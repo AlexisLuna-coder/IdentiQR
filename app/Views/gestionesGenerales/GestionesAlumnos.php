@@ -9,7 +9,9 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesAlumnos.css"> <!--CSS-->
-        <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js" defer></script> <!-- JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js"></script> <!-- JS -->
         <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--*: Da formato frente para el registro - MODIFICAR-->
         <title>IdentiQR</title>
