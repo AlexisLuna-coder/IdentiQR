@@ -31,28 +31,28 @@
             </div>
         </header>
         <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
-        
-        <div id="HeaderLogin">
-            <h2><center>IdentiQR</center></h2>
-            
-        </div>
-        <hr>
-        <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
-        <section>
-            <h2>Gestión de Alumnos</h2>
-            <a href = "RegistroAlumno.html#seccionRegistrarAlumno">Registrar Nuevo Alumno</a>
-            <a href = "RegistroAlumno.html#ConsultaModificacionAlumnos">Modificar un Alumno</a>
-            <a href = "RegistroAlumno.html#EliminacionAlumnos">Eliminar un Alumno</a>
-            <a href = "RegistroAlumno.html#ConsultaModificacionAlumnos">Buscar un Alumno</a>
-        </section>
-        <hr>
+        <div class = "contenedorCentral">
+            <div id="HeaderLogin">
+                <h2><center>IdentiQR</center></h2>
+                
+            </div>
+            <hr>
+            <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
+            <section>
+                <h2>Gestión de Alumnos</h2>
+                <a href = "/IdentiQR/app/Views/gestionesGenerales/RegistroAlumno.html#seccionRegistrarAlumno">Registrar Nuevo Alumno</a>
+                <a href = "/IdentiQR/app/Views/gestionesGenerales/RegistroAlumno.html#ConsultaModificacionAlumnos">Modificar un Alumno</a>
+                <a href = "/IdentiQR/app/Views/gestionesGenerales/RegistroAlumno.html#EliminacionAlumnos">Eliminar un Alumno</a>
+                <a href = "/IdentiQR/app/Views/gestionesGenerales/RegistroAlumno.html#ConsultaModificacionAlumnos">Buscar un Alumno</a>
+            </section>
+            <hr>
 
-        <section>
-            <h2>Gestión de justificantes</h2>
-            <a href = "gestionJustificantes_Dir.html#generarJustificante">Generar justificante</a> 
-            <a href = "gestionJustificantes_Dir.html#revisarJustificante">Revisar justificante</a> 
-        </section>
-       
+            <section>
+                <h2>Gestión de justificantes</h2>
+                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.html#generarJustificante">Generar justificante</a> 
+                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.html#revisarJustificante">Revisar justificante</a> 
+            </section>
+        </div>
 
         <br>
         <footer class="FooterIndex1" id = "FooterIndex1">

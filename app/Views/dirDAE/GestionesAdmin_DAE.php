@@ -20,9 +20,9 @@
                 <div class="container__nav">
                     <nav id="nav">
                         <ul>
-                            <li><a href="index.html" class="select">INICIO</a></li>
-                            <li><a href="#">TEMAS</a></li>
-                            <li><a href="#">CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
+                            <li><a href="/IdentiQR/index.html#Temas">TEMAS</a></li>
+                            <li><a href="/IdentiQR/index.html#Contacto">CONTACTOS</a></li>
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -33,16 +33,15 @@
         </header>
         <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
         
-        <div id="HeaderLogin">
-            <h2><center>IdentiQR</center></h2>
+        <div>
+            <div id="HeaderLogin">
+                <h2><center>IdentiQR</center></h2>
+            </div>
+            <hr>
+            <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
             
+            <br>
         </div>
-        <hr>
-        <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
-        
-       
-
-        <br>
         <footer class="FooterIndex1" id = "FooterIndex1">
             <div class="FooterIndex1">
                 <div class="footer__info">

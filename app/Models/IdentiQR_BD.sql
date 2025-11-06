@@ -247,6 +247,14 @@ begin
     end if;
 end //
 
+/*Disparador para agilizar el procedimiento de asignación de DATOS a los tramites/servicios*/
+delimiter //
+create trigger regisServ_Tramite before insert on registroservicio
+for each row
+begin
+	set new.FechaHora = now();
+end //
+
 
 /* Procedimiento para agilizar la consulta de los diferentes usuarios que tendrán acceso al sistema*/
 delimiter //
@@ -260,7 +268,6 @@ begin
 end //
 
 /*Procedimiento para agilizar el registro de los usuarios*/
-
 delimiter //
 create procedure registrarUsuariosSP(in nombre varchar(60), in ApP varchar(45), in ApM varchar(45),in usr varchar(100), in email varchar(100), in passw varchar(255), in rol varchar(45), in idDepto int)
 begin
@@ -309,6 +316,8 @@ BEGIN
     SET eliminado = ROW_COUNT(); -- número de filas afectadas
     COMMIT;
 END //
+
+/*PROCEDIMIENTO CON TRANSACCIÓN DISTRIBUIDA PARA AGILIZAR LA ELIMINACIÓN DE LOS TRAMITES*/
 
 
 /*Funcion para agilizar la obtención de los cuatrimestres en los cuales se encuentra el alumno*/
