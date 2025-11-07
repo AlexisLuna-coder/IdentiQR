@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" type="image/jpg" href="Media/img/Favicon.ico"/> <!--FAVICON-->
+        <title>DireccionACADEMICA_IdentiQR</title>
+
+        <!--TODO: Aquí se tendra que pasar a CSS-->
+    </head>
+    <body>
+        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <header id="HeaderIndex1">
+            <div class="container__header">
+                <div class="logo">
+                    <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
+                </div>
+                <div class="container__nav">
+                    <nav id="nav">
+                        <ul>
+                            <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
+                            <li><a href="#">TEMAS</a></li>
+                            <li><a href="#">CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
+                        </ul>
+                    </nav>
+                    <div class="btn__menu" id="btn_menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <div id="HeaderLogin">
+            <h2><center>IdentiQR</center></h2>
+            
+        </div>
+        <hr>
+        <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
+
+        <div id = "generarJustificante">
+            <h2>Gestión de justificantes</h2>
+            <form action="">
+                <fieldset>
+                    <legend>Generar justificante</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <br><br>
+                    <label for="idTramite">Tramite a realizar: </label>
+                        <select name="idTramite" id="idTramite" required>
+                            <option no value=""></option>
+                            <option value="0011">Justificante</option>
+                            <option value="0012">Recursamiento</option>
+                        </select>
+                    <br><br>
+                    <label for="requisitos">Requisitos: </label>
+                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
+                    <hr>
+                    <input type="submit" value="Enviar_Justificante" name = "Enviar_Justificante" onclick="alert('Datos enviados con exito')">
+                </fieldset>
+            </form>
+
+            <form action="">
+                <fieldset>
+                    <table></table>
+                    <legend>Actualizar justificante</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <br><br>
+                    <label for="idTramite">Tramite a realizar: </label>
+                        <select name="idTramite" id="idTramite" required>
+                            <option no value=""></option>
+                            <option value="0011">Justificante</option>
+                            <option value="0012">Recursamiento</option>
+                        </select>
+                    <br><br>
+                    <label for="requisitos">Requisitos: </label>
+                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
+                    <hr>
+                    <input type="submit" value="Enviar_Justificante" name = "Enviar_Justificante" onclick="alert('Datos enviados con exito')">
+                </fieldset>
+            </form>
+
+            <form action="">
+                <fieldset>
+                    <table></table>
+                    <legend>Eliminar justificante</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <br><br>
+                    <label for="idTramite">Tramite a realizar: </label>
+                        <select name="idTramite" id="idTramite" required>
+                            <option no value=""></option>
+                            <option value="0011">Justificante</option>
+                            <option value="0012">Recursamiento</option>
+                        </select>
+                    <br><br>
+                    <label for="requisitos">Requisitos: </label>
+                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
+                    <hr>
+                    <input type="submit" value="Enviar_Justificante" name = "Enviar_Justificante" onclick="alert('Datos enviados con exito')">
+                </fieldset>
+            </form>
+        </div>
+
+        <div id = "revisarJustificante">
+
+        </div>
+        <br>
+        <footer class="FooterIndex1" id = "FooterIndex1">
+            <div class="FooterIndex1">
+                <div class="footer__info">
+                    <h3>IdentiQR</h3>
+                    <p>
+                        ©2025 IdentiQR. Todos los derechos reservados.
+                        <br>
+                        Diseñado por: Lizbeth B. y Alexis S.
+                    </p>
+                </div>
+                <div class="footer__links">
+                    <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
+                    <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
+                    <a href="#Terms_Index1">Terminos del servicio</a>
+                </div>
+            </div>
+
+            <!-- Nuevo div de términos -->
+            <div id="Terms_Index1">
+                <p>
+                    Toda información resguardada será de carácter relevante. 
+                    No se podrá acceder a este sistema si no se cuenta con previo registro. 
+                    Por ningún motivo el estudiante podrá acceder al sistema.
+                </p>
+            </div>
+        </footer>
+
+        <!--
+        <script>
+            // Evitar regresar con el botón "Atrás"
+            window.history.pushState(null, "", window.location.href);
+            window.onpopstate = function () {
+                window.history.pushState(null, "", window.location.href);
+                alert("No puedes regresar a la página anterior.");
+            };
+
+            // Evitar recargar (F5 o Ctrl+R)
+            document.addEventListener("keydown", function (e) {
+                if ((e.key === "F5") || 
+                    (e.ctrlKey && e.key === "r") || 
+                    (e.metaKey && e.key === "r")) {
+                    e.preventDefault();
+                    alert("La recarga de la página está deshabilitada.");
+                }
+            });
+
+            // También evita recargar con clic derecho → “Recargar”
+            window.onbeforeunload = function () {
+                return "¿Estás seguro de que deseas salir de esta página?";
+            };
+        </script>
+        -->
+        <script>
+            (function() {
+            // Añade varios estados para "llenar" el historial localmente
+            function pushStates(n = 2) {
+                try {
+                for (let i = 0; i < n; i++) {
+                    history.pushState({preventBack: true, i}, "", window.location.href);
+                }
+                } catch (err) { /* algunos entornos restringen pushState */ }
+            }
+
+            // En carga, agrega estados
+            window.addEventListener("load", function() {
+                pushStates(2);
+            });
+
+            // Maneja cuando el usuario intenta retroceder
+            window.addEventListener("popstate", function (e) {
+                // Si viene de nuestros estados, lo 'empujamos' de regreso
+                if (e.state && e.state.preventBack) {
+                // Opcional: mostrar mensaje breve al usuario
+                // (evita alert() intrusivos si no quieres interrumpir)
+                // alert("No puedes regresar a la página anterior.");
+
+                // Reponer estado inmediatamente para impedir retroceso
+                try { history.pushState(null, "", window.location.href); } catch (err) {}
+
+                // Intento extra por si el navegador lo permite
+                try { history.forward(); } catch (err) {}
+
+                // Alternativa: redirigir a una página segura (descomenta si prefieres esto)
+                // window.location.replace("/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php");
+                } else {
+                // Si no es nuestro estado, volvemos a empujar uno
+                try { history.pushState(null, "", window.location.href); } catch (err) {}
+                }
+            }, false);
+
+            // Bloquear atajos de recarga
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "F5" || (e.ctrlKey && (e.key === "r" || e.key === "R")) || (e.metaKey && (e.key === "r" || e.key === "R"))) {
+                e.preventDefault();
+                // Puedes mostrar un pequeño toast en lugar de alert
+                // alert("Recarga deshabilitada.");
+                }
+            });
+
+            // Aviso al intentar cerrar/recargar (los navegadores modernos muestran su propio mensaje)
+            window.addEventListener("beforeunload", function (e) {
+                // Si quieres que no siempre pregunte, comenta la siguiente línea
+                e.preventDefault();
+                e.returnValue = ""; // necesario en muchos navegadores
+                return ""; // compatibilidad
+            });
+            })();
+        </script>
+
+        <script>
+            window.addEventListener('popstate',function(event){
+                history.pushState(null,null,window.location.pathname);
+                history.pushState(null,null,window.location.pathname);
+            },false);
+        </script>
+    </body>
+</html>

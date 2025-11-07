@@ -51,7 +51,7 @@ create table if not exists Usuario (
     genero varchar(45) default "Otro",
     usr varchar(45) not null,
     email varchar(60) unique not null, #UNIQUE es una restricción que posee SQL para imponer integridad en datos, evitando duplicidad. https://hightouch.com/sql-dictionary/sql-unique
-    passw varchar(150) not null, # La contraseña debe ser hasheada
+    passw varchar(255) not null, # La contraseña debe ser hasheada
     rol varchar(50) not null, # Rol del usuario (ej. 'Administrador', 'Direccion_Academica', 'Vinculacion')
     idDepto int, # Clave foránea al departamento al que pertenece el usuario
     FechaRegistro datetime not null,
@@ -132,10 +132,10 @@ create table RegistroServicio(
     FechaHora datetime not null,
     descripcion text default "S/D", #PUEDE QUEDAR NULO
     estatusT varchar(45) default "Pendiente",
+    FolioSeguimiento varchar(45) default "Procesando",
     foreign key (Matricula) references Alumno(Matricula) on update cascade on delete cascade,
     foreign key(idTramite) references ServicioTramite(idTramite) on update cascade on delete cascade
 );
-
 
 #7. Tabla para gestionar el historial de los movimientos que se hacen dentro de la base de datos
 create table if not exists HistorialInfoQR(
@@ -226,13 +226,14 @@ end //
 
 /*Inserciones dentro de la tabla de Usuario*/
 /*Usuarios generados para cada DIRECCIÓN*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R', 'identiqr.info@gmail.com', 'IdentiQR_Admin', 'Administrador',1); /*Admin*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Dir', 'identiQR.info_Dir@identiqr.com', 'IdentiQR_Dir', 'Administrativo_Direccion',2);/*Dirección - IQR2025-72*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_ServEsco', 'identiQR.info_ServEsco@identiqr.com', 'IdentiQR_ServEsco', 'Administrativo_ServicioEsco',3);/*Serv Esco - IQO2025-72 */
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DDA', 'identiQR.info_DDA@identiqr.com', 'IdentiQR_DDA', 'Administrativo_DesaAca',4);/*DDA - IQA2025-72*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DAE', 'identiQR.info_DAE@identiqr.com', 'IdentiQR_DAE', 'Administrativo_DAE',5);/*DAE - IQE2025-72*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-72*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Vinc', 'identiQR.info_Vinc@identiqr.com', 'IdentiQR_Vinc', 'Administrativo_Vinculacion',7);/*Vinc - IQC2025-72*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R', 'identiqr.info@gmail.com', 'IdentiQR_Admin', 'Administrador',1); /*Admin - IQR2025-9F*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Dir', 'identiQR.info_Dir@identiqr.com', 'IdentiQR_Dir', 'Administrativo_Direccion',2);/*Dirección - IQR2025-9F*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_ServEsco', 'identiQR.info_ServEsco@identiqr.com', 'IdentiQR_ServEsco', 'Administrativo_ServicioEsco',3);/*Serv Esco - IQO2025-9F */
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DDA', 'identiQR.info_DDA@identiqr.com', 'IdentiQR_DDA', 'Administrativo_DesaAca',4);/*DDA - IQA2025-9F*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DAE', 'identiQR.info_DAE@identiqr.com', 'IdentiQR_DAE', 'Administrativo_DAE',5);/*DAE - IQE2025-9F*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-9F*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Vinc', 'identiQR.info_Vinc@identiqr.com', 'IdentiQR_Vinc', 'Administrativo_Vinculacion',7);/*Vinc - IQC2025-9F*/
+
 
 select * from departamento;
 /* DISPARADOR PARA EL REGISTRO DE LA CONTRASEÑA INICIAL - Falta*/
@@ -243,7 +244,8 @@ create trigger actHash_QR_Alumno before update on alumno
 for each row
 begin
 	if ((old.qrHash != new.qrHash) and (new.qrHash != 'Pendiente')) then
-        set new.fechaGenerarQR_1 = CURDATE();
+        set new.fechaGenerarQR_1 = curdate();
+        set new.fechaExpiracionQR_2 = adddate(new.fechaGenerarQR_1, interval 4 month); /*En automatico la fecha del HASH o de expiración sera en 4 MESES.*/
     end if;
 end //
 
@@ -253,6 +255,7 @@ create trigger regisServ_Tramite before insert on registroservicio
 for each row
 begin
 	set new.FechaHora = now();
+    #set new.FolioSeguimiento;
 end //
 
 
@@ -318,7 +321,20 @@ BEGIN
 END //
 
 /*PROCEDIMIENTO CON TRANSACCIÓN DISTRIBUIDA PARA AGILIZAR LA ELIMINACIÓN DE LOS TRAMITES*/
+delimiter //
+CREATE PROCEDURE cancelarTramite(IN FR int, OUT eliminado INT)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SET eliminado = 0;
+    END;
 
+    START TRANSACTION;
+    DELETE FROM registroservicio WHERE (FolioRegistro = FR);
+    SET eliminado = ROW_COUNT(); -- número de filas afectadas
+    COMMIT;
+END //
 
 /*Funcion para agilizar la obtención de los cuatrimestres en los cuales se encuentra el alumno*/
 delimiter //

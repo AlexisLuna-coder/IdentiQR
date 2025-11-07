@@ -247,14 +247,15 @@ function confirmacionEliminacionAlumno(event){
     }
 
     function manejarRespuestaServidorQR(data, content) {
-        if (!datosQR) return;
+        if (!datosQR) 
+            return;
 
         if (data.includes('redirect:')) {
             const url = data.split('redirect:')[1];
             datosQR.innerHTML += '<br><p>¿Desea proceder con la redirección a Modificación?</p>';
-            datosQR.innerHTML += '<button id="aceptarBtn" class="btn btn-success">Aceptar</button> ';
-            datosQR.innerHTML += '<button id="cancelarBtn" class="btn btn-danger">Cancelar</button> ';
-            datosQR.innerHTML += '<button id="usarMatriculaBtn" class="btn btn-info">Solamente usar Matricula</button>';
+            datosQR.innerHTML += '<button id="aceptarBtn" class="btn btn-success btn-sm">Aceptar</button> ';
+            datosQR.innerHTML += '<button id="cancelarBtn" class="btn btn-danger btn-sm">Cancelar</button> ';
+            datosQR.innerHTML += '<button id="usarMatriculaBtn" class="btn btn-info btn-sm">Solamente usar Matricula</button>';
 
             // Listeners para estos botones (se añaden dinámicamente)
             document.getElementById('aceptarBtn').addEventListener('click', function() {

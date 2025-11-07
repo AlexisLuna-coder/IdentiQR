@@ -76,35 +76,35 @@
 
         public function loginUsuarioSP(string $usr, string $pw): Array /*String*/|bool 
         {
-        //Codigo para hacer el login
-        $sql = "call Login(?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        if (!$stmt) {
-            echo("Connection_BD->loginUsuario prepare error: " . $this->conn->error);
-            return false;
-        }
+            //Codigo para hacer el login
+            $sql = "call Login(?, ?)";
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) {
+                echo("Connection_BD->loginUsuario prepare error: " . $this->conn->error);
+                return false;
+            }
 
-        $stmt->bind_param("ss", $usr, $pw);
-        if (!$stmt->execute()) {
-            echo("Connection_BD->loginUsuario execute error: " . $stmt->error);
-            return false;
-        }
+            $stmt->bind_param("ss", $usr, $pw);
+            if (!$stmt->execute()) {
+                echo("Connection_BD->loginUsuario execute error: " . $stmt->error);
+                return false;
+            }
 
-        $res = $stmt->get_result();
-        if ($res && $row = $res->fetch_assoc()) {
+            $res = $stmt->get_result();
+            if ($res && $row = $res->fetch_assoc()) {
+                $stmt->close();
+                // Devuelve el rol del usuario
+                //return $row['rol']; String
+                return [
+                    'idUsuario' => $row['idUsuario'] ?? null,
+                    'usr'       => $row['usr'] ?? null,
+                    'email'     => $row['email'] ?? null,
+                    'rol'       => $row['rol'] ?? null
+                ];
+            }
+
             $stmt->close();
-            // Devuelve el rol del usuario
-            //return $row['rol']; String
-            return [
-                'idUsuario' => $row['idUsuario'] ?? null,
-                'usr'       => $row['usr'] ?? null,
-                'email'     => $row['email'] ?? null,
-                'rol'       => $row['rol'] ?? null
-            ];
-        }
-
-        $stmt->close();
-        return false;
+            return false;
         }
 
         
