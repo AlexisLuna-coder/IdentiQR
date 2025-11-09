@@ -111,7 +111,7 @@
         /*Función para la modificación de un Usuario*/
         public function actualizarUsuario(Usuario $unUsuario){
             //Statement
-            $sql_statement = "UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, /*genero = ?,*/ email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ?";
+            $sql_statement = "UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, genero = ?, email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ?";
             //Preparar el statement
             $stmt = $this ->conn->prepare($sql_statement);
             //Pasamos los parametros
@@ -123,20 +123,20 @@
             $nombre = $unUsuario->getNombre();
             $apellido_paterno = $unUsuario->getApellidoPaterno();
             $apellido_materno = $unUsuario->getApellidoMaterno();
-            //$genero = $unUsuario->getGenero();
+            $genero = $unUsuario->getGenero();
             $email = $unUsuario->getEmail();
-            $passw = $unUsuario->getPassw();
+            $passw = password_hash($unUsuario->getPassw(),PASSWORD_BCRYPT);
             $rol = $unUsuario->getRol();
             $idDepto = (int)$unUsuario->getIdDepto();
             $id_usuario = (int)$unUsuario->getIdUsuario();
 
             // Enlazamos parámetros
             //$stmt->bind_param("sssssssii"
-            $stmt->bind_param("ssssssii",
+            $stmt->bind_param("sssssssii",
                 $nombre,
                 $apellido_paterno,
                 $apellido_materno,
-                //$genero,
+                $genero,
                 $email,
                 $passw,
                 $rol,

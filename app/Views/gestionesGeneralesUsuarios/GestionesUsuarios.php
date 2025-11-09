@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
-
+        <script src="/IdentiQR/public/JavaScript/confirmacionBotones.js"></script> <!--SCRIPT-->
         <title>Gestión de usuarios-IdentiQR</title>
         <!--
         <style>
@@ -257,9 +257,11 @@
                                     <a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=updateUsuarioID&id=<?php echo $row['id_usuario']?>">
                                         <button>Editar</button>
                                     </a>
-                                    <a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=deleteUsuario&id=<?php echo $row['id_usuario']?>">
-                                        <button>Eliminar</button>
-                                    </a>
+
+                                    <button type="button" 
+                                            onclick="confirmacionEliminacionUsuarioTabla(event, '<?php echo $row['usr']?>')">
+                                        Eliminar Usuario
+                                    </button>
                                 </td>
                             </tr>
                         <?php 
@@ -336,7 +338,7 @@
             </div>
         </footer>
         <!--AQUÍ ESTARÁ TODO LA UNIFICACIÓN PARA LOS BOTONES DE (CONFIRMACIÓN).-->
-        <script src = "/IdentiQR/public/JavaScript/confirmacionBotones.js"></script>
+        <script src = "/IdentiQR/public/JavaScript/confirmacionBotones.js?v=2.0"></script>
         
         <?php if (isset($resultadoExito) && $resultadoExito === true): ?>
             <script>

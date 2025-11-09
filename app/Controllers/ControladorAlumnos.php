@@ -259,7 +259,8 @@
         }
 
     }
-    /*Realizamos la instancia del metodo de inserción */
+    
+    // Realizamos la instancia del metodo de inserción
     // Asegúrate que $conn exista
     $db = new Connection_BD();
     $conn = $db->getConnection();

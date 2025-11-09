@@ -46,7 +46,7 @@
         <div id = "generarJustificante">
             <h2>Gestión de justificantes</h2>
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
-            <form action="/IdentiQR/redireccionAcciones.php?action=insert" method="POST">
+            <form id="formGenerarJustificante" action="/IdentiQR/redireccionAcciones.php?controller=dirDirAca&action=insert" method="POST">
                 <fieldset>
                     <legend>Generar justificante</legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
@@ -75,7 +75,7 @@
                     <hr>
 
                     
-                    <input type="submit" value="Registrar servicio (Justificante o Recursamiento)" name = "registrarTramite_dirDirACA" onclick="alert('Datos enviados con exito')">
+                    <input type="submit" value="Registrar servicio (Justificante o Recursamiento)" name = "registrarTramite_dirDirACA">
                 </fieldset>
             </form>
         </div>
@@ -158,7 +158,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                if(isset($direccion) && $direccion !== null or ($direccion === 0)){
+                                if(isset($direccion) && $direccion !== null && $direccion !== 0){
                                     while($row = $direccion->fetch_assoc()){
                             ?>
                                     <tr>

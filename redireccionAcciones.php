@@ -1,9 +1,18 @@
 <?php 
     //Incluir el controlador de la Dirección/Departamento correspondiente
-    include_once "app/Controllers/ControladorAlumnos.php";
-    include_once "app/Controllers/ControladorDirecciones.php";
-    include_once "app/Controllers/ControladorUsuario.php";
     include_once "config/Connection_BD.php";
+    //include_once "app/Controllers/ControladorAlumnos.php";
+    include_once "app/Controllers/ControladorDirecciones.php";
+    //include_once "app/Controllers/ControladorUsuario.php";
+    
+    // Crear la conexión a la base de datos
+    $db = new Connection_BD();
+    $conn = $db->getConnection();
+    
+    if (!$conn) {
+        die("Error: No se pudo establecer conexión con la base de datos.");
+    }
+    
     // En caso de no tener una ruta, se envia al formulario de insertar usuario
     $controller = isset($_GET['controller']) ? $_GET['controller'] :  'dirDirAca';
     //
@@ -13,14 +22,14 @@
         case 'dirDirAca':
             $controllerInstance = new DirectionsController($conn);
             break;
-        case 'alumno':
+        /*case 'alumno':
             $controllerInstance = new AlumnoController($conn);
             break;
+            */
         default:
             echo "<br> Error al encontrar el controlador";
             exit();
     }
-
 
     switch($action){
         case 'insert': //Llamar a registrarTramite

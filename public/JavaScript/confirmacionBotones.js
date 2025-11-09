@@ -183,3 +183,69 @@ function mostrarAlertaBusqueda(tipo, mensaje) {
         showConfirmButton: false
     });
 }
+
+/*4. MENSAJES DE NOTIIFCACIONES DE ELIMINACIÓN */
+function confirmacionEliminacionUsuario(event){
+    event.preventDefault();  // Prevenir envío inmediato del form
+    const inputCred = document.getElementById('idUsuario_BajaUSUARIO');
+    const valor = (inputCred.value || '').trim();
+
+    if (!valor) {
+        Swal.fire({
+            title: "Campo vacío",
+            text: "Por favor ingresa la matricula del usuario a eliminar.",
+            icon: "warning"
+        });
+        return false;  // No continuar con el submit ni confirmación
+    }
+    Swal.fire({
+        title: "¿Desea continua con la eliminación?",
+        text: "¡No podrás revertir esta acción!",
+        theme: 'material-ui',
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar."
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si confirma, enviamos el formulario manualmente
+            document.getElementById('formBajaUsuario').submit();
+        }
+    });
+
+    // Retornamos false para prevenir el submit normal
+    return false;
+}
+
+/*4.1. CONFIRMACIÓN DE ELIMINACIÓN DESDE LA TABLA DE USUARIOS */
+function confirmacionEliminacionUsuarioTabla(event, usuario) {
+    event.preventDefault();  // Prevenir cualquier acción por defecto
+    
+    if (!usuario || usuario.trim() === '') {
+        Swal.fire({
+            title: "Error",
+            text: "No se pudo obtener el usuario.",
+            icon: "error"
+        });
+        return false;
+    }
+    
+    Swal.fire({
+        title: "¿Desea eliminar este usuario?",
+        text: `Usuario: ${usuario}\n¡No podrás revertir esta acción!`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Redirigir al controlador con GET
+            window.location.href = `/IdentiQR/app/Controllers/ControladorUsuario.php?action=eliminarUsuario&usuario=${encodeURIComponent(usuario)}`;
+        }
+    });
+    
+    return false;
+}

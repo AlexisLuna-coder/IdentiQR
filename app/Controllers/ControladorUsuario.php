@@ -226,41 +226,44 @@
             }
             //Metodo para hacer la eliminación del usuario
             public function eliminarUsuario() {
-                if(isset($_POST['BajaUsuario_EliminarUsuario']) or isset($_POST['accionEliminar']) && $_POST['accionEliminar'] === 'eliminarUsuario'){
+                $credencial = null;
+                
+                // Verificar si viene por GET (desde la tabla)
+                if(isset($_GET['usuario'])){
+                    $credencial = $_GET['usuario'];
+                }
+                // Verificar si viene por POST (desde el formulario de eliminación)
+                elseif(isset($_POST['BajaUsuario_EliminarUsuario']) || (isset($_POST['accionEliminar']) && $_POST['accionEliminar'] === 'eliminarUsuario')){
                     $credencial = $_POST['idUsuario_BajaUSUARIO'];
-                    if (empty($credencial) or $credencial === "") {
-                        // Si está vacío, definimos mensaje de error y resultado false
-                        $mensaje = "Debe proporcionar un usuario para eliminar.";
-                        $resultadoExito = false;
-                        
-                        include_once(__DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php');
-                        exit();
-                    }
-                    //echo "<script>alert('Hola desde JavaScript: $credencial');</script>";
-                    //$mensaje = "Hola desde JavaScript: $credencial";
-                    //Consulta para ver si sirve de algo
-                    $rowsDeleted = $this -> modelUser -> eliminarUsuario($credencial);
-                    if($rowsDeleted >= 1){
-                        //$mensaje = "La eliminación del usuario ".$credencial." fue correcta.";
-                        //header("Location: /IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&msg=UsuarioEliminado");
-                        //exit();
-                        $mensaje = "La eliminación del usuario $credencial fue correcta.";
-                        $resultadoExito = true;
-                    } else {
-                        // Si falla, mostrar mensaje o redirigir con error
-                        //header("Location: /IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&error=1");
-                        //exit();
-                        $mensaje = "Error al eliminar el usuario.";
-                        $resultadoExito = false;
-                    }
+                }
+                
+                // Validar que se haya recibido un usuario
+                if (empty($credencial) || $credencial === "") {
+                    $mensaje = "Debe proporcionar un usuario para eliminar.";
+                    $resultadoExito = false;
                     include_once(__DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php');
                     exit();
                 }
+                
+                // Realizar la eliminación
+                $rowsDeleted = $this->modelUser->eliminarUsuario($credencial);
+                
+                if($rowsDeleted >= 1){
+                    $mensaje = "La eliminación del usuario $credencial fue correcta.";
+                    $resultadoExito = true;
+                } else {
+                    $mensaje = "Error al eliminar el usuario.";
+                    $resultadoExito = false;
+                }
+                
+                include_once(__DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php');
+                exit();
             }
 
         }
+        
         //Realizamos las validaciones
-        /*Realizamos la instancia del metodo de inserción */
+        // Realizamos la instancia del metodo de inserción
         $db = new Connection_BD();
         $conn = $db->getConnection(); 
 
@@ -293,6 +296,9 @@
                 case 'eliminarUsuario':
                     $controladorUsuario -> eliminarUsuario();
                     break;
+                case 'deleteUsuario':
+                    $controladorUsuario -> eliminarUsuario();
+                    break;
                 default:
                     header("Location: /IdentiQR/index.html");
                     exit();
@@ -301,7 +307,4 @@
         } else {
             $controladorUsuario -> loginUsuario(); 
         }
-        
-
-
     ?>
