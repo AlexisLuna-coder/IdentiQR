@@ -39,6 +39,9 @@ function iniciarScanner() {
 
     scanner = new Instascan.Scanner({ video: video });
 
+    const canvas = document.createElement('canvas');
+    canvas.getContext('2d', { willReadFrequently: true });
+
     scanner.addListener('scan', function (content) {
         // Mostrar el contenido escaneado
         datosQR.innerHTML = '<pre>' + escapeHtml(content) + '</pre>';
@@ -261,7 +264,7 @@ function mostrarCampoConsulta(tipo) {
 }
 
 // Función para confirmar eliminación desde la tabla (por FolioSeguimiento)
-function confirmarEliminacion(folioSeguimiento) {
+function confirmarEliminacion(controller,folioSeguimiento,idDepto) {
     Swal.fire({
         title: '¿Estás seguro?',
         text: "¿Deseas eliminar el trámite con Folio de Seguimiento: " + folioSeguimiento + "?",
@@ -276,7 +279,7 @@ function confirmarEliminacion(folioSeguimiento) {
             // Crear un formulario para enviar el FolioSeguimiento por POST
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/IdentiQR/redireccionAcciones.php?action=deleteFS';
+            form.action = '/IdentiQR/redireccionAcciones.php?controller='+controller+'&action=deleteFS&idDepto='+idDepto;
             //form.action = 'GestionesAdmin_Direccion.php?action=deleteFS';
             
             // Agregar campo FolioSeguimiento
@@ -290,7 +293,7 @@ function confirmarEliminacion(folioSeguimiento) {
             const inputDepto = document.createElement('input');
             inputDepto.type = 'hidden';
             inputDepto.name = 'idDepto';
-            inputDepto.value = '2';
+            inputDepto.value = idDepto;
             form.appendChild(inputDepto);
             
             // Agregar campo de acción

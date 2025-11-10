@@ -1,6 +1,7 @@
 <?php
     include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
     $idDepto = 4; //Esta variable permitira ser modificada para cada departamentp
+    $contro = "dirDDA";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -8,14 +9,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         
+
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
-        <script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>
-        <!--<script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>-->
+        <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
+        <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
         <title>DireccionACADEMICA_IdentiQR</title>
     </head>
     <body>
@@ -178,7 +180,7 @@
                             <th>Matricula</th>
                             <th>Descripcion</th>
                             <th>Estatus</th>
-                            <th>Extracurricular</th>
+                            <th>Tutor</th>
                             <th>ACCIONES</th>
                         </thead>
                         <tbody>
@@ -194,12 +196,12 @@
                                     <td><?php echo $row['Matricula']; ?></td>
                                     <td><?php echo $row['descripcion']; ?></td>
                                     <td><?php echo $row['estatusT']; ?></td>
-                                    <td><?php echo obtenerExtracurricular($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerTutor($row['descripcion']); ?></td>
                                     <td>
-                                        <a href="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=updateDDA&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
+                                        <a href="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro;?>&action=updateDDA&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
                                             <button type="button">Editar</button>
                                         </a>
-                                        <button type="button" onclick="confirmarEliminacion('<?php echo $row['FolioSeguimiento'] ?? ''; ?>')">Eliminar</button>
+                                        <button type="button" onclick="confirmarEliminacion('<?php echo $contro?>','<?php echo $row['FolioSeguimiento'] ?? ''; ?>','<?php echo $idDepto;?>')">Eliminar</button>
                                     </td>
                                 </tr>
                             <?php

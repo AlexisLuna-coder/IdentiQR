@@ -43,4 +43,20 @@
 
         return "No especificado";
     }
+
+    //Función para obtener el tutor
+    function obtenerTutor($descripcion) {
+        // Busca el texto dentro de <...> que esté después de la palabra "tutor"
+        if (preg_match('/tutor(?:\/a)?:?\s*<([^>]+)>/iu', $descripcion, $coincidencia)) {
+            return trim($coincidencia[1]);
+        }
+
+        // Si no se encuentra con la palabra tutor, toma el último <...> (que normalmente es el tutor)
+        if (preg_match_all('/<([^>]+)>/u', $descripcion, $coincidencias)) {
+            $ultimo = end($coincidencias[1]);
+            return trim($ultimo);
+        }
+
+        return "No especificado";
+    }
 ?>

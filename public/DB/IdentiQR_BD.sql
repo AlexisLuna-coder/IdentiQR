@@ -226,14 +226,14 @@ end //
 
 /*Inserciones dentro de la tabla de Usuario*/
 /*Usuarios generados para cada DIRECCIÓN*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R', 'identiqr.info@gmail.com', 'IdentiQR_Admin', 'Administrador',1); /*Admin - IQR2025-9F*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Dir', 'identiQR.info_Dir@identiqr.com', 'IdentiQR_Dir', 'Administrativo_Direccion',2);/*Dirección - IQR2025-9F*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_ServEsco', 'identiQR.info_ServEsco@identiqr.com', 'IdentiQR_ServEsco', 'Administrativo_ServicioEsco',3);/*Serv Esco - IQO2025-9F */
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DDA', 'identiQR.info_DDA@identiqr.com', 'IdentiQR_DDA', 'Administrativo_DesaAca',4);/*DDA - IQA2025-9F*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DAE', 'identiQR.info_DAE@identiqr.com', 'IdentiQR_DAE', 'Administrativo_DAE',5);/*DAE - IQE2025-9F*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-9F*/
-INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Vinc', 'identiQR.info_Vinc@identiqr.com', 'IdentiQR_Vinc', 'Administrativo_Vinculacion',7);/*Vinc - IQC2025-9F*/
-
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R', 'identiqr.info@gmail.com', 'IdentiQR_Admin', 'Administrador',1); /*Admin - IQR2025-99*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Dir', 'identiQR.info_Dir@identiqr.com', 'IdentiQR_Dir', 'Administrativo_Direccion',2);/*Dirección - IQR2025-9C*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_ServEsco', 'identiQR.info_ServEsco@identiqr.com', 'IdentiQR_ServEsco', 'Administrativo_ServicioEsco',3);/*Serv Esco - IQO2025-9D */
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DDA', 'identiQR.info_DDA@identiqr.com', 'IdentiQR_DDA', 'Administrativo_DesaAca',4);/*DDA - IQA2025-9E*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_DAE', 'identiQR.info_DAE@identiqr.com', 'IdentiQR_DAE', 'Administrativo_DAE',5);/*DAE - IQE2025-A0*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-A1*/
+INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Vinc', 'identiQR.info_Vinc@identiqr.com', 'IdentiQR_Vinc', 'Administrativo_Vinculacion',7);/*Vinc - IQC2025-A3*/
+select * from usuario;
 
 select * from departamento;
 /* DISPARADOR PARA EL REGISTRO DE LA CONTRASEÑA INICIAL - Falta*/
@@ -275,6 +275,15 @@ create trigger ingInfoMed_Medico before insert on informacionMedica
 for each row
 begin
 	set new.fechaIngreso_InfoMed = curdate();
+end //
+
+delimiter //
+create trigger actInfoMed_Medico before update on informacionMedica
+for each row
+begin
+	if(old.fechaIngreso_InfoMed != new.fechaIngreso_InfoMed) then
+		set new.fechaIngreso_InfoMed = curdate(); 
+    end if;
 end //
 
 /* Procedimiento para agilizar la consulta de los diferentes usuarios que tendrán acceso al sistema*/
@@ -354,6 +363,7 @@ BEGIN
     COMMIT;
 END //
 
+/*2 PROCEDIMIENTO CON TRANSACCIÓN DISTRIBUIDA PARA AGILIZAR LA ELIMINACIÓN DE LOS TRAMITES*/
 delimiter //
 CREATE PROCEDURE cancelarTramite2(IN FS text, OUT eliminado INT)
 BEGIN
@@ -382,6 +392,36 @@ begin
     return c;
 end //
 
+/*Funcion para agilizar la obtención de los PERIODOS en los cuales se encuentra el alumno*/
+DELIMITER //
+CREATE FUNCTION calcPeriodo(feIngreso DATE)
+RETURNS VARCHAR(10)
+DETERMINISTIC
+BEGIN
+    DECLARE cuatri INT;
+    DECLARE periodo CHAR(1);
+    DECLARE anio CHAR(4);
+
+    #1. Obtener el cuatrimestre actual con la función interna
+    SET cuatri = CalcCuatrimestre(feIngreso);
+
+    #2. Determinar el periodo según el mes actual
+    CASE 
+        WHEN MONTH(CURDATE()) BETWEEN 1 AND 4 THEN 
+            SET periodo = 'I';   -- Invierno
+        WHEN MONTH(CURDATE()) BETWEEN 5 AND 8 THEN 
+            SET periodo = 'P';   -- Primavera
+        WHEN MONTH(CURDATE()) BETWEEN 9 AND 12 THEN 
+            SET periodo = 'O';   -- Otoño
+    END CASE;
+
+    #3. Obtener el año actual
+    SET anio = YEAR(CURDATE());
+
+    -- 4. Retornar en formato "7O-2025"
+    RETURN CONCAT(cuatri, periodo, '-', anio);
+END //
+
 /*CONSULTA - BORRAR*/
 SELECT 
                     a.*, 
@@ -394,3 +434,7 @@ SELECT
                 WHERE a.Matricula = "SLAO230036";
                 
                 select * from registroservicio;
+                
+#BORRAR EN PRODUCCIÓN
+select * from registroservicio;
+select * from usuario;

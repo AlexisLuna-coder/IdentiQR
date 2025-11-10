@@ -521,45 +521,39 @@
 
             //Evaluamos que tipo de direccion es para Incluirlo
             switch($idDepto){
-                case 2:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                    break;
-                case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                default:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                    break;
-            }
-            //Evaluamos que tipo de direccion es para Incluirlo
-            switch($idDepto){
-                case 2:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                    break;
-                case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    break;
-                default:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                    break;
+                    case 2:
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        exit();
+                        break;
+                    case 3:
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        exit();
+                        break;
+                    case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        exit();
+                        break;
+                    case 5:
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        exit();
+                        break;
+                    case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        exit();
+                        break;
+                    case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        exit();
+                        break;
+                    default:
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                        break;
             }
         }
         //2.2 Funcion para consultar TODOS los TRAMITES ESPECIFICOS DE ALGÚN TIPO.
@@ -579,19 +573,34 @@
             //Evaluamos que tipo de direccion es para Incluirlo
             switch($idDepto){
                 case 2:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    exit();
                     break;
                 case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    exit();
                     break;
                 case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    exit();
                     break;
                 case 5:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    exit();
                     break;
                 case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    exit();
                     break;
                 case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    exit();
                     break;
                 default:
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
@@ -616,19 +625,34 @@
             //Evaluamos que tipo de direccion es para Incluirlo
             switch($idDepto){
                 case 2:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    exit();
                     break;
                 case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    exit();
                     break;
                 case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    exit();
                     break;
                 case 5:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    exit();
                     break;
                 case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    exit();
                     break;
                 case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    exit();
                     break;
                 default:
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
@@ -649,23 +673,37 @@
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarTramitePorFolio($folio);
             }
-
             //Evaluamos que tipo de direccion es para Incluirlo
             switch($idDepto){
                 case 2:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    exit();
                     break;
                 case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    exit();
                     break;
                 case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    exit();
                     break;
                 case 5:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    exit();
                     break;
                 case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    exit();
                     break;
                 case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    exit();
                     break;
                 default:
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
@@ -690,21 +728,37 @@
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        exit();
                         break;
                     case 3:
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        exit();
                         break;
-                    case 4 :
+                    case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        exit();
                         break;
                     case 5:
-                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        exit();
                         break;
-                    case 6 :
+                    case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        exit();
                         break;
                     case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        exit();
                         break;
                     default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/GestionesAdmin_Direccion.php'); //Vista de justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         break;
                 }
                 return;
@@ -780,7 +834,6 @@
             if(isset($_POST['Actualizar_Tramite'])){
                 $FolioRegistro = trim($_POST['FolioAct']);
                 $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
-
                 //Llamar al metodo del modelo para hacer la consulta
                 $result = $this->directionModel->consultarTramitePorFolio($FolioRegistro);
                 
@@ -788,17 +841,40 @@
                 if($result && $result->num_rows > 0){
                     $row = $result->fetch_assoc();
                 }
-                
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        exit();
+                        break;
+                    case 3:
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        exit();
+                        break;
+                    case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        exit();
                         break;
                     case 5:
-                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        exit();
+                        break;
+                    case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        exit();
+                        break;
+                    case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        exit();
                         break;
                     default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/GestionesAdmin_Direccion.php'); //Vista de justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         break;
                 }
                 return;
@@ -839,22 +915,38 @@
                 
                 // Incluir la vista primero
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
-                include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');//Evaluamos que tipo de direccion es para Incluirlo
+                
+                //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        exit();
                         break;
                     case 3:
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        exit();
                         break;
                     case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        exit();
                         break;
                     case 5:
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        exit();
                         break;
                     case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        exit();
                         break;
                     case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        exit();
                         break;
                     default:
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
@@ -898,30 +990,43 @@
             }
             
             // Incluir la vista con el resultado
+            
             //Evaluamos que tipo de direccion es para Incluirlo
             switch($idDepto){
                 case 2:
-                    $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    //exit();
                     break;
                 case 3:
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosServEsco.php');
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    //exit();
                     break;
                 case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    //exit();
                     break;
                 case 5:
-                    $redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?controller=dirDAE&action=consult";
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    //exit();
                     break;
                 case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    //exit();
                     break;
                 case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    //exit();
                     break;
                 default:
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     break;
             }
-            
             // Mostrar mensaje después de cargar la vista
             if($eliminado > 0){
                 echo "<script>
@@ -944,6 +1049,8 @@
                     });
                 </script>";
             }
+            
+
         }
     }
 ?>
