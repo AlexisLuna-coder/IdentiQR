@@ -25,6 +25,9 @@
         case 'dirDAE':
             $controllerInstance = new DirectionsController($conn);
             break;
+        case 'dirDDA':
+            $controllerInstance = new DirectionsController($conn);
+            break;
         /*case 'alumno':
             $controllerInstance = new AlumnoController($conn);
             break;

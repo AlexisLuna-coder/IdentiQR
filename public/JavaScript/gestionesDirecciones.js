@@ -188,6 +188,7 @@ function escapeHtml(text) {
 
 // Event listeners
 document.addEventListener("DOMContentLoaded", function() {
+    cargarTutoriasIndividuales(); //Así hacemos que se pueda usar el check
     // Event listener para el botón de escaneo (registro)
     const btnEscanear = document.getElementById('btnEscanear');
     if (btnEscanear) {
@@ -237,6 +238,7 @@ function mostrarCampo(tipo) {
         document.getElementById("campoTramite").style.display = "block";
     }
 }
+
 
 // Función para mostrar campos de consulta
 function mostrarCampoConsulta(tipo) {
@@ -347,6 +349,27 @@ function confirmarEliminacionFS(event) {
     return false;
 }
 
+/*FUNCIONES EXTRA PARA MEJORA DE FUNCIONAMIENTO */
+//1. Aquí debera ir el script que oculta el campo de Tutorias individuales
+function cargarTutoriasIndividuales() {
+    const check = document.getElementById("tutoriasIndv_Check");
+    const campo = document.getElementById("tutoriasIndv_Campo");
+
+    // Si alguno no existe, salimos sin hacer nada (evita el error)
+    if (!check || !campo) {
+        return;
+    }
+
+    // Inicializar el estado según el valor actual del checkbox
+    campo.style.display = check.checked ? "block" : "none";
+    if (!check._tutoriasListenerAdded) {
+        check.addEventListener("change", () => {
+            campo.style.display = check.checked ? "block" : "none";
+        });
+        check._tutoriasListenerAdded = true;
+    }
+}
+/********************************************** */
 
 /*
         <script>
@@ -428,4 +451,4 @@ function confirmarEliminacionFS(event) {
                 return ""; // compatibilidad
             });
             })();
-    */
+*/

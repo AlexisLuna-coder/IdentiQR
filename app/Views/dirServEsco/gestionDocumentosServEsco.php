@@ -1,27 +1,36 @@
-
+<?php
+    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
+    $idDepto = 3; //Esta variable permitira ser modificada para cada departamentp
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/jpg" href="Media/img/Favicon.ico"/> <!--FAVICON-->
-        <title>DireccionServiciosEscolares_IdentiQR</title>
-
-        <!--TODO: Aquí se tendra que pasar a CSS-->
+        <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
+        <title>DireccionACADEMICA_IdentiQR</title>
     </head>
     <body>
         <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
-                    <img src="../Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
+                    <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
                 </div>
                 <div class="container__nav">
                     <nav id="nav">
                         <ul>
-                            <li><a href="../index.html" class="select">INICIO</a></li>
+                            <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
                             <li><a href="#">TEMAS</a></li>
                             <li><a href="#">CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li> <!--MODIFICAS-->
+                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARA-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -37,16 +46,21 @@
         </div>
         <hr>
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
-
-        <div id = "generarTramites_ServEsco">
-            <h2>Gestión de asistencia a tutorias</h2>
-            <form action="">
+        
+        <div id = "generarTramite">
+            <h2>Gestión de Servicios escolares</h2>
+            <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
+            <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=dirServMed&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar tramites</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <legend>Generar Tramites o servicios - Servicios Escolares</legend>
+                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <button type="button" id="btnEscanear">Escanear QR</button>
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
+
+                    <!--APARTIR DE AQUÍ SE INCLUYE TODO EL TRAMITE QUE SE PUEDE HACER EN SERV_ESCO-->
                     <br><br>
-                    
                     <label for="idTramite">Tramite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
                             <option no value=""></option>
@@ -57,73 +71,170 @@
                         </select>
                     <br><br>
                     <label for="tipoPago">Metodo de pago: </label>
-                        <select>
-                            <option name="" id="" disabled="disabled" selected>Seleccione una opción</option>
+                        <select name="metodoPago" id="metodoPago">
+                            <option name="metodoPago" id="metodoPago" disabled="disabled" selected>Seleccione una opción</option>
                             <option value="TDD">Debito</option>
                             <option value="TDC">Credito</option>
                             <option value="Transferencia">Transferencia</option>
                             <option value="Deposito">Deposito</option>
                         </select>
                     <hr>
-                    <input type="submit" value="RegistrarDocServEsc" name = "RegistrarDocServEsc" onclick="alert('Datos enviados con exito')">
-                </fieldset>
-            </form>
-
-            <form action="">
-                <fieldset>
-                    <legend>Solicitar y modificar tramites</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear, deberá recuperar todos los tramites que tenga ADJUNTOS ese estudiante-->
-                    <br><br>
-                    <table border="1" id = "tablaRegistroServicios" name = "tablaRegistroServicios">
-                        <!--*: Creación del encabezado-->
-                        <th>Folio de registro</th>
-                        <th>Tramite realizado</th>
-                        <th>fecha y hora</th>
-                        <th>Descripción</th>
-                        <th>Estatus</th>
-                        <th>Matricula</th>
-                        <!--Para llenar toda esta tabla se asignara al escanear el qr. Deberá acceder a la BD y retornar los datos que se obtuvieron-->
-                    </table>
-
-                    <label for="folioR">Folio de registro a modificar: </label>
-                        <input type="number" name="folioR" id="folioR" >
+                    <label for="descripcion">Descripción adicional: </label><br>
+                    <textarea id="descripcion" name="descripcion" rows="3" cols="40"
+                        placeholder="[Ejemplo. Tramite requerido para el IMSS, ISSTE, BECA, Perdí mi credencial, etc.]..."></textarea>
+                    <br>
+                    <hr>
                     
-                    <input type="submit" value="Modificar Documento" name = "modificarDocServEsc" onclick="alert('Datos actualizados con exito')">
-                </fieldset>
-            </form>
-
-            <form action="">
-                <fieldset>
-                    <legend>Cancelar tramite</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear, deberá recuperar todos los tramites que tenga ADJUNTOS ese estudiante-->
-                    <br><br>
-                    <table border="1" id = "tablaRegistroServicios" name = "tablaRegistroServicios">
-                        <!--*: Creación del encabezado-->
-                        <th>Folio de registro</th>
-                        <th>Tramite realizado</th>
-                        <th>fecha y hora</th>
-                        <th>Descripción</th>
-                        <th>Estatus</th>
-                        <th>Matricula</th>
-                        <!--Para llenar toda esta tabla se asignara al escanear el qr. Deberá acceder a la BD y retornar los datos que se obtuvieron-->
-                    </table>
-
-                    <label for="folioR">Folio de registro a cancelar: </label>
-                        <input type="number" name="folioR" id="folioR" >
-                    
-                    <input type="submit" value="Cancelar servicio" name = "cancelarDocServEsc" onclick="alert('Datos actualizados con exito')">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
+                    <input type="submit" value="Registrar asistencias alumno" name = "registrarTramite_dirMedica" onclick="alert('Datos enviados con exito')">
                 </fieldset>
             </form>
         </div>
 
-        <div id = "revisarTramites_ServEsco">
+        <div id = "revisarTramite">
+                <!--Aquí se incluira la tabla del justificante hecho.-->
+                <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
+                <form action="/IdentiQR/redireccionAcciones.php?controller=dirServMed&action=consult" method="POST">    
+                    <!-- Selección de tipo de búsqueda -->
+                    <fieldset>
+                        <legend>Consultar por:</legend>
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaTodo" name="tipoConsulta" value="todos" onclick="mostrarCampoConsulta('todos')">
+                            <label for="consultaTodo">Todo</label>
+                        </div>
 
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaMatricula" name="tipoConsulta" value="matricula" onclick="mostrarCampoConsulta('matricula')">
+                            <label for="consultaMatricula">Matrícula</label>
+                        </div>
+
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaFolio" name="tipoConsulta" value="folio" onclick="mostrarCampoConsulta('folio')">
+                            <label for="consultaFolio">Folio</label>
+                        </div>
+
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaTramite" name="tipoConsulta" value="tramite" onclick="mostrarCampoConsulta('tramite')">
+                            <label for="consultaTramite">Tipo de Trámite</label>
+                        </div>
+                    </fieldset>
+                    <br>
+
+                    <!-- Campo: Mostrar Todos -->
+                    <div id="campoTodosConsulta" style="display:none;">
+                        <p>Se mostrarán todos los trámites del departamento.</p>
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto; ?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
+                    </div>
+
+                    <!-- Campo: Matricula (con escaneo QR) -->
+                    <div id="campoMatriculaConsulta" style="display:none;">
+                        <label for="matriculaConsulta">Escanear QR para consultar por Matrícula:</label>
+                        <button type="button" id="btnEscanearConsulta">Escanear QR</button>
+                        <input type="text" id="matriculaConsultaVisible" placeholder="Matrícula escaneada" disabled>
+                        <input type="hidden" name="Matricula" id="matriculaConsulta">
+                        
+                        <br><br>
+                        <input type="submit" value="Consultar por Matrícula" name="consultarTramite_Matricula">
+                    </div>
+
+                    <!-- Campo: Folio -->
+                    <div id="campoFolioConsulta" style="display:none;">
+                        <label for="folioConsulta">Ingrese Folio:</label>
+                        <input type="text" name="FolioRegistro" id="folioConsulta" placeholder="Ej. FOL12345">
+                        <input type="submit" value="Consultar por Folio" name="consultarTramite_Folio">
+                    </div>
+
+                    <!-- Campo: Tipo de Trámite -->
+                    <div id="campoTramiteConsulta" style="display:none;">
+                        <label for="idTramiteConsulta">Seleccione el trámite:</label>
+                        <select name="idTramite" id="idTramiteConsulta">
+                            <option no value="" disabled>Seleccione una opción</option>
+                            <option value="0003">Reinscripcion</option>
+                            <option value="0004">Inscripcion</option>
+                            <option value="0010">Reposicion Credencial</option>
+                            <option value="0015">Constancias e historial</option>
+                        </select>
+                        <input type="submit" value="Consultar por Trámite" name="consultarTramite_idTramite">
+                    </div>
+                    </form> 
+                    <br>
+                    <table border = "1">
+                        <thead>
+                            <th>Folio de Registro</th>
+                            <th>Folio de Seguimiento</th>
+                            <th>Tramite</th>
+                            <th>Fecha y Hora</th>
+                            <th>Matricula</th>
+                            <th>Descripcion</th>
+                            <th>Estatus</th>
+                            <th>Extracurricular</th>
+                            <th>ACCIONES</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                if(isset($direccion) && $direccion !== null && $direccion !== 0){
+                                    while($row = $direccion->fetch_assoc()){
+                            ?>
+                                <tr>
+                                    <td><?php echo $row['FolioRegistro'];?></td>
+                                    <td><?php echo $row['FolioSeguimiento']; ?></td>
+                                    <td><?php echo $row['idTramite']; ?></td>
+                                    <td><?php echo $row['FechaHora']; ?></td>
+                                    <td><?php echo $row['Matricula']; ?></td>
+                                    <td><?php echo $row['descripcion']; ?></td>
+                                    <td><?php echo $row['estatusT']; ?></td>
+                                    <td><?php echo obtenerExtracurricular($row['descripcion']); ?></td>
+                                    <td>
+                                        <a href="/IdentiQR/redireccionAcciones.php?controller=dirServMed&action=updateServMed&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
+                                            <button type="button">Editar</button>
+                                        </a>
+                                        <button type="button" onclick="confirmarEliminacion('<?php echo $row['FolioSeguimiento'] ?? ''; ?>')">Eliminar</button>
+                                    </td>
+                                </tr>
+                            <?php
+                                    }
+                                } else {
+                            ?>
+                                <tr>
+                                    <td colspan="9">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table> 
+            </div>
+        </div>
+        
+        <div id = "modificarTramite">
+            <!-- <form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=updateManual" method = "POST"> -->
+            <form action="/IdentiQR/redireccionAcciones.php?controller=dirServMed&action=updateManualServMed" method="POST">
+                <fieldset>
+                    <table></table>
+                    <legend>Actualizar Cita médica</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <label for="folioConsulta">Ingrese Folio:</label>
+                    <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
+                    <input type="submit" value="Actualizar registro" name = "Actualizar_Tramite" onclick="alert('Redirección a página de actualización')">
+                </fieldset>
+            </form>
         </div>
 
-       
-
+        <div id = "eliminarTramite">
+            <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)"> --> 
+            <form action="/IdentiQR/redireccionAcciones.php?controller=dirServMed&action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
+                <fieldset>
+                    <legend>Eliminar Cita medica por Folio de Seguimiento</legend>
+                    <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
+                    <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
+                    <br><br>
+                    <input type="submit" value="Eliminar Trámite" name="BajaServicio_Tramite">
+                </fieldset>
+            </form>
+        </div>
         <br>
         <footer class="FooterIndex1" id = "FooterIndex1">
             <div class="FooterIndex1">
@@ -151,5 +262,37 @@
                 </p>
             </div>
         </footer>
+
+        <!-- Modal -->
+        <div id="modalEscanear" class="modal" style="display: none;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Escanear QR</h5>
+                        <button type="button" class="close" onclick="cerrarModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="scanner-container" style="display: flex; gap: 20px;">
+                            <!-- Sección Izquierda: Cámara -->
+                            <div class="camera-section" style="flex: 1;">
+                                <h6 class="text-center">Cámara</h6>
+                                <video id="video" style="width: 100%; border: 2px solid #be00f3ff; border-radius: 5px;"></video>
+                                <div id="estado" class="mt-3 text-center"></div>
+                            </div>
+                            <!-- Sección Derecha: Datos Escaneados -->
+                            <div class="data-section" style="flex: 1;">
+                                <h6 class="text-center">Datos Escaneados</h6>
+                                <div id="datosQR" style="background-color: #e9ecef; padding: 15px; border-radius: 5px; min-height: 300px; max-height: 500px; overflow-y: auto;">
+                                    <p class="text-muted">Acerque el Código QR a escanear.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

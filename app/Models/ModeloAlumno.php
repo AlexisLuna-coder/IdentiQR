@@ -198,7 +198,8 @@
                     a.*, 
                     c.*, 
                     im.*, 
-                    calcCuatrimestre(a.FeIngreso) AS Cuatri
+                    calcCuatrimestre(a.FeIngreso) AS Cuatri,
+                    calcPeriodo(a.FeIngreso) AS Periodo
                 FROM alumno a
                 LEFT JOIN carrera c ON a.idCarrera = c.idCarrera
                 LEFT JOIN informacionmedica im ON a.Matricula = im.Matricula

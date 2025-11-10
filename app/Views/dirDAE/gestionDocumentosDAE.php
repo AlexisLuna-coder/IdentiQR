@@ -30,6 +30,7 @@
                             <li><a href="#">TEMAS</a></li>
                             <li><a href="#">CONTACTOS</a></li>
                             <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
+                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARA-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">

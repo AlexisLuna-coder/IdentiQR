@@ -1,27 +1,38 @@
-
+<?php
+    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
+    $idDepto = 4; //Esta variable permitira ser modificada para cada departamentp
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" type="image/jpg" href="Media/img/Favicon.ico"/> <!--FAVICON-->
-        <title>DireccionVinculación_IdentiQR</title>
-
-        <!--TODO: Aquí se tendra que pasar a CSS-->
+        <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>
+        <!--<script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>-->
+        <title>DireccionACADEMICA_IdentiQR</title>
     </head>
     <body>
         <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
-                    <img src="../Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
+                    <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
                 </div>
                 <div class="container__nav">
                     <nav id="nav">
                         <ul>
-                            <li><a href="../index.html" class="select">INICIO</a></li>
+                            <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
                             <li><a href="#">TEMAS</a></li>
                             <li><a href="#">CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
+                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARA-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -37,26 +48,46 @@
         </div>
         <hr>
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
-
-        <div id = "generarJustificante">
+        
+        <div id = "generarTramite">
             <h2>Gestión de asistencia a tutorias</h2>
-            <form action="">
+            <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
+            <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar asistencias tutorias</legend>
+                    <legend>Generar/Inscripción a extracurricular</legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
-                    <br><br>
-                    
+                    <button type="button" id="btnEscanear">Escanear QR</button>
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
+
+                    <!--APARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
                     <label for="idTramite">Tramite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
-                            <option no value=""></option>
+                            <option no value="" disabled selected>Seleccione un tramite</option>
                             <option value="0002">Tutorias</option>
                         </select>
                     <br><br>
                     <label for="cantTutorias">Tutorias asistidas: </label>
                         <input type="number" name="cantTutorias" id="cantTutorias" placeholder="Cant. tutorias asistidas" min="1" max="13" required>
-                    
                     <br>
+                    <label for="tutor">Tutor encargado: </label>
+                    <select name="tutor" id="tutor" required>
+                        <option value="" disabled selected>Seleccione un tutor</option>
+                        <option value="Dra. Sandra Elizabeth León Sosa">Dra. Sandra Elizabeth León Sosa</option>
+                        <option value="Dra. Deny Lizbeth Hernández Rabadán">Dra. Deny Lizbeth Hernández Rabadán</option>
+                        <option value="Dra. Irma Yazmín Hernández Baéz">Dra. Irma Yazmín Hernández Baéz</option>
+                        <option value="Dr. Juan Paulo Sánchez Hernández">Dr. Juan Paulo Sánchez Hernández</option>
+                        <option value="Dr. Alfredo Gil Velasco">Dr. Alfredo Gil Velasco</option>
+                        <option value="Dr. Miguel Ángel Ruiz Jaimes">Dr. Miguel Ángel Ruiz Jaimes</option>
+                        <option value="M.C. Roberto Enrique López Díaz">M.C. Roberto Enrique López Díaz</option>
+                        <option value="M. Ce. Miguel Ángel Velasco Castillo">M. Ce. Miguel Ángel Velasco Castillo</option>
+                        <option value="Pedrito Sola">Pedrito Sola</option>
+                        <option value="Juan Carlos Bodoque">Juan Carlos Bodoque</option>
+                        <!-- Más opciones futuramente -->
+                    </select>
+                    <br><br>
                     <hr>
                     <!--!: Considerar que el alumno PUEDE O NO tener asistencias a tutorias individuales-->
                     <label for="tutoriasIndv">Asistencia a tutorias individuales: </label>
@@ -67,74 +98,153 @@
                         <input type="number" name="cantTutoriasInd" id="cantTutoriasInd" min="0" max = "4">
                     </div>
 
-                    <hr>
-
-                    <script>
-                        const check = document.getElementById("tutoriasIndv_Check");
-                        const campo = document.getElementById("tutoriasIndv_Campo");
-
-                        check.addEventListener("change", () => {
-                            campo.style.display = check.checked ? "block" : "none";
-                        });
-                    </script>
-                    <hr>
-                    <!--TODO: Nota.- 2025-10-05 "Considerar que la nota que este tendrá seran. El alumno #Tal asistio a tutorias la cantidad de: <NUM> e Individuales <#>"
-                    <label for="requisitos">Requisitos: </label>
-                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
-                    <hr>
-                    -->
-                    <input type="submit" value="Registrar sesiones" name = "Enviar_DocumentoAlumno_Vincu" onclick="alert('Datos enviados con exito')">
-                </fieldset>
-            </form>
-
-            <form action="">
-                <fieldset>
-                    <table></table>
-                    <legend>Actualizar justificante</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
-                    <br><br>
-                    <label for="idTramite">Tramite a realizar: </label>
-                        <select name="idTramite" id="idTramite" required>
-                            <option no value=""></option>
-                            <option value="0003">Tutoria</option>
-                        </select>
-                    <br><br>
-                    <label for="requisitos">Requisitos: </label>
-                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
-                    <hr>
-                    <input type="submit" value="Registrar sesiones" name = "Enviar_DocumentoAlumno_Vincu" onclick="alert('Datos enviados con exito')">
-                </fieldset>
-            </form>
-
-             <form action="">
-                <fieldset>
-                    <table></table>
-                    <legend>Eliminar justificante</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
-                    <br><br>
-                    <label for="idTramite">Tramite a realizar: </label>
-                        <select name="idTramite" id="idTramite" required>
-                            <option no value=""></option>
-                            <option value="0011">Justificante</option>
-                            <option value="0012">Recursamiento</option>
-                        </select>
-                    <br><br>
-                    <label for="requisitos">Requisitos: </label>
-                        <textarea rows="5" cols="10" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco"></textarea>
-                    <hr>
-                    <input type="submit" value="Enviar_DocumentoAlumno_Vincu" name = "Enviar_DocumentoAlumno_Vincu" onclick="alert('Datos enviados con exito')">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
+                    <input type="submit" value="Registrar asistencias alumno" name = "registrarTramite_dirDDA" onclick="alert('Datos enviados con exito')">
                 </fieldset>
             </form>
         </div>
 
-        <div id = "revisarJustificante">
+        <div id = "revisarTramite">
+                <!--Aquí se incluira la tabla del justificante hecho.-->
+                <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
+                <form action="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=consult" method="POST">    
+                    <!-- Selección de tipo de búsqueda -->
+                    <fieldset>
+                        <legend>Consultar por:</legend>
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaTodo" name="tipoConsulta" value="todos" onclick="mostrarCampoConsulta('todos')">
+                            <label for="consultaTodo">Todo</label>
+                        </div>
 
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaMatricula" name="tipoConsulta" value="matricula" onclick="mostrarCampoConsulta('matricula')">
+                            <label for="consultaMatricula">Matrícula</label>
+                        </div>
+
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaFolio" name="tipoConsulta" value="folio" onclick="mostrarCampoConsulta('folio')">
+                            <label for="consultaFolio">Folio</label>
+                        </div>
+
+                        <div class="opcionConsulta">
+                            <input type="radio" id="consultaTramite" name="tipoConsulta" value="tramite" onclick="mostrarCampoConsulta('tramite')">
+                            <label for="consultaTramite">Tipo de Trámite</label>
+                        </div>
+                    </fieldset>
+                    <br>
+
+                    <!-- Campo: Mostrar Todos -->
+                    <div id="campoTodosConsulta" style="display:none;">
+                        <p>Se mostrarán todos los trámites del departamento.</p>
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
+                    </div>
+
+                    <!-- Campo: Matricula (con escaneo QR) -->
+                    <div id="campoMatriculaConsulta" style="display:none;">
+                        <label for="matriculaConsulta">Escanear QR para consultar por Matrícula:</label>
+                        <button type="button" id="btnEscanearConsulta">Escanear QR</button>
+                        <input type="text" id="matriculaConsultaVisible" placeholder="Matrícula escaneada" disabled>
+                        <input type="hidden" name="Matricula" id="matriculaConsulta">
+                        
+                        <br><br>
+                        <input type="submit" value="Consultar por Matrícula" name="consultarTramite_Matricula">
+                    </div>
+
+                    <!-- Campo: Folio -->
+                    <div id="campoFolioConsulta" style="display:none;">
+                        <label for="folioConsulta">Ingrese Folio:</label>
+                        <input type="text" name="FolioRegistro" id="folioConsulta" placeholder="Ej. FOL12345">
+                        <input type="submit" value="Consultar por Folio" name="consultarTramite_Folio">
+                    </div>
+
+                    <!-- Campo: Tipo de Trámite -->
+                    <div id="campoTramiteConsulta" style="display:none;">
+                        <label for="idTramiteConsulta">Seleccione el trámite:</label>
+                        <select name="idTramite" id="idTramiteConsulta">
+                            <option value="">Seleccione...</option>
+                            <option value="001">Extracurricular</option>
+                        </select>
+                        <input type="submit" value="Consultar por Trámite" name="consultarTramite_idTramite">
+                    </div>
+                    </form> 
+                    <br>
+                    <table border = "1">
+                        <thead>
+                            <th>Folio de Registro</th>
+                            <th>Folio de Seguimiento</th>
+                            <th>Tramite</th>
+                            <th>Fecha y Hora</th>
+                            <th>Matricula</th>
+                            <th>Descripcion</th>
+                            <th>Estatus</th>
+                            <th>Extracurricular</th>
+                            <th>ACCIONES</th>
+                        </thead>
+                        <tbody>
+                            <?php
+                                if(isset($direccion) && $direccion !== null && $direccion !== 0){
+                                    while($row = $direccion->fetch_assoc()){
+                            ?>
+                                <tr>
+                                    <td><?php echo $row['FolioRegistro'];?></td>
+                                    <td><?php echo $row['FolioSeguimiento']; ?></td>
+                                    <td><?php echo $row['idTramite']; ?></td>
+                                    <td><?php echo $row['FechaHora']; ?></td>
+                                    <td><?php echo $row['Matricula']; ?></td>
+                                    <td><?php echo $row['descripcion']; ?></td>
+                                    <td><?php echo $row['estatusT']; ?></td>
+                                    <td><?php echo obtenerExtracurricular($row['descripcion']); ?></td>
+                                    <td>
+                                        <a href="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=updateDDA&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
+                                            <button type="button">Editar</button>
+                                        </a>
+                                        <button type="button" onclick="confirmarEliminacion('<?php echo $row['FolioSeguimiento'] ?? ''; ?>')">Eliminar</button>
+                                    </td>
+                                </tr>
+                            <?php
+                                    }
+                                } else {
+                            ?>
+                                <tr>
+                                    <td colspan="9">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
+                        </tbody>
+                    </table> 
+            </div>
+        </div>
+        
+        <div id = "modificarTramite">
+            <!-- <form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=updateManual" method = "POST"> -->
+            <form action="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=updateManualDDA" method="POST">
+                <fieldset>
+                    <table></table>
+                    <legend>Actualizar Tutorias</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <label for="folioConsulta">Ingrese Folio:</label>
+                    <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
+                    <input type="submit" value="Actualizar registro" name = "Actualizar_Tramite" onclick="alert('Redirección a página de actualización')">
+                </fieldset>
+            </form>
         </div>
 
-       
-
+        <div id = "eliminarTramite">
+            <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)"> --> 
+            <form action="/IdentiQR/redireccionAcciones.php?controller=dirDDA&action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
+                <fieldset>
+                    <legend>Eliminar justificante por Folio de Seguimiento</legend>
+                    <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
+                    <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
+                    <br><br>
+                    <input type="submit" value="Eliminar Trámite" name="BajaServicio_Tramite">
+                </fieldset>
+            </form>
+        </div>
         <br>
         <footer class="FooterIndex1" id = "FooterIndex1">
             <div class="FooterIndex1">
@@ -162,5 +272,37 @@
                 </p>
             </div>
         </footer>
+
+        <!-- Modal -->
+        <div id="modalEscanear" class="modal" style="display: none;">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Escanear QR</h5>
+                        <button type="button" class="close" onclick="cerrarModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="scanner-container" style="display: flex; gap: 20px;">
+                            <!-- Sección Izquierda: Cámara -->
+                            <div class="camera-section" style="flex: 1;">
+                                <h6 class="text-center">Cámara</h6>
+                                <video id="video" style="width: 100%; border: 2px solid #be00f3ff; border-radius: 5px;"></video>
+                                <div id="estado" class="mt-3 text-center"></div>
+                            </div>
+                            <!-- Sección Derecha: Datos Escaneados -->
+                            <div class="data-section" style="flex: 1;">
+                                <h6 class="text-center">Datos Escaneados</h6>
+                                <div id="datosQR" style="background-color: #e9ecef; padding: 15px; border-radius: 5px; min-height: 300px; max-height: 500px; overflow-y: auto;">
+                                    <p class="text-muted">Acerque el Código QR a escanear.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

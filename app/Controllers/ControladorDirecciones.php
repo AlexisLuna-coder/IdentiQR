@@ -16,7 +16,9 @@
         /*Funciones para la generación de los tramites. */
         //1. Función para ingresar dentro de TRAMITES
         public function registrarTramite(){
-            //Validar que el botón fue enviado y tiene datos
+            //Obtenemos para ver las vistas
+            $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
+            //Validar que el botón fue enviado y tiene datos - DirAcademica
             if(isset($_POST['registrarTramite_dirDirACA'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
@@ -167,8 +169,339 @@
                 }
             }
 
+            //Valir que el boton fue enviado y tiene datos - dirDDA
+            if(isset($_POST['registrarTramite_dirDDA'])){
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
+
+                $idTramite = (int)$_POST['idTramite'];
+                
+                $cantTutorias = (int)$_POST['cantTutorias'];
+                $cantTutoriasInd = isset($_POST['cantTutoriasInd']) ? (int)$_POST['cantTutoriasInd'] : 0;
+                $tutor = trim($_POST['tutor']);
+                
+                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
+
+                /*Hacemos la validación para recuperar los datos*/
+                if($resultDatos){
+                    $Nombre_AUX         = $resultDatos['Nombre'];
+                    $ApePat_AUX         = $resultDatos['ApePat'];
+                    $ApeMat_AUX         = $resultDatos['ApeMat'];
+                    $FechaNac_AUX       = $resultDatos['FechaNac'];
+                    $FeIngreso_AUX      = $resultDatos['FeIngreso'];
+                    $Correo_AUX         = $resultDatos['Correo'];
+                    $Direccion_AUX      = $resultDatos['Direccion'];
+                    $Telefono_AUX       = $resultDatos['Telefono'];
+                    $Ciudad_AUX         = $resultDatos['Ciudad'];
+                    $Estado_AUX         = $resultDatos['Estado'];
+                    $Genero_AUX         = $resultDatos['Genero'];
+                    $idCarrera_AUX      = $resultDatos['idCarrera'];
+                    $DescripcionCarrera_AUX = $resultDatos['descripcion']; // de tabla carrera
+                    $PlanEstudios_AUX   = $resultDatos['planEstudios'];
+                    $idDepto_AUX        = $resultDatos['idDepto'];         // de tabla carrera
+                    $TipoSangre_AUX     = $resultDatos['TipoSangre'];
+                    $Alergias_AUX       = $resultDatos['Alergias'];
+                    $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
+                    $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
+                    $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
+                    $Periodo_AUX = $resultDatos['Periodo'];
+                    //Concatenación de datos
+                    $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
+                    $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
+                    //Validamos que tipo de servicio es
+                    switch($idTramite){
+                        case 2: 
+                            $tram = "Tutorias";
+                            $fraseDia = "Asitio a tutorias GRUPALES: - ";
+                            break;
+                        default:
+                            $tram = "Extracurricular";
+                            $fraseDia = "Asitio a tutorias: - ";
+                            break;
+                    }
+
+                    // Generamos la descripción
+                    $descripcionTotal = trim(sprintf(
+                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] con el Plan de estudio <%s> durante el periodo [%s] asistió [%s %d veces] y [%s - Individuales: %d veces] con el tutor/a: <%s>",
+                        $nombreCompleto,        
+                        $matricula,             
+                        $Cuatri_AUX,            
+                        $PlanEstudios_AUX,
+                        $Periodo_AUX,           
+                        $fraseDia,              
+                        $cantTutorias,          
+                        $tram,                  
+                        $cantTutoriasInd,       
+                        $tutor
+                    ));
+                    $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
+                    
+                    if($insert){
+                        //echo "<br>Registro exitoso";
+                    } else {
+                        //echo "<br>Error en el registro";
+                    }
+                } else {
+                    echo "<br>Error: No se encontró el alumno con la matrícula proporcionada";
+                }
+            }
+
+            //Valir que el boton fue enviado y tiene datos - dirMed
+            if(isset($_POST['registrarTramite_dirMed'])){
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
+
+                $idTramite = (int)$_POST['idTramite'];
+                
+                $Temperatura =  $_POST[''];
+                $Altura =  $_POST[''];
+                $Peso = $_POST[''];
+                $descripcionAdicional =  $_POST[''];
+                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
+
+                /*Hacemos la validación para recuperar los datos*/
+                if($resultDatos){
+                    $Nombre_AUX         = $resultDatos['Nombre'];
+                    $ApePat_AUX         = $resultDatos['ApePat'];
+                    $ApeMat_AUX         = $resultDatos['ApeMat'];
+                    $FechaNac_AUX       = $resultDatos['FechaNac'];
+                    $FeIngreso_AUX      = $resultDatos['FeIngreso'];
+                    $Correo_AUX         = $resultDatos['Correo'];
+                    $Direccion_AUX      = $resultDatos['Direccion'];
+                    $Telefono_AUX       = $resultDatos['Telefono'];
+                    $Ciudad_AUX         = $resultDatos['Ciudad'];
+                    $Estado_AUX         = $resultDatos['Estado'];
+                    $Genero_AUX         = $resultDatos['Genero'];
+                    $idCarrera_AUX      = $resultDatos['idCarrera'];
+                    $DescripcionCarrera_AUX = $resultDatos['descripcion']; // de tabla carrera
+                    $PlanEstudios_AUX   = $resultDatos['planEstudios'];
+                    $idDepto_AUX        = $resultDatos['idDepto'];         // de tabla carrera
+                    $TipoSangre_AUX     = $resultDatos['TipoSangre'];
+                    $Alergias_AUX       = $resultDatos['Alergias'];
+                    $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
+                    $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
+                    $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
+
+                    //Concatenación de datos
+                    $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
+                    $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
+
+                    //Validamos que tipo de servicio es
+                    switch($idTramite){
+                        case 5: 
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                        default:
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                    }
+
+                    // Generamos la descripción
+                    $descripcionTotal = sprintf(
+                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] <%s> de [%s-%s]. Datos Médicos [$%s]",
+                        $nombreCompleto,
+                        $matricula,
+                        $Cuatri_AUX,
+                        $DescripcionCarrera_AUX,
+                        $fraseDia,
+                        $tram,
+                        $seleccionExtra,
+                        $requisitos
+                    );
+                    $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
+                    
+                    if($insert){
+                        //echo "<br>Registro exitoso";
+                    } else {
+                        //echo "<br>Error en el registro";
+                    }
+                } else {
+                    echo "<br>Error: No se encontró el alumno con la matrícula proporcionada";
+                }
+            }
+
+            //Valir que el boton fue enviado y tiene datos - dirServEsco
+            if(isset($_POST['registrarTramite_dirServEsco'])){
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
+
+                $idTramite = (int)$_POST['idTramite'];
+                
+                $seleccionExtra = $_POST['seleccionExtra'];
+                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
+
+                /*Hacemos la validación para recuperar los datos*/
+                if($resultDatos){
+                    $Nombre_AUX         = $resultDatos['Nombre'];
+                    $ApePat_AUX         = $resultDatos['ApePat'];
+                    $ApeMat_AUX         = $resultDatos['ApeMat'];
+                    $FechaNac_AUX       = $resultDatos['FechaNac'];
+                    $FeIngreso_AUX      = $resultDatos['FeIngreso'];
+                    $Correo_AUX         = $resultDatos['Correo'];
+                    $Direccion_AUX      = $resultDatos['Direccion'];
+                    $Telefono_AUX       = $resultDatos['Telefono'];
+                    $Ciudad_AUX         = $resultDatos['Ciudad'];
+                    $Estado_AUX         = $resultDatos['Estado'];
+                    $Genero_AUX         = $resultDatos['Genero'];
+                    $idCarrera_AUX      = $resultDatos['idCarrera'];
+                    $DescripcionCarrera_AUX = $resultDatos['descripcion']; // de tabla carrera
+                    $PlanEstudios_AUX   = $resultDatos['planEstudios'];
+                    $idDepto_AUX        = $resultDatos['idDepto'];         // de tabla carrera
+                    $TipoSangre_AUX     = $resultDatos['TipoSangre'];
+                    $Alergias_AUX       = $resultDatos['Alergias'];
+                    $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
+                    $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
+                    $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
+
+                    //Concatenación de datos
+                    $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
+                    $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
+
+                    //Validamos que tipo de servicio es
+                    switch($idTramite){
+                        case 5: 
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                        default:
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                    }
+
+                    // Generamos la descripción
+                    $descripcionTotal = sprintf(
+                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] <%s> de [%s-%s]. Datos Médicos [$%s]",
+                        $nombreCompleto,
+                        $matricula,
+                        $Cuatri_AUX,
+                        $DescripcionCarrera_AUX,
+                        $fraseDia,
+                        $tram,
+                        $seleccionExtra,
+                        $requisitos
+                    );
+                    $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
+                    
+                    if($insert){
+                        //echo "<br>Registro exitoso";
+                    } else {
+                        //echo "<br>Error en el registro";
+                    }
+                } else {
+                    echo "<br>Error: No se encontró el alumno con la matrícula proporcionada";
+                }
+            }
+
+            //Valir que el boton fue enviado y tiene datos - dirVinc
+            if(isset($_POST['registrarTramite_dirVinc'])){
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
+
+                $idTramite = (int)$_POST['idTramite'];
+                
+                $seleccionExtra = $_POST['seleccionExtra'];
+                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
+
+                /*Hacemos la validación para recuperar los datos*/
+                if($resultDatos){
+                    $Nombre_AUX         = $resultDatos['Nombre'];
+                    $ApePat_AUX         = $resultDatos['ApePat'];
+                    $ApeMat_AUX         = $resultDatos['ApeMat'];
+                    $FechaNac_AUX       = $resultDatos['FechaNac'];
+                    $FeIngreso_AUX      = $resultDatos['FeIngreso'];
+                    $Correo_AUX         = $resultDatos['Correo'];
+                    $Direccion_AUX      = $resultDatos['Direccion'];
+                    $Telefono_AUX       = $resultDatos['Telefono'];
+                    $Ciudad_AUX         = $resultDatos['Ciudad'];
+                    $Estado_AUX         = $resultDatos['Estado'];
+                    $Genero_AUX         = $resultDatos['Genero'];
+                    $idCarrera_AUX      = $resultDatos['idCarrera'];
+                    $DescripcionCarrera_AUX = $resultDatos['descripcion']; // de tabla carrera
+                    $PlanEstudios_AUX   = $resultDatos['planEstudios'];
+                    $idDepto_AUX        = $resultDatos['idDepto'];         // de tabla carrera
+                    $TipoSangre_AUX     = $resultDatos['TipoSangre'];
+                    $Alergias_AUX       = $resultDatos['Alergias'];
+                    $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
+                    $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
+                    $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
+
+                    //Concatenación de datos
+                    $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
+                    $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
+
+                    //Validamos que tipo de servicio es
+                    switch($idTramite){
+                        case 5: 
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                        default:
+                            $tram = "Extracurricular";
+                            $fraseDia = "Solicitó unirse al extracurricular";
+                            break;
+                    }
+
+                    // Generamos la descripción
+                    $descripcionTotal = sprintf(
+                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] <%s> de [%s-%s]. Datos Médicos [$%s]",
+                        $nombreCompleto,
+                        $matricula,
+                        $Cuatri_AUX,
+                        $DescripcionCarrera_AUX,
+                        $fraseDia,
+                        $tram,
+                        $seleccionExtra,
+                        $requisitos
+                    );
+                    $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
+                    
+                    if($insert){
+                        //echo "<br>Registro exitoso";
+                    } else {
+                        //echo "<br>Error en el registro";
+                    }
+                } else {
+                    echo "<br>Error: No se encontró el alumno con la matrícula proporcionada";
+                }
+            }
             //Incluimos la vista
-            include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+            switch($idDepto){
+                case 2:
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    exit();
+                    break;
+                case 3:
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    exit();
+                    break;
+                case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    exit();
+                    break;
+                case 5:
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    exit();
+                    break;
+                case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    exit();
+                    break;
+                case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    exit();
+                    break;
+                default:
+                    include_once(__DIR__ . '/../Views/Login.php');
+            }
         }
 
         
