@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -44,8 +43,8 @@
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
         
         <div id = "generarJustificante">
-            <h2>Gestión de Extracurricular - DAE</h2>
-            <form action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=updateDAE" method="POST">
+            <h2>Gestión de Gestión de Atención medica de primer contacto</h2>
+            <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=updateMedica" method="POST">
                 <fieldset>
                     <legend>Actualización de Tramite - <?php echo $row['FolioSeguimiento']; ?> </legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
@@ -58,9 +57,7 @@
                     <input type="hidden" name="FolioSeguimiento" id = "FolioSeguimiento" value = "<?php echo $row['FolioSeguimiento']?>">
                     
                     <label for="requisitos">Descripción/Requisitos: </label>
-                        <textarea rows="4" cols="30" id = "Descripcion" name = "Descripcion" value = "">
-                            <?php echo trim($row['descripcion']); ?>
-                        </textarea> <!--NOTA: Considerar que puede quedar disabled-->
+                        <textarea rows="4" cols="30" id = "Descripcion" name = "Descripcion" value = ""><?php echo trim($row['descripcion']); ?></textarea> <!--NOTA: Considerar que puede quedar disabled-->
                     <hr>
 
                     <select name="estatusT" id="estatusT" required>
@@ -71,9 +68,9 @@
                         <option value="Completado" <?php if($row['estatusT'] == 'Completado') echo 'selected'; ?>>Completado</option>
                         <option value="Cancelado" <?php if($row['estatusT'] == 'Cancelado') echo 'selected'; ?>>Cancelado</option>
                     </select>
-                    <input type="hidden" name="idDepto" id = "idDepto" value = "5"> <!--CONSIDERAR QUE CAMBIARA EL VALUE-->
+                    <input type="hidden" name="idDepto" id = "idDepto" value = "6"> <!--CONSIDERAR QUE CAMBIARA EL VALUE-->
 
-                    <input type="submit" value="Actualizar servicio (EXTRACURRICULAR)" name = "actualizarTramite_Tramite" onclick="alert('Datos actualizados con exito')">
+                    <input type="submit" value="Actualizar servicio (MEDICO)" name = "actualizarTramite_Tramite" onclick="alert('Datos actualizados con exito')">
                 </fieldset>
             </form>
         <br>
@@ -98,7 +95,7 @@
             <div id="Terms_Index1">
                 <p>
                     Toda información resguardada será de carácter relevante. 
-                    No se podrá acceder a este sistema si no se cuenta con previo registro. 
+                    No se podrá acceder a este sistema si no cuenta con previo registro. 
                     Por ningún motivo el estudiante podrá acceder al sistema.
                 </p>
             </div>

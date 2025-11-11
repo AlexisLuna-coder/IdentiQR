@@ -1,6 +1,7 @@
 <?php
     include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
     $idDepto = 6; //Esta variable permitira ser modificada para cada departamentp
+    $contro = "dirMedica";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -8,11 +9,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        
+
+        <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
         <title>DireccionACADEMICA_IdentiQR</title>
     </head>
@@ -50,15 +54,17 @@
         <div id = "generarTramite">
             <h2>Gestión de Atención medica de primer contacto</h2>
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
-            <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=insert" method="POST">
+            <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro; ?>&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar cita medica</legend>
+                    <legend>Generar/Inscripción a extracurricular</legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
                     <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
                     <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
+                    <!--APARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
                     <br><br>
                     <label for="idTramite">Tramite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
@@ -76,6 +82,10 @@
                         <input type="number" step="0.1" id="altura" name="altura" requiered>
                     <br><br>
 
+                    <label for="fechaCita">Fecha de cita: </label>
+                        <input type="date" name="fechaCita" id="fechaCita" required>
+                    <br><br>
+
                     <label for="peso">Peso (kg): </label>
                     <input type="number" step="0.1" id="peso" name="peso" requiered>
                     <br><br>
@@ -85,9 +95,9 @@
                             placeholder="Observaciones médicas..."></textarea>
                     <br>
                     <hr>
-                    
-                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
-                    <input type="submit" value="Registrar asistencias alumno" name = "registrarTramite_dirMedica" onclick="alert('Datos enviados con exito')">
+
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
+                    <input type="submit" value="Registrar cita medica - alumno" name = "registrarTramite_dirMedica" onclick="alert('Datos enviados con exito')">
                 </fieldset>
             </form>
         </div>
@@ -95,7 +105,7 @@
         <div id = "revisarTramite">
                 <!--Aquí se incluira la tabla del justificante hecho.-->
                 <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
-                <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=consult" method="POST">    
+                <form action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro; ?>&action=consult" method="POST">    
                     <!-- Selección de tipo de búsqueda -->
                     <fieldset>
                         <legend>Consultar por:</legend>
@@ -124,7 +134,7 @@
                     <!-- Campo: Mostrar Todos -->
                     <div id="campoTodosConsulta" style="display:none;">
                         <p>Se mostrarán todos los trámites del departamento.</p>
-                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto; ?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
                         <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
                     </div>
 
@@ -151,7 +161,7 @@
                         <label for="idTramiteConsulta">Seleccione el trámite:</label>
                         <select name="idTramite" id="idTramiteConsulta">
                             <option value="">Seleccione...</option>
-                            <option value="013">Consulta Médica</option>
+                            <option value="0013">Consulta médica</option>
                         </select>
                         <input type="submit" value="Consultar por Trámite" name="consultarTramite_idTramite">
                     </div>
@@ -166,7 +176,11 @@
                             <th>Matricula</th>
                             <th>Descripcion</th>
                             <th>Estatus</th>
-                            <th>Extracurricular</th>
+                            <th>Temperatura</th>
+                            <th>Estatura</th>
+                            <th>Peso</th>
+                            <th>Alergias</th>
+                            <th>TipoSangre</th>
                             <th>ACCIONES</th>
                         </thead>
                         <tbody>
@@ -182,12 +196,16 @@
                                     <td><?php echo $row['Matricula']; ?></td>
                                     <td><?php echo $row['descripcion']; ?></td>
                                     <td><?php echo $row['estatusT']; ?></td>
-                                    <td><?php echo obtenerExtracurricular($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerTemperatura($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerEstatura($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerPeso($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerAlergias($row['descripcion']); ?></td>
+                                    <td><?php echo obtenerTipoSangre($row['descripcion']); ?></td>
                                     <td>
-                                        <a href="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=updateMedica&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
+                                        <a href="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro;?>&action=updateMedica&Folio=<?php echo $row['FolioSeguimiento'] ?? ''; ?>&idDepto=<?php echo $idDepto; ?>">
                                             <button type="button">Editar</button>
                                         </a>
-                                        <button type="button" onclick="confirmarEliminacion('<?php echo $row['FolioSeguimiento'] ?? ''; ?>')">Eliminar</button>
+                                        <button type="button" onclick="confirmarEliminacion('<?php echo $contro?>','<?php echo $row['FolioSeguimiento'] ?? ''; ?>','<?php echo $idDepto;?>')">Eliminar</button>
                                     </td>
                                 </tr>
                             <?php
@@ -195,7 +213,7 @@
                                 } else {
                             ?>
                                 <tr>
-                                    <td colspan="9">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
+                                    <td colspan="13">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
                                 </tr>
                             <?php
                                 }
@@ -207,14 +225,14 @@
         
         <div id = "modificarTramite">
             <!-- <form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=updateManual" method = "POST"> -->
-            <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=updateManualMedicaE" method="POST">
+            <form action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro;?>&action=updateManualMedica" method="POST">
                 <fieldset>
                     <table></table>
-                    <legend>Actualizar Cita médica</legend>
+                    <legend>Actualizar Tutorias</legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
                     <label for="folioConsulta">Ingrese Folio:</label>
                     <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
-                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <input type="submit" value="Actualizar registro" name = "Actualizar_Tramite" onclick="alert('Redirección a página de actualización')">
                 </fieldset>
             </form>
@@ -222,12 +240,12 @@
 
         <div id = "eliminarTramite">
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)"> --> 
-            <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
+            <form action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro;?>&action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
                 <fieldset>
-                    <legend>Eliminar Cita medica por Folio de Seguimiento</legend>
+                    <legend>Eliminar justificante por Folio de Seguimiento</legend>
                     <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
                     <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
-                    <input type="hidden" name="idDepto" value="<?php echo $idDepto; ?>">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <br><br>
                     <input type="submit" value="Eliminar Trámite" name="BajaServicio_Tramite">
                 </fieldset>

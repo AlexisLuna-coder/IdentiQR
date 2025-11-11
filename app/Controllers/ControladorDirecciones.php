@@ -247,15 +247,14 @@
             }
 
             //Valir que el boton fue enviado y tiene datos - dirMed
-            if(isset($_POST['registrarTramite_dirMed'])){
+            if(isset($_POST['registrarTramite_dirMedica'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
-
                 $idTramite = (int)$_POST['idTramite'];
-                
-                $Temperatura =  $_POST[''];
-                $Altura =  $_POST[''];
-                $Peso = $_POST[''];
-                $descripcionAdicional =  $_POST[''];
+                $Temperatura =  (double)$_POST['temperatura'];
+                $Altura =  (double)$_POST['altura'];
+                $Peso = (double)$_POST['peso'];
+                $fechaCita = $_POST['fechaCita'];
+                $descripcionAdicional =  $_POST['descripcion'];
                 /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
@@ -288,27 +287,31 @@
 
                     //Validamos que tipo de servicio es
                     switch($idTramite){
-                        case 5: 
-                            $tram = "Extracurricular";
-                            $fraseDia = "Solicitó unirse al extracurricular";
+                        case 13: 
+                            $tram = "Cita Médica:";
+                            $fraseDia = "Solicitó una";
                             break;
                         default:
-                            $tram = "Extracurricular";
-                            $fraseDia = "Solicitó unirse al extracurricular";
+                            $tram = "Cita Médica: ";
+                            $fraseDia = "Solicitó una";
                             break;
                     }
-
                     // Generamos la descripción
                     $descripcionTotal = sprintf(
-                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] <%s> de [%s-%s]. Datos Médicos [$%s]",
+                        "El Alumno [%s] con matrícula [%s] del [%s] Cuatri de la carrera [%s] <%s> [%s - el día <%s>]. Datos medicos [Sangre: %s - Alergias: %s - Altura: %.2f - Peso: %.3f - Temperatura: %.2f°C]. Notas Adicionales: [%s]",
                         $nombreCompleto,
                         $matricula,
                         $Cuatri_AUX,
                         $DescripcionCarrera_AUX,
                         $fraseDia,
                         $tram,
-                        $seleccionExtra,
-                        $requisitos
+                        $fechaCita,
+                        $TipoSangre_AUX,
+                        $Alergias_AUX,
+                        $Altura,
+                        $Peso,
+                        $Temperatura,
+                        $descripcionAdicional
                     );
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
                     
@@ -466,41 +469,41 @@
                 } else {
                     echo "<br>Error: No se encontró el alumno con la matrícula proporcionada";
                 }
-            }
-            //Incluimos la vista
-            switch($idDepto){
-                case 2:
-                    //Dirección academica - justificantes
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                    exit();
-                    break;
-                case 3:
-                    //Servicio escolares
-                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
-                    exit();
-                    break;
-                case 4:
-                    //DDA
-                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                    exit();
-                    break;
-                case 5:
-                    //DAE
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                    exit();
-                    break;
-                case 6:
-                    //Medico
-                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                    exit();
-                    break;
-                case 7:
-                    //Vinculación
-                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                    exit();
-                    break;
-                default:
-                    include_once(__DIR__ . '/../Views/Login.php');
+                }
+                //Incluimos la vista
+                switch($idDepto){
+                    case 2:
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        exit();
+                        break;
+                    case 3:
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        exit();
+                        break;
+                    case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        exit();
+                        break;
+                    case 5:
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        exit();
+                        break;
+                    case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        exit();
+                        break;
+                    case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        exit();
+                        break;
+                    default:
+                        include_once(__DIR__ . '/../Views/Login.php');
             }
         }
 
@@ -517,8 +520,6 @@
                 $idDepto = isset($_POST['idDepto']) ? (int)$_POST['idDepto'] : 2;
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
-            }
-
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
@@ -555,6 +556,7 @@
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         break;
                 }
+            }
         }
         //2.2 Funcion para consultar TODOS los TRAMITES ESPECIFICOS DE ALGÚN TIPO.
         public function consultarPorTipoTramite(){
@@ -570,42 +572,41 @@
                 $direccion = $this->directionModel->consultarPorTipoTramite($idTramite);
             }
 
-                //Evaluamos que tipo de direccion es para Incluirlo
-                switch($idDepto){
-                    case 2:
-                        //Dirección academica - justificantes
-                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
-                        exit();
-                        break;
-                    case 3:
-                        //Servicio escolares
-                        include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php');
-                        exit();
-                        break;
-                    case 4:
-                        //DDA
-                        include_once(__DIR__ . '/../Views/dirDDA/modificacionTramite.php');
-                        exit();
-                        break;
-                    case 5:
-                        //DAE
-                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
-                        exit();
-                        break;
-                    case 6:
-                        //Medico
-                        include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
-                        exit();
-                        break;
-                    case 7:
-                        //Vinculación
-                        include_once(__DIR__ . '/../Views/dirVinculacion/modificacionTramite.php');
-                        exit();
-                        break;
-                    default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
-                        break;
-                }
+            switch($idDepto){
+                case 2:
+                    //Dirección academica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    exit();
+                    break;
+                case 3:
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php');
+                    exit();
+                    break;
+                case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php');
+                    exit();
+                    break;
+                case 5:
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
+                    exit();
+                    break;
+                case 6:
+                    //Medico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
+                    exit();
+                    break;
+                case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php');
+                    exit();
+                    break;
+                default:
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                    break;
+            }
         }
         
         //2.3 Función para consultar TODOS los TRAMITES realizados por algún alumno (por Matrícula)
@@ -626,32 +627,32 @@
             switch($idDepto){
                 case 2:
                     //Dirección academica - justificantes
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     exit();
                     break;
                 case 3:
                     //Servicio escolares
-                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php');
                     exit();
                     break;
                 case 4:
                     //DDA
-                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php');
                     exit();
                     break;
                 case 5:
                     //DAE
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
                     exit();
                     break;
                 case 6:
                     //Medico
-                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                     exit();
                     break;
                 case 7:
                     //Vinculación
-                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php');
                     exit();
                     break;
                 default:
@@ -677,32 +678,32 @@
             switch($idDepto){
                 case 2:
                     //Dirección academica - justificantes
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     exit();
                     break;
                 case 3:
                     //Servicio escolares
-                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php');
                     exit();
                     break;
                 case 4:
                     //DDA
-                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php');
                     exit();
                     break;
                 case 5:
                     //DAE
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
                     exit();
                     break;
                 case 6:
                     //Medico
-                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                     exit();
                     break;
                 case 7:
                     //Vinculación
-                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php');
                     exit();
                     break;
                 default:
@@ -1012,13 +1013,13 @@
                         break;
                     case 5:
                         //DAE
-                        $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DAE.php?action=consult";
+                        $redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
                         //exit();
                         break;
                     case 6:
                         //Medico
-                        $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_Medico.php?action=consult";
+                        $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                         //exit();
                         break;
@@ -1094,13 +1095,13 @@
                     break;
                 case 5:
                     //DAE
-                    $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DAE.php?action=consult";
+                    $redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
                     //exit();
                     break;
                 case 6:
                     //Medico
-                    $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_Medico.php?action=consult";
+                    $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                     //exit();
                     break;
