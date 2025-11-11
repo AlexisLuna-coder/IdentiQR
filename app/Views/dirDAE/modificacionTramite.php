@@ -1,4 +1,7 @@
-
+<?php
+    $idDepto = 5; //Esta variable permitira ser modificada para cada departamentp
+    $contro = "dirDAE";
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -71,7 +74,7 @@
                         <option value="Completado" <?php if($row['estatusT'] == 'Completado') echo 'selected'; ?>>Completado</option>
                         <option value="Cancelado" <?php if($row['estatusT'] == 'Cancelado') echo 'selected'; ?>>Cancelado</option>
                     </select>
-                    <input type="hidden" name="idDepto" id = "idDepto" value = "5"> <!--CONSIDERAR QUE CAMBIARA EL VALUE-->
+                    <input type="hidden" name="idDepto" id = "idDepto" value = "<?php echo $idDepto; ?>"> <!--CONSIDERAR QUE CAMBIARA EL VALUE-->
 
                     <input type="submit" value="Actualizar servicio (EXTRACURRICULAR)" name = "actualizarTramite_Tramite" onclick="alert('Datos actualizados con exito')">
                 </fieldset>

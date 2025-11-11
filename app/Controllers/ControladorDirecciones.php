@@ -519,42 +519,42 @@
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
             }
 
-            //Evaluamos que tipo de direccion es para Incluirlo
-            switch($idDepto){
+                //Evaluamos que tipo de direccion es para Incluirlo
+                switch($idDepto){
                     case 2:
                         //Dirección academica - justificantes
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         exit();
                         break;
                     case 3:
                         //Servicio escolares
-                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
+                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php');
                         exit();
                         break;
                     case 4:
                         //DDA
-                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php');
                         exit();
                         break;
                     case 5:
                         //DAE
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
                         exit();
                         break;
                     case 6:
                         //Medico
-                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                         exit();
                         break;
                     case 7:
                         //Vinculación
-                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php');
                         exit();
                         break;
                     default:
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         break;
-            }
+                }
         }
         //2.2 Funcion para consultar TODOS los TRAMITES ESPECIFICOS DE ALGÚN TIPO.
         public function consultarPorTipoTramite(){
@@ -570,42 +570,42 @@
                 $direccion = $this->directionModel->consultarPorTipoTramite($idTramite);
             }
 
-            //Evaluamos que tipo de direccion es para Incluirlo
-            switch($idDepto){
-                case 2:
-                    //Dirección academica - justificantes
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                    exit();
-                    break;
-                case 3:
-                    //Servicio escolares
-                    include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
-                    exit();
-                    break;
-                case 4:
-                    //DDA
-                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                    exit();
-                    break;
-                case 5:
-                    //DAE
-                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                    exit();
-                    break;
-                case 6:
-                    //Medico
-                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                    exit();
-                    break;
-                case 7:
-                    //Vinculación
-                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                    exit();
-                    break;
-                default:
-                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                    break;
-            }
+                //Evaluamos que tipo de direccion es para Incluirlo
+                switch($idDepto){
+                    case 2:
+                        //Dirección academica - justificantes
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        exit();
+                        break;
+                    case 3:
+                        //Servicio escolares
+                        include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php');
+                        exit();
+                        break;
+                    case 4:
+                        //DDA
+                        include_once(__DIR__ . '/../Views/dirDDA/modificacionTramite.php');
+                        exit();
+                        break;
+                    case 5:
+                        //DAE
+                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
+                        exit();
+                        break;
+                    case 6:
+                        //Medico
+                        include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
+                        exit();
+                        break;
+                    case 7:
+                        //Vinculación
+                        include_once(__DIR__ . '/../Views/dirVinculacion/modificacionTramite.php');
+                        exit();
+                        break;
+                    default:
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        break;
+                }
         }
         
         //2.3 Función para consultar TODOS los TRAMITES realizados por algún alumno (por Matrícula)
@@ -729,36 +729,36 @@
                 switch($idDepto){
                     case 2:
                         //Dirección academica - justificantes
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
-                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php');
+                        //exit();
                         break;
                     case 4:
                         //DDA
-                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDDA/modificacionTramite.php');
+                        //exit();
                         break;
                     case 5:
                         //DAE
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
+                        //exit();
                         break;
                     case 6:
                         //Medico
-                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
+                        //exit();
                         break;
                     case 7:
                         //Vinculación
-                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirVinculacion/modificacionTramite.php');
+                        //exit();
                         break;
                     default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
                         break;
                 }
                 return;
@@ -781,12 +781,12 @@
                             break;
                         case 3:
                             //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
-
+                            header("Location: /IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult");
                             exit();
                             break;
                         case 4 :
                             //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
-
+                            header("Location: /IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult");
                             exit();
                             break;
                         case 5:
@@ -796,12 +796,12 @@
                             break;
                         case 6 :
                             //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
-
+                            header("Location: /IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult");
                             exit();
                             break;
                         case 7:
                             //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
-
+                            header("Location: /IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult");
                             exit();
                             break;
                         default:
@@ -815,8 +815,25 @@
                         case 2:
                             $url_error = "/IdentiQR/app/Views/dirDirAca/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=2&error=true";
                             break;
+                        case 3:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirServEsco/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=3&error=true";
+                            break;
+                        case 4 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirDDA/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=4&error=true";
+                            break;
                         case 5:
+                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                             $url_error = "/IdentiQR/app/Views/dirDAE/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=5&error=true";
+                            break;
+                        case 6 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirMedica/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=6&error=true";
+                            break;
+                        case 7:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirVinculacion/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=7&error=true";
                             break;
                         default:
                             $url_error = $redireccion_error_base;
@@ -845,36 +862,36 @@
                 switch($idDepto){
                     case 2:
                         //Dirección academica - justificantes
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
-                        include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php');
+                        //exit();
                         break;
                     case 4:
                         //DDA
-                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDDA/modificacionTramite.php');
+                        //exit();
                         break;
                     case 5:
                         //DAE
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
+                        //exit();
                         break;
                     case 6:
                         //Medico
-                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
+                        //exit();
                         break;
                     case 7:
                         //Vinculación
-                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                        exit();
+                        include_once(__DIR__ . '/../Views/dirVinculacion/modificacionTramite.php');
+                        //exit();
                         break;
                     default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
+                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
                         break;
                 }
                 return;
@@ -888,20 +905,77 @@
 
                 $update = $this -> directionModel -> actualizarTramite($Descripcion, $estatusT, $FolioRegistro, $FolioSeguimiento);
                 if($update){
-                    /*switch($idDepto){
-                    case 2:
-                        include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
-                        break;
-                    default:
-                        include_once(__DIR__ . '/../Views/dirDirAca/GestionesAdmin_Direccion.php'); //Vista de justificantes
-                        break;
-                    }*/
-                    header("Location: /IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult");
+                    switch($idDepto){
+                        case 2:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            header("Location: /IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult");
+                            exit();
+                            break;
+                        case 3:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            header("Location: /IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult");
+                            exit();
+                            break;
+                        case 4 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            header("Location: /IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult");
+                            exit();
+                            break;
+                        case 5:
+                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
+                            header("Location: /IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult");
+                            exit();
+                            break;
+                        case 6 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            header("Location: /IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult");
+                            exit();
+                            break;
+                        case 7:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            header("Location: /IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult");
+                            exit();
+                            break;
+                        default:
+                            include_once(__DIR__ . '/../Views/dirDirAca/GestionesAdmin_Direccion.php'); //Vista de justificantes
+                            break;
+                    }
                 } else {
-                    header("Location: /IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update");
+                    // Redirección de ERROR (Volver al formulario de modificación con GET)
+                    $url_error = "";
+                    switch($idDepto){
+                        case 2:
+                            $url_error = "/IdentiQR/app/Views/dirDirAca/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=2&error=true";
+                            break;
+                        case 3:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirServEsco/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=3&error=true";
+                            break;
+                        case 4 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirDDA/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=4&error=true";
+                            break;
+                        case 5:
+                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
+                            $url_error = "/IdentiQR/app/Views/dirDAE/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=5&error=true";
+                            break;
+                        case 6 :
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirMedica/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=6&error=true";
+                            break;
+                        case 7:
+                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
+                            $url_error = "/IdentiQR/app/Views/dirVinculacion/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=7&error=true";
+                            break;
+                        default:
+                            $url_error = $redireccion_error_base;
+                            break;
+                    }
+                    header("Location: $url_error");
+                    exit(); 
                 }
             }
-            include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
+            //include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
         }
 
         /*Funciones para realizar la baja de los servicios/tramites */
@@ -920,35 +994,42 @@
                 switch($idDepto){
                     case 2:
                         //Dirección academica - justificantes
+                        $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                        exit();
+                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
+                        $redireccion = "/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
-                        exit();
+                        //exit();
                         break;
                     case 4:
                         //DDA
+                        $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                        exit();
+                        //exit();
                         break;
                     case 5:
                         //DAE
+                        $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DAE.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                        exit();
+                        //exit();
                         break;
                     case 6:
                         //Medico
+                        $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_Medico.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                        exit();
+                        //exit();
                         break;
                     case 7:
                         //Vinculación
+                        $redireccion = "/IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                        exit();
+                        //exit();
                         break;
                     default:
+                        $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         break;
                 }
@@ -995,35 +1076,42 @@
             switch($idDepto){
                 case 2:
                     //Dirección academica - justificantes
+                    $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
                     //exit();
                     break;
                 case 3:
                     //Servicio escolares
+                    $redireccion = "/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirServEsco/gestionSocumentosServEsco.php'); 
                     //exit();
                     break;
                 case 4:
                     //DDA
+                    $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
                     //exit();
                     break;
                 case 5:
                     //DAE
+                    $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DAE.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
                     //exit();
                     break;
                 case 6:
                     //Medico
+                    $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_Medico.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                     //exit();
                     break;
                 case 7:
                     //Vinculación
+                    $redireccion = "/IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
                     //exit();
                     break;
                 default:
+                    $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     break;
             }
@@ -1050,7 +1138,6 @@
                 </script>";
             }
             
-
         }
     }
 ?>

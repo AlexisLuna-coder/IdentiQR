@@ -1,6 +1,7 @@
 <?php
     include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
     $idDepto = 5; //Esta variable permitira ser modificada para cada departamentp
+    $contro = "dirDAE";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -83,7 +84,7 @@
                             <option value="Fotografía">Fotografía</option>
                         </select>
                     <br>
-                    <input type="hidden" name="idDepto" value="5">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <input type="submit" value="Registrar extracurricular alumno" name = "registrarTramite_dirDAE" onclick="alert('Datos enviados con exito')">
                 </fieldset>
             </form>
@@ -121,7 +122,7 @@
                     <!-- Campo: Mostrar Todos -->
                     <div id="campoTodosConsulta" style="display:none;">
                         <p>Se mostrarán todos los trámites del departamento.</p>
-                        <input type="hidden" name="idDepto" value ="5"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
                         <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
                     </div>
 
@@ -192,7 +193,7 @@
                                 } else {
                             ?>
                                 <tr>
-                                    <td colspan="9">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
+                                    <td colspan="8">No hay trámites para mostrar. Presione "ConsultarTramites" para cargar los datos.</td>
                                 </tr>
                             <?php
                                 }
@@ -211,7 +212,7 @@
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
                     <label for="folioConsulta">Ingrese Folio:</label>
                     <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
-                    <input type="hidden" name="idDepto" value="5">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <input type="submit" value="Actualizar registro" name = "Actualizar_Tramite" onclick="alert('Redirección a página de actualización')">
                 </fieldset>
             </form>
@@ -224,7 +225,7 @@
                     <legend>Eliminar justificante por Folio de Seguimiento</legend>
                     <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
                     <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
-                    <input type="hidden" name="idDepto" value="5">
+                    <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <br><br>
                     <input type="submit" value="Eliminar Trámite" name="BajaServicio_Tramite">
                 </fieldset>

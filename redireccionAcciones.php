@@ -28,6 +28,15 @@
         case 'dirDDA':
             $controllerInstance = new DirectionsController($conn);
             break;
+        case 'dirMedica':
+            $controllerInstance = new DirectionsController($conn);
+            break;
+        case 'dirServEsco':
+            $controllerInstance = new DirectionsController($conn);
+            break;
+        case 'dirVinc':
+            $controllerInstance = new DirectionsController($conn);
+            break;
         /*case 'alumno':
             $controllerInstance = new AlumnoController($conn);
             break;
@@ -56,16 +65,40 @@
             }
             break;
         /*Casos de update para direcciones */
-        case 'update':
+        case 'update': //DirAca
             $controllerInstance -> actualizarTramite();
             break;
-        case 'updateManual':
+        case 'updateManual': //DirAca
             $controllerInstance -> actualizarTramiteManual();
             break;
-        case 'updateDAE':
+        case 'updateDAE': //DAE
             $controllerInstance ->actualizarTramite();
             break;
-        case 'updateManualDAE':
+        case 'updateManualDAE': //DAE
+            $controllerInstance -> actualizarTramiteManual();
+            break; 
+        case 'updateDDA': //DDA
+            $controllerInstance ->actualizarTramite();
+            break;
+        case 'updateManualDDA': //DDA
+            $controllerInstance -> actualizarTramiteManual();
+            break;
+        case 'updateMedica': //Medica
+            $controllerInstance ->actualizarTramite();
+            break;
+        case 'updateManualMedica': //Medica
+            $controllerInstance -> actualizarTramiteManual();
+            break; 
+        case 'updateServEsco': //Servicios escolares
+            $controllerInstance ->actualizarTramite();
+            break;
+        case 'updateManualServEsco': //Servicios escolares
+            $controllerInstance -> actualizarTramiteManual();
+            break; 
+        case 'updateVinc': //Vinculación
+            $controllerInstance ->actualizarTramite();
+            break;
+        case 'updateManualVinc': //Vinculación
             $controllerInstance -> actualizarTramiteManual();
             break; 
         /**************************************** */   
