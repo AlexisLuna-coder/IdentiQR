@@ -13,6 +13,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login_IdentiQR</title>
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/stylesLogin.css"> <!--CSS-->
     </head>
@@ -31,9 +32,9 @@
                 <div class="header-right">
                 <nav aria-label="Navegación principal">
                     <ul class="nav-list">
-                    <li><a href="/IdentiQR/index.html" class="select">Inicio</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Contactanos</a></li>
+                    <li><a href="/IdentiQR/index.html" class="select"><i class="fa-regular fa-house"></i>Inicio</a></li>
+                    <li><a href="#"><i class="fa-solid fa-plus"></i>Servicios</a></li>
+                    <li><a href="#"><i class="fa-solid fa-envelope"></i>Contactanos</a></li>
                     </ul>
                 </nav>
 
@@ -48,6 +49,8 @@
         <main>
             <div class="Login_ContenedorGeneral">
                 <h2>Iniciar Sesión</h2>
+                <h2><i class="fa-solid fa-user"></i></h2>
+                <h2><i class="fa-thin fa-user"></i></h2>
                 <form action="/IdentiQR/app/Controllers/ControladorUsuario.php?action=loginUsuario" method="POST">
                     <fieldset>
                         <legend>Ingresa tus credenciales</legend>

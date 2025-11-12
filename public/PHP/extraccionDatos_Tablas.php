@@ -208,4 +208,71 @@
 
         return "N/A";
     }
+
+    /*FUNCIONES PARA VINCULACIÓ*/ 
+    function obtenerDocumentosFinales($descripcion) {
+        // Busca Si / Sí / No dentro de corchetes o menor-mayor
+        if (preg_match('/Do[c|m]umentos\s+finales[^\[\<]*[\:\-]?\s*(?:\[([^\]]+)\]|\<([^>]+)\>)/iu', $descripcion, $coincidencia)) {
+            $valor = $coincidencia[1] ?? $coincidencia[2] ?? '';
+            $valor = trim($valor);
+            if (preg_match('/^(si|sí)$/iu', $valor)) return 'Sí';
+            if (preg_match('/^no$/iu', $valor)) return 'No';
+            return $valor !== '' ? $valor : 'N/A';
+        }
+        return "N/A";
+    }
+
+    function obtenerDocumentosEntregados($descripcion) {
+        // Busca la etiqueta 'Documentos entregados:' y captura el contenido del corchete siguiente [ ]
+        if (preg_match('/Documentos entregados:\s*\[([^\]]+)\]/u', $descripcion, $coincidencia)) {
+            // Devuelve la lista de documentos, limpiando el espacio extra.
+            return trim($coincidencia[1]);
+        }
+        return "Ninguno";
+    }
+
+    /*function obtenerTramiteRealizado($descripcion) {
+        if (!$descripcion) return "No especificado";
+
+        // 1) Buscar "trámite de [ ... ]" entre corchetes
+        if (preg_match('/tr[aá]mite(?:\s+de)?\s*[:\-]?\s*\[\s*([^\]]+?)\s*\]/iu', $descripcion, $m)) {
+            return trim($m[1]) ?: "No especificado";
+        }
+
+        // 2) "solicitó el trámite de [ ... ]" o "solicitó el trámite: [ ... ]"
+        if (preg_match('/solicit[oó]\s+(?:el\s+)?tr[aá]mite[^\[\<\:\n\r]*[\:\-]?\s*(?:\<\s*([^>]+?)\s*\>|\[\s*([^\]]+?)\s*\])/iu', $descripcion, $m2)) {
+            $val = isset($m2[1]) && $m2[1] !== '' ? $m2[1] : (isset($m2[2]) ? $m2[2] : '');
+            return trim($val) ?: "No especificado";
+        }
+
+        // 3) Si no hay corchetes, buscar "trámite de ..." hasta punto o pipe
+        if (preg_match('/tr[aá]mite(?:\s+de)?\s*[:\-]?\s*([^\.\|\<\[\n\r]+)/iu', $descripcion, $m3)) {
+            $val = trim($m3[1]);
+            return $val !== '' ? rtrim($val, " .") : "No especificado";
+        }
+
+        // 4) fallback: devolver primer contenido entre corchetes que contenga palabra típica
+        if (preg_match_all('/\[\s*([^\]]+?)\s*\]/u', $descripcion, $matches)) {
+            foreach ($matches[1] as $candidate) {
+                if (preg_match('/(Estancia|Reinscrip|Inscrip|Constancia|Reposicion|Credencial|Estancia|Servicio|Tramite)/iu', $candidate)) {
+                    return trim($candidate);
+                }
+            }
+            // si no hay coincidencias específicas, devolver el primer corchete
+            return trim($matches[1][0]);
+        }
+
+        return "No especificado";
+    }*/
+    
+    function obtenerTramiteRealizado($descripcion) {
+        // Busca la frase 'solicitó el trámite de' y captura todo el contenido del siguiente corchete [ ]
+        if (preg_match('/solicitó el trámite de\s*\[([^\]]+)\]/u', $descripcion, $coincidencia)) {
+            // Quita la posible fecha de la descripción si fue concatenada
+            $tramite = preg_replace('/ - Fecha: <[^>]+>/u', '', $coincidencia[1]);
+            return trim($tramite);
+        }
+        return "N/A";
+    }
+    
 ?>

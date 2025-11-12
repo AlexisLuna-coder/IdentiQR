@@ -411,9 +411,22 @@
             if(isset($_POST['registrarTramite_dirVinc'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
-                $idTramite = (int)$_POST['idTramite'];
+                $idTramite = (int)$_POST['idTramite']; //Tipo de Tramite 
+                $descripcionExtra = $_POST['descripcionExtra'];
+                $entregaDocumentos = $_POST['entregaDocumentos'];
+                $fechaSolicitud = $_POST['fechaSolicitud'];
                 
-                $seleccionExtra = $_POST['seleccionExtra'];
+                // Recuperar los documentos seleccionados
+                if (isset($_POST['docs']) && is_array($_POST['docs'])) {
+                    $docs = $_POST['docs']; // ← Esto es un arreglo con los documentos seleccionados
+                    $docsTexto = implode(', ', $docs); // Ejemplo: "INE, CV, CartaAceptacion"
+                } else {
+                    $docs = [];
+                    $docsTexto = 'Ninguno';
+                }
+
+                
+
                 /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
@@ -439,6 +452,7 @@
                     $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
                     $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
                     $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
+                    $Periodo_AUX = $resultDatos['Periodo']; //Función calcPeriodo();
 
                     //Concatenación de datos
                     $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
@@ -446,27 +460,44 @@
 
                     //Validamos que tipo de servicio es
                     switch($idTramite){
-                        case 5: 
-                            $tram = "Extracurricular";
-                            $fraseDia = "Solicitó unirse al extracurricular";
+                        case 5:
+                            $tram = "Estancia I";
+                            $fraseDia = "Solicitó iniciar su primera estancia profesional";
+                            break;
+                        case 6:
+                            $tram = "Estancia II";
+                            $fraseDia = "Solicitó continuar con su segunda estancia profesional";
+                            break;
+                        case 7:
+                            $tram = "Estadía";
+                            $fraseDia = "Solicitó registrar su estadía profesional";
+                            break;
+                        case 8:
+                            $tram = "Prácticas profesionales";
+                            $fraseDia = "Solicitó realizar sus prácticas profesionales";
+                            break;
+                        case 9:
+                            $tram = "Servicio social";
+                            $fraseDia = "Solicitó iniciar su servicio social";
                             break;
                         default:
-                            $tram = "Extracurricular";
-                            $fraseDia = "Solicitó unirse al extracurricular";
+                            $tram = "Trámite general";
+                            $fraseDia = "Solicitó un trámite institucional";
                             break;
                     }
 
                     // Generamos la descripción
                     $descripcionTotal = sprintf(
-                        "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] <%s> de [%s-%s]. Datos Médicos [$%s]",
+                        "El alumno [%s] [Matrícula: %s], de <%s°> Cuatri en la carrera <%s>, solicitó el trámite de [%s - %s - Fecha: <%s>]. Documentos entregados: [%s]. Documentos finales correctos y adecuados: [%s].",
                         $nombreCompleto,
                         $matricula,
                         $Cuatri_AUX,
                         $DescripcionCarrera_AUX,
-                        $fraseDia,
                         $tram,
-                        $seleccionExtra,
-                        $requisitos
+                        $fraseDia,
+                        $fechaSolicitud,
+                        $docsTexto,
+                        $entregaDocumentos
                     );
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
                     

@@ -192,6 +192,7 @@ function escapeHtml(text) {
 // Event listeners
 document.addEventListener("DOMContentLoaded", function() {
     cargarTutoriasIndividuales(); //Así hacemos que se pueda usar el check
+    setFechaSolicitudHoy(); //Función para la asignación de fechas
     // Event listener para el botón de escaneo (registro)
     const btnEscanear = document.getElementById('btnEscanear');
     if (btnEscanear) {
@@ -371,6 +372,23 @@ function cargarTutoriasIndividuales() {
         });
         check._tutoriasListenerAdded = true;
     }
+}
+
+//2. Aquí se encuentra el script para la asignación de FECHA EN fechaSolicitud
+function setFechaSolicitudHoy() {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoy.getDate()).padStart(2, '0');
+    const fechaActual = `${año}-${mes}-${dia}`;
+
+    // Selecciona por name para cubrir ambos inputs (visible y hidden)
+    const inputs = document.querySelectorAll('input[name="fechaSolicitud"]');
+    inputs.forEach(input => {
+        // Si el input es disabled, seguirá mostrando la fecha en pantalla
+        // El hidden con el mismo name también se llenará y será enviado en el formulario.
+        input.value = fechaActual;
+    });
 }
 /********************************************** */
 

@@ -4,6 +4,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
+
 
         <!-- BOOTSTRAP -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
@@ -40,10 +42,10 @@
             <div id = "ExportarDatos" class = "SeguridadDatos">
                 <h2>Exportación y recuperación de Datos</h2>
                 <a href="/IdentiQR/app/Models/backup.php">
-                    <button onclick="">Respaldar Base de datos</button>
+                    <button onclick=""><i class="fa-solid fa-download"></i>Respaldar Base de datos</button>
                 </a>
                 <form action="/IdentiQR/app/Models/restore.php" method="post" enctype="multipart/form-data">
-                    <label for="backupFile">Suba un archivo .sql (máx 50MB):</label><br>
+                    <label for="backupFile"><i class="fa-solid fa-file"></i>Suba un archivo .sql (máx 50MB):</label><br>
                         <input type="file" id="backupFile" name="backupFile" accept=".sql" required><br><br>
 
                     <!-- checkbox para elegir método si quieres (opcional) -->
@@ -51,7 +53,7 @@
                         <input type="checkbox" name="use_cli" value="1">
                     </label><br><br>
 
-                    <button type="submit">Cargar y restaurar</button>
+                    <button type="submit"><i class="fa-solid fa-file"></i>Cargar y restaurar</button>
                 </form>
                 
                 <!-- Botones para exportar diferentes tipos de datos 
@@ -63,7 +65,7 @@
                 
             <main>
                 <section id = "GestorUsuarios" class = "GestorUsuarios">
-                    <h2>Gestión de Usuarios</h2>
+                    <h2><i class="fa-solid fa-user"></i>Gestión de Usuarios</h2>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=registroU#seccionRegistrarUsuario">Registrar Nuevo Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=modificarU#seccionModificarUsuario">Modificar un Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=eliminarU#seccionEliminarUsuario">Eliminar un Usuario</a>
@@ -72,7 +74,7 @@
 
                 <hr>
                 <section>
-                    <h2>Gestión de Alumnos</h2>
+                    <h2><i class="fa-solid fa-users"></i>Gestión de Alumnos</h2>
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=registroA#seccionRegistrarAlumno">Registrar Nuevo Alumno</a>
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=modificarA#ConsultaModificacionAlumnos">Modificar un Alumno</a>
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=eliminarA#EliminacionAlumnos">Eliminar un Alumno</a>
@@ -81,7 +83,7 @@
 
                 <hr>
                 <section>
-                    <h2>Gestión de Tramites</h2>
+                    <h2><i class="fa-solid fa-file"></i>Gestión de Tramites</h2>
                     <!--*:  Aquí se van a incluir todos los tramites que se pueden realizar (Desto todos los departamentos)-->
                     <div id = "card-Dir">
                         <legend>Dirección Academica</legend>
