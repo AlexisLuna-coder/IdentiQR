@@ -258,6 +258,61 @@
             exit();
         }
 
+        /*METODO/FUNCIÓN PARA QUE SE ACTUALICE EL NUEVO CODIGO QR*/ 
+        public function actualizarQR(){
+            //CONFIRMAR SI EL BOTON SE ENVIO//
+            $result = $this->modelAlumno->obtenerTodosAlumnos();
+
+            if(!$result){
+                echo "No se cuenta con alumnos registrados.";
+            }
+            $listaAlumnos = [];
+            $alumnoQR_Nuevo; //Esta es la variable que utilizaremos
+
+            while ($row = $result->fetch_assoc()) {
+                $alumnoQR_Nuevo = new Alumno(
+                    $row['Matricula'],
+                    $row['Nombre'],
+                    $row['ApePat'],
+                    $row['ApeMat'],
+                    $row['FechaNac'],
+                    $row['FeIngreso'],
+                    $row['Correo'] ?? null,
+                    $row['Direccion'] ?? "Sin dirección",
+                    $row['Telefono'] ?? "Sin teléfono",
+                    $row['Ciudad'] ?? "Desconocida",
+                    $row['Estado'] ?? "Desconocido",
+                    (int)$row['IdCarrera'],
+                    $row['qrHash'] ?? null,
+                    $row['Genero'] ?? "Otro"
+                );
+
+                // Guardas el nuevo objeto en una lista
+                $listaAlumnos[] = $alumnoQR_Nuevo;
+            }
+
+            //Usamos un for-each para iterar SOBRE TODOS LOS ALUMNOS. Y Actualizar/generar un nuevo qr.)
+            $codigosQR = new codigosQR();
+            foreach ($listaAlumnos as $alumno) {
+                $rutaQR = $codigosQR->generarQR_Alumno($alumno);
+                // Generar un hash único basado en el contenido del QR
+                $hashQR = hash('sha256', $rutaQR->getString());
+                $alumno->setQRHash($hashQR);
+                if(!$this->modelAlumno->asignarHashQR($alumno)){
+                    die("Error al asignar el código QR al alumno.");
+                }
+
+                // Mostrar mensaje de éxito
+                include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
+                enviarCorreoAlumnoQRActualizado($alumno, $rutaQR->getString());
+            }
+
+            //Incluye la vista del administrador.
+            header("Location: /IdentiQR/app/Views/GestionesAdministradorG.php");
+            exit();
+            //echo "<h2 style='color: green;'>Códigos QR actualizados exitosamente para todos los alumnos.</h2>";
+        }
+
     }
     
     // Realizamos la instancia del metodo de inserción
@@ -290,6 +345,9 @@
                 break;
             case 'procesarQR':
                 $controladorAlumno->procesarQR();
+                break;
+            case 'actualizarQR_Alumno':
+                $controladorAlumno->actualizarQR();
                 break;
             default:
                 header("Location: /IdentiQR/index.html");

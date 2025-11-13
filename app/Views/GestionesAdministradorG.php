@@ -8,7 +8,10 @@
 
 
         <!-- BOOTSTRAP -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <link rel="stylesheet" href="/IdentiQR/public/CSS/stylesGestionAdmin.css">
@@ -70,6 +73,11 @@
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=modificarU#seccionModificarUsuario">Modificar un Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=eliminarU#seccionEliminarUsuario">Eliminar un Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=consultarUsuario#seccionConsultarUsuario">Buscar un Usuario</a>
+
+                    <!--BOTON QUE SE USARA UNICAMENTE PARA LA REDIRECCIÓN Y ENVIO DE LOS NUEVOS CODIGOS QR-->
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalConfirmacionQR">
+                        Actualización MASIVA de QR
+                    </button>
                 </section>
 
                 <hr>
@@ -131,6 +139,31 @@
                 </section>
             </main>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalConfirmacionQR" tabindex="-1" role="dialog" aria-labelledby="modalConfirmacionQRLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalConfirmacionQRLabel">Confirmación masiva de QR de los alumnos</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Está seguro de que desea proceder con la modificación masiva de QR de los alumnos?
+                        <br>Considere que esta actualización podra demorar tiempo...
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=actualizarQR_Alumno">
+                            <button type="button" class="btn btn-primary">Sí, continuar</button>
+                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No, regresar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!------------------------------------>
         <footer class="FooterIndex1" id="FooterIndex1">
             <div class="footer__container">
                 <div class="footer__info">

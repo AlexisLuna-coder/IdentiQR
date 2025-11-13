@@ -239,4 +239,107 @@
         }
     }
 
+    function enviarCorreoAlumnoQRActualizado(Alumno $alumno, String $qrData){
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'identiqr.info@gmail.com';                     //SMTP username
+            $mail->Password   = 'cldfvbragfaluqsz';                               //SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->CharSet = 'UTF-8';
+
+            //----------------------VARIABLES PARA EL CORREO----------------------
+
+            $destino = $alumno->getCorreo();  // Usamos el correo del objeto Usuario
+            $mat = $alumno -> getMatricula();
+
+            //--------------------------------------------------------------------
+            //Recipients
+            $mail->setFrom('indentiqr.info@gmail.com', 'IdentiQR-Info-Actualización');
+            $mail->addAddress($destino, $mat);     //Add a recipient
+            $mail->addReplyTo('indentiqr.info@gmail.com', 'IdentiQR-Information');
+
+            //Attachments
+            //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+            //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+            $qrFilename = $mat . '.png';
+            $mail->addStringAttachment($qrData, $qrFilename, 'base64', 'image/png');
+
+            //Content
+            
+            //Set email format to HTML
+            $mail->Subject = 'Bienvenido a IdentiQR - ¡Tu actualización del QR fur correcta! (Non-reply)';
+            // Construir mensaje HTML (estilos inline para compatibilidad)
+            
+            $htmlBody = '
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        body { font-family: Arial, Helvetica, sans-serif; background: #f6f8fa; margin: 0; padding: 20px; }
+                        .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+                        .header { background: #4B0082; padding: 20px; color: #fff; text-align: center; }
+                        .content { padding: 24px; color: #333; }
+                        .footer { background: #f8fafb; padding: 12px 16px; font-size: 12px; color: #8898a6; text-align: center; }
+                        table { border-collapse: collapse; margin-bottom: 12px; }
+                        td { padding: 10px; font-family: monospace; }
+                        .label { background: #f1f5f9; border-radius: 4px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <div class="header">
+                            <h1>IdentiQR</h1>
+                            <div>Confirmación de registro</div>
+                        </div>
+                        <div class="content">
+                            <p>Hola <strong>'. $alumno->getNombre() .' '. $alumno->getApePat() .' '. $alumno->getApeMat() .'</strong>,</p>
+                            <p>¡Se realizó una actualización cuatrimestral de tu código QR <strong>IdentiQR</strong>!.</p>
+                            <table>
+                                <tr>
+                                    <td class="label">Matricula:</td>
+                                    <td><strong>'. $mat.'</strong></td>
+                                </tr>
+                            </table>
+                            
+                            <p>Adjunto encontrarás tu código QR renovado el cual AHORA deberás usar para realizar tus tramites y servicios de manera mas facil y eficiente.</p>
+                            <p>Cualquier duda, contacta al administrador.</p>
+                            
+                            <hr>
+                            <p>Saludos,<br><strong>Equipo IdentiQR</strong></p>
+                        </div>
+                        <div class="footer">
+                            &copy; '.date('Y').' IdentiQR — Este es un correo automático, por favor no responda a esta dirección.
+                        </div>
+                    </div>
+                </body>
+                </html>
+            ';
+            
+            //$mail->Body    = $mensaje;
+
+            // Texto plano alternativo
+            $textoPlano = "Hola " . $alumno->getNombre() . " " . $alumno->getApePat() . " " . $alumno->getApeMat() . ",\n\n";
+                $textoPlano .= "¡Se realizó la renovación cuatrimestral de tu codigo QR.\n\n";
+                $textoPlano .= "Tus datos de acceso:\n";
+                $textoPlano .= "Usuario/Matricula: $mat\n\n";
+                $textoPlano .= "Adjunto encontrarás tu código QR renovado el cual AHORA deberás usar para realizar tus tramites y servicios de manera mas facil y eficiente.\n";
+                $textoPlano .= "Cualquier duda, contacta al administrador.\n\n";
+                $textoPlano .= "Saludos cordiales,\nEquipo IdentiQR.";
+
+            $mail->isHTML(true);  
+            $mail->Body = $htmlBody;
+            $mail->AltBody = $textoPlano;
+
+            $mail->send();
+            
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
+    }
+
 ?>

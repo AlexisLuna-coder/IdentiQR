@@ -223,7 +223,7 @@
         }
 
         public function obtenerTodosAlumnos(){
-            $sql_statement = "SELECT a.Matricula, a.Nombre, a.ApePat, a.ApeMat, calcCuatrimestre(a.FeIngreso) as Cuatrimestre, a.FechaNac, a.Correo, im.TipoSangre FROM Alumno a LEFT JOIN InformacionMedica im ON a.Matricula = im.Matricula";
+            $sql_statement = "SELECT a.Matricula, a.Nombre, a.ApePat, a.ApeMat,a.FeIngreso,a.idCarrera, calcCuatrimestre(a.FeIngreso) as Cuatrimestre, a.FechaNac, a.Correo, im.TipoSangre FROM Alumno a LEFT JOIN InformacionMedica im ON a.Matricula = im.Matricula";
             
             $result = $this->conn->query($sql_statement);
             return $result;
@@ -252,4 +252,6 @@
             }
             return 0;
         }
+
+        /*METODO/FUNCIÓN PARA ASIGNAR EL NUEVO HASH DEL ALUMNO */
     }
