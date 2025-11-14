@@ -91,11 +91,11 @@
 
                 <hr>
                 <section>
-                    <h2><i class="fa-solid fa-file"></i>Gestión de Tramites</h2>
+                    <h2><i class="fa-solid fa-file"></i>Gestión de Trámites</h2>
                     <!--*:  Aquí se van a incluir todos los tramites que se pueden realizar (Desto todos los departamentos)-->
                     <div id = "card-Dir">
-                        <legend>Dirección Academica</legend>
-                        <a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">Gestión Dirección Acádemica - Justificantes_DirecciónAcademica</a>
+                        <legend>Dirección Académica</legend>
+                        <a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">Gestión Dirección Acádemica - Justificantes - Recursamiento - DirecciónAcademica</a>
                         <!-- <a href="gestionRecursamiento_Dir.html">Recursamiento_DirecciónAcademica</a> -->
                     </div>
                     <hr>
@@ -105,7 +105,7 @@
                     </div>
                     <hr>
                     <div id = "card-DirDDA">
-                        <legend>Dirección de Desarrollo Academico</legend>
+                        <legend>Dirección de Desarrollo Académico</legend>
                         <a href="dirDDA/gestionAsistenciaTutorias.php">Gestión de DDA - Tutorias</a>
                     </div>
                     <hr>

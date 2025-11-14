@@ -272,7 +272,7 @@
             //Content
             
             //Set email format to HTML
-            $mail->Subject = 'Bienvenido a IdentiQR - ¡Tu actualización del QR fur correcta! (Non-reply)';
+            $mail->Subject = 'Bienvenido a IdentiQR - ¡Tu actualización del QR fue correcta! (Non-reply)';
             // Construir mensaje HTML (estilos inline para compatibilidad)
             
             $htmlBody = '
@@ -294,7 +294,7 @@
                     <div class="container">
                         <div class="header">
                             <h1>IdentiQR</h1>
-                            <div>Confirmación de registro</div>
+                            <div>Actualización de información cuatrimestral</div>
                         </div>
                         <div class="content">
                             <p>Hola <strong>'. $alumno->getNombre() .' '. $alumno->getApePat() .' '. $alumno->getApeMat() .'</strong>,</p>

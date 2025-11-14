@@ -109,7 +109,7 @@
                     <!--*: Aquí se debe considerar que para registrar debe ser dominio UPEMOR-->
                     <br><br>
 
-                    <label for="genero">Genero: </label>
+                    <label for="genero">Género: </label>
                         <select id="genero" name="genero" required>
                             <option disabled selected>Selecciona una opción</option>
                             <option value="Masculino">Masculino</option>
@@ -117,7 +117,7 @@
                             <option value="Otro">Otro</option>
                         </select>
                     <br><br>
-                    <label for = "Email">Correo electronico</label>
+                    <label for = "Email">Correo electrónico</label>
                         <input type="email" id="email" name="email" placeholder = "example@upemor.edu.mx" required>
                     <br><br>
                     <label for="password">Contraseña</label>
@@ -142,9 +142,9 @@
                     <select id="depto" name="idDepto" required disabled>
                         <option value="" disabled selected>Selecciona una opción</option>
                         <option value="1">Ninguna especifica</option>
-                        <option value="2">Direccion Academica</option>
+                        <option value="2">Direccion Académica</option>
                         <option value="3">Servicios Escolares</option>
-                        <option value="4">Dirección Desarrollo Academico(DDA)</option>
+                        <option value="4">Dirección Desarrollo Académico(DDA)</option>
                         <option value="5">Dirección Asuntos Estudiantiles(DAE)</option>
                         <option value="6">Consultorio de atención de primer contacto</option>
                         <option value="7">Vinculación</option>

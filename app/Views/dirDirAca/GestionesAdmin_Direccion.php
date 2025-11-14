@@ -125,9 +125,9 @@
             <hr>
 
             <section>
-                <h2>Gestión de justificantes</h2>
-                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.php#generarJustificante">Generar justificante</a>
-                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.php#revisarJustificante">Revisar justificante</a>
+                <h2>Gestión de trámites</h2>
+                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.php#generarJustificante">Generar trámite</a>
+                <a href = "/IdentiQR/app/Views/dirDirAca/gestionJustificantes_Dir.php#revisarJustificante">Revisar trámite</a>
             </section>
         </div>
 

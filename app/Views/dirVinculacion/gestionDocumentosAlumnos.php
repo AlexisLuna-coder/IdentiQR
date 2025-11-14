@@ -56,7 +56,7 @@
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
             <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro; ?>&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar Tramites o servicios - Vinculación</legend>
+                    <legend>Generar Trámites o servicios - Vinculación</legend>
                     <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
@@ -65,14 +65,14 @@
 
                     <!--APARTIR DE AQUÍ SE INCLUYE TODO EL TRAMITE QUE SE PUEDE HACER EN VINCULACIÓN-->
                     <br><br>
-                    <label for="idTramite">Tramite a realizar: </label>
+                    <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
                             <option no value=""></option>
                             <option value="0005">Estancia I</option>
                             <option value="0006">Estancia II</option>
-                            <option value="0007">Estadia</option>
-                            <option value="0008">Practicas profesionales</option>
-                            <option value="0009">Servicio sócial</option>
+                            <option value="0007">Estadía</option>
+                            <option value="0008">Prácticas profesionales</option>
+                            <option value="0009">Servicio social</option>
                         </select>
                     <br>
 

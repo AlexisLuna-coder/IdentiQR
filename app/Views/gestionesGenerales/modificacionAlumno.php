@@ -57,7 +57,7 @@
                     <p>Por favor, modifica los datos del alumno.</p>
                     <hr>
                     <div class="form-group row">
-                        <label for="Matricula">Matricula</label>
+                        <label for="Matricula">Matrícula</label>
                         <div class="input-group-prepend">
                             <div class="input-group-text">
                                 <i class="fa fa-address-card"></i>
@@ -80,7 +80,7 @@
                         <input type="text" id="ApMat" name="ApMat" value="<?php echo $row['ApeMat']; ?>" required>
                     </div>
                     <div class="form-group row">
-                        <label for="FechaNac">Fecha_Nacimiento</label>
+                        <label for="FechaNac">Fecha de nacimiento</label>
                         <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" value="<?php echo $row['FechaNac']; ?>" required>
                     </div>
                     <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matricula-->
@@ -120,7 +120,7 @@
                         <input type="text" id="estado" name="estado" value="<?php echo $row['Estado']; ?>" required>
                     </div>
                     <div class="form-group row">
-                        <label for="genero">Genero</label>
+                        <label for="genero">Género</label>
                         <select type="select" id="genero" name="genero" value="<?php echo $row['Genero']; ?>" required>
                             <option value="Masculino" <?php if($row['Genero'] == 'Masculino') echo 'selected'; ?>>Masculino</option>
                             <option value="Femenino" <?php if($row['Genero'] == 'Femenino') echo 'selected'; ?>>Femenino</option>

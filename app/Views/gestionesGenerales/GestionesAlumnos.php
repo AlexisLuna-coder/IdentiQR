@@ -46,7 +46,7 @@
 
         <hr>
         <p class = "Textos_GeneralIndex1">
-            Genera tu código QR único para la identificación y mejora de la recopilación de tus datos, al realizar los tramites.
+            Genera tu código QR único para la identificación y mejora de la recopilación de tus datos, al realizar los trámites.
             <br>
             <i>Escanea cualquier código QR</i> para acceder a facilmente a los datos y mucho más con un solo toque.
         </p>
@@ -63,7 +63,7 @@
                     <p>Por favor, rellena este formulario para registrar un alumno.</p>
                     <hr>
                     <div class="form-group row">
-                        <label for="Matricula">Matricula</label>
+                        <label for="Matricula">Matrícula</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -88,7 +88,7 @@
                         <input type="text" id="ApMat" name="ApMat" required>
                     </div>
                     <div class="form-group row">
-                        <label for="FechaNac">Fecha_Nacimiento</label>
+                        <label for="FechaNac">Fecha de nacimiento</label>
                         <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" required>
                     </div>
                     <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matricula-->
@@ -128,7 +128,7 @@
                         <input type="text" id="estado" name="estado" required>
                     </div>
                     <div class="form-group row">
-                        <label for="genero">Genero</label>
+                        <label for="genero">Género</label>
                         <select type="select" id="genero" name="genero" required>
                             <option value="Masculino">Masculino</option>
                             <option value="Femenino">Femenino</option>
@@ -223,7 +223,7 @@
             <form action="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=consultarAlumnos" id="formConsultaUsuario" method="POST">
                 <fieldset>
                     <legend>Consulta todos los alumnos</legend>
-                    <label for="idUsuario">Matricula a buscar:</label>
+                    <label for="idUsuario">Matrícula a buscar:</label>
                     <input type="hidden" name="consultarTodo" value="1">
                         <button type="submit" class="btn btn-primary" name = "consultarTodo">Consultar Todos los Alumnos</button>
                     <!-- Campo hidden para saber qué botón fue presionado -->
@@ -302,7 +302,7 @@
                     <hr>
                     <!-- !: Aquí se deberá escanear el QR-->
                     <!--*: Implementar modulo para escanear el QR aquí y verificar-->
-                    <label for="Matricula">Matricula: </label>
+                    <label for="Matricula">Matrícula: </label>
                         <input type="text" id="idAlumno_BajaUSUARIO" name="idAlumno_BajaUSUARIO" placeholder="MATO250###" required>
                     <input type="hidden" name="accionEliminar" value="eliminarAlumno">
                         <button type="submit" name="BajaAlumno_EliminarUsuario" id="BajaAlumno_EliminarUsuario" 

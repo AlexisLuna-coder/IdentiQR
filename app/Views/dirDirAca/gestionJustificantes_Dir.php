@@ -44,11 +44,11 @@
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
         
         <div id = "generarJustificante">
-            <h2>Gestión de justificantes</h2>
+            <h2>Gestión de trámites</h2>
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
             <form id="formGenerarJustificante" action="/IdentiQR/redireccionAcciones.php?controller=dirDirAca&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar justificante</legend>
+                    <legend>Generar trámite</legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
                     <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
@@ -58,7 +58,7 @@
 
                     <!--APARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
                     <br><br>
-                    <label for="idTramite">Tramite a realizar: </label>
+                    <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
                             <option no value=""></option>
                             <option value="0011">Justificante</option>
@@ -196,7 +196,7 @@
             <form action="/IdentiQR/redireccionAcciones.php?controller=dirDirAca&action=updateManual" method="POST">
                 <fieldset>
                     <table></table>
-                    <legend>Actualizar justificante</legend>
+                    <legend>Actualizar trámite</legend>
                     <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
                     <label for="folioConsulta">Ingrese Folio:</label>
                     <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
@@ -209,7 +209,7 @@
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)"> --> 
             <form action="/IdentiQR/redireccionAcciones.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
                 <fieldset>
-                    <legend>Eliminar justificante por Folio de Seguimiento</legend>
+                    <legend>Eliminar trámite por Folio de Seguimiento</legend>
                     <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
                     <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
                     <input type="hidden" name="idDepto" value="2">
