@@ -76,7 +76,7 @@
 
         public function loginUsuarioSP(string $usr, string $pw): Array /*String*/|bool 
         {
-            //Codigo para hacer el login
+            //Código para hacer el login
             $sql = "call Login(?, ?)";
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
@@ -114,7 +114,7 @@
             $sql_statement = "UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, genero = ?, email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ?";
             //Preparar el statement
             $stmt = $this ->conn->prepare($sql_statement);
-            //Pasamos los parametros
+            //Pasamos los parámetros
             if (!$stmt) {
                 die("Error al preparar actualización: " . $this->conn->error);
             }
@@ -158,7 +158,7 @@
             $sql_statement = "SELECT * FROM usuario where (usr = ? or email = ? or id_usuario = ?)";
             //Preparar el statement
             $stmt = $this -> conn ->prepare($sql_statement);
-            //Pasamos el parametro
+            //Pasamos el parámetro
             $stmt -> bind_param("ssi", $credencial, $credencial, $credencial);
             $stmt -> execute();
             return $result = $stmt -> get_result();
@@ -171,7 +171,7 @@
             $sql_statement = "SELECT * FROM usuario where (id_usuario = ?) or (email = ?) or (usr = ?)";
             //Preparar el statement
             $stmt = $this -> conn ->prepare($sql_statement);
-            //Pasamos el parametro
+            //Pasamos el parámetro
             $stmt -> bind_param("iss", $credencial, $credencial, $credencial);
             $stmt -> execute();
             $result = $stmt -> get_result();
@@ -184,7 +184,7 @@
         }
         /*Función para la eliminación de un usuario (Se puede eliminar por ID, por Correo o Usuario)*/
         public function eliminarUsuario($credencial){
-            //Codigo para hacer el login
+            //Código para hacer el login
             $sql_statement = "call darBajaUsuario(?, @eliminado)";
             $stmt = $this->conn->prepare($sql_statement);
             if (!$stmt) {

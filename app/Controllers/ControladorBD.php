@@ -30,12 +30,12 @@
         /*FUNCIÓN PARA LA GENERACIÓN DEL RESTORE DE LA BASE DE DATOS */
         public function restoreDBs(){
 
-            /*NOTA. CONSIDERAR QUE EL Archivo cargado se solicitara */
+            /*NOTA. CONSIDERAR QUE EL Archivo cargado se solicitará */
             // Config
             $tamañoMaximoArch = 50 * 1024 * 1024; // 50 MB
             $uploadDir = realpath(__DIR__ . '/../../config/Uploads');
 
-            //Si el fichero/directorio o carpeta aún no se crea. Se creara uno nuevo
+            //Si el fichero/directorio o carpeta aún no se crea. Se creará uno nuevo
             if (!is_dir($uploadDir)) 
                 mkdir($uploadDir, 0755, true);
 
@@ -49,8 +49,8 @@
             $file = $_FILES['backupFile'];
             $filename = basename($file['name']);
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION)); 
-            /*NOTA. pathinfo($filename, PATHINFO_EXTENSION): Esta función extrae la extensión del nombre de archivo ($filename).
-                Ejemplo: Si $filename es "Backup_IdentiQR_2025-11-12_18-31-54.sql", esta parte devuelve "sql". 
+            /*NOTA. pathinfo($filename, PATHINFO_EXTENSION): Está función extrae la extensión del nombre de archivo ($filename).
+                Ejemplo: Si $filename es "Backup_IdentiQR_2025-11-12_18-31-54.sql", está parte devuelve "sql". 
             */
             
             //Valida que la extensión dea .sql
@@ -72,7 +72,7 @@
             //$fechaHora = date('Y-m-d_H-i-s'); //Año-Mes-Dia_Hora-Minutos-Segundos
             //$carpetaSistemaUpload = $uploadDir . '/' . $filename'_'.$fechaHora .'_restore_' . '.sql';
             if (!move_uploaded_file($file['tmp_name'], $carpetaSistemaUpload)) {
-                //NOTA. ABAJO ESTA LA LIGA DE LO QUE FUNCIONA O COMO FUNCIONA
+                //NOTA. ABAJO ESTÁ LA LIGA DE LO QUE FUNCIONA O COMO FUNCIONA
                 //The move_uploaded_file() function in PHP is used to move an uploaded file from its temporary location on the server to a new, specified destination. This function is crucial for securely handling file uploads in web applications.
                 
                 //NOTA. Considerar redirigir con un mensaje de error usando SweetAlert

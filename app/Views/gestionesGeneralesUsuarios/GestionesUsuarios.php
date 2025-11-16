@@ -63,7 +63,7 @@
 
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrara el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -83,7 +83,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendrá-->
         
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
@@ -127,11 +127,11 @@
                     <select id="rol" name="rol" required>
                         <option disabled selected>Selecciona una opción</option>
                         <option value="Administrador">Administrador</option>
-                        <option value="Administrativo_Vinculacion">Vinculacion</option>
+                        <option value="Administrativo_Vinculacion">Vinculación</option>
                         <option value="Administrativo_ServicioEsco">Servicios Escolares</option>
-                        <option value="Administrativo_DesaAca">Desarrollo Academico</option>
+                        <option value="Administrativo_DesaAca">Desarrollo Académico</option>
                         <option value="Administrativo_DAE">Asuntos Estudiantiles</option>
-                        <option value="Administrativo_Direccion">Dirección Academica</option>
+                        <option value="Administrativo_Direccion">Dirección Académica</option>
                         <option value="Administrativo_Medico">Consultorio Médico</option>
                     </select>
                     <br><br>

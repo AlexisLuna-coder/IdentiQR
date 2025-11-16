@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
-        <title>DireccionACADEMICA_IdentiQR</title>
+        <title>DireccionDesarrolloAcademico_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
 
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
@@ -38,11 +38,11 @@
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
         <div class = "contenedorCentral">
             <section>
-                <h2>Gestión de Tutorias Alumnos - DDA</h2>
-                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#generarTramite">Registrar Nuevo Documento DDA - Tutorias</a>
-                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#modificarTramite">Modificar un Documento DDA - Tutorias</a>
-                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#eliminarTramite">Eliminar un Documento DDA - Tutorias</a>
-                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#revisarTramite">Buscar un Documento DDA - Tutorias</a>
+                <h2>Gestión de Tutorías Alumnos - DDA</h2>
+                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#generarTramite">Registrar Nuevo Documento DDA - Tutorías</a>
+                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#modificarTramite">Modificar un Documento DDA - Tutorías</a>
+                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#eliminarTramite">Eliminar un Documento DDA - Tutorías</a>
+                <a href = "/IdentiQR/app/Views/dirDDA/gestionAsistenciaTutorias.php#revisarTramite">Buscar un Documento DDA - Tutorías</a>
             </section>
             <hr>
 

@@ -13,21 +13,21 @@
             $this->alumnoModel = new AlumnoModel($conn);
         }
 
-        /*Funciones para la generación de los tramites. */
-        //1. Función para ingresar dentro de TRAMITES
+        /*Funciones para la generación de los trÁmites. */
+        //1. Función para ingresar dentro de TRáMITES
         public function registrarTramite(){
             //Obtenemos para ver las vistas
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
             //Validar que el botón fue enviado y tiene datos - DirAcademica
             if(isset($_POST['registrarTramite_dirDirACA'])){
-                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará
 
                 $idTramite = (int)$_POST['idTramite'];
                 
                 $fechaJustificante = $_POST['fechaJustificante'];
                 $requisitos = $_POST['Requisitos'];
 
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -96,14 +96,14 @@
                 }
             }
             
-            //Validar que el boton fue enviado y tiene datos - dirDAE
+            //Validar que el botón fue enviado y tiene datos - dirDAE
             if(isset($_POST['registrarTramite_dirDAE'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
                 $idTramite = (int)$_POST['idTramite'];
                 
                 $seleccionExtra = $_POST['seleccionExtra'];
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -169,7 +169,7 @@
                 }
             }
 
-            //Valir que el boton fue enviado y tiene datos - dirDDA
+            //Valir que el botón fue enviado y tiene datos - dirDDA
             if(isset($_POST['registrarTramite_dirDDA'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
@@ -179,7 +179,7 @@
                 $cantTutoriasInd = isset($_POST['cantTutoriasInd']) ? (int)$_POST['cantTutoriasInd'] : 0;
                 $tutor = trim($_POST['tutor']);
                 
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -246,7 +246,7 @@
                 }
             }
 
-            //Valir que el boton fue enviado y tiene datos - dirMed
+            //Valir que el botón fue enviado y tiene datos - dirMed
             if(isset($_POST['registrarTramite_dirMedica'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
                 $idTramite = (int)$_POST['idTramite'];
@@ -255,7 +255,7 @@
                 $Peso = (double)$_POST['peso'];
                 $fechaCita = $_POST['fechaCita'];
                 $descripcionAdicional =  $_POST['descripcion'];
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -298,7 +298,7 @@
                     }
                     // Generamos la descripción
                     $descripcionTotal = sprintf(
-                        "El Alumno [%s] con matrícula [%s] del [%s] Cuatri de la carrera [%s] <%s> [%s - el día <%s>]. Datos medicos [Sangre: %s - Alergias: %s - Altura: %.2f - Peso: %.3f - Temperatura: %.2f°C]. Notas Adicionales: [%s]",
+                        "El Alumno [%s] con matrícula [%s] del [%s] Cuatri de la carrera [%s] <%s> [%s - el día <%s>]. Datos médicos [Sangre: %s - Alergias: %s - Altura: %.2f - Peso: %.3f - Temperatura: %.2f°C]. Notas Adicionales: [%s]",
                         $nombreCompleto,
                         $matricula,
                         $Cuatri_AUX,
@@ -325,7 +325,7 @@
                 }
             }
 
-            //Valir que el boton fue enviado y tiene datos - dirServEsco
+            //Valir que el botón fue enviado y tiene datos - dirServEsco
             if(isset($_POST['registrarTramite_dirServEsco'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
                 $idTramite = (int)$_POST['idTramite'];
@@ -335,7 +335,7 @@
                 $fechaSolicitud = $_POST['fechaSolicitud'];
                 $motivoConstancia = $_POST['motivoConstancia'];
 
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -407,11 +407,11 @@
                 }
             }
 
-            //Valir que el boton fue enviado y tiene datos - dirVinc
+            //Valir que el botón fue enviado y tiene datos - dirVinc
             if(isset($_POST['registrarTramite_dirVinc'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
-                $idTramite = (int)$_POST['idTramite']; //Tipo de Tramite 
+                $idTramite = (int)$_POST['idTramite']; //Tipo de Trámite 
                 $descripcionExtra = $_POST['descripcionExtra'];
                 $entregaDocumentos = $_POST['entregaDocumentos'];
                 $fechaSolicitud = $_POST['fechaSolicitud'];
@@ -427,7 +427,7 @@
 
                 
 
-                /*AQUÍ SE RECUPERARAN LOS DATOS DEL ALUMNO. */
+                /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
 
                 /*Hacemos la validación para recuperar los datos*/
@@ -513,7 +513,7 @@
                 //Incluimos la vista
                 switch($idDepto){
                     case 2:
-                        //Dirección academica - justificantes
+                        //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
                         exit();
                         break;
@@ -533,7 +533,7 @@
                         exit();
                         break;
                     case 6:
-                        //Medico
+                        //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                         exit();
                         break;
@@ -548,9 +548,9 @@
         }
 
         
-        //2.0. Funcion para consultar TODOS LOS TRAMITES
+        //2.0. Función para consultar TODOS LOS TRÁMITES
 
-        //2.1. Funcion para consultar TODOS LOS TRAMITES por DEPARTAMENTO
+        //2.1. Función para consultar TODOS LOS TRÁMITES por DEPARTAMENTO
         public function consultarTramitesPorDEPTO(){
             $direccion = null; // default: null
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 2);
@@ -560,10 +560,10 @@
                 $idDepto = isset($_POST['idDepto']) ? (int)$_POST['idDepto'] : 2;
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
-                //Evaluamos que tipo de direccion es para Incluirlo
+                //Evaluamos que tipo de dirección es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        //Dirección academica - justificantes
+                        //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                         exit();
                         break;
@@ -583,7 +583,7 @@
                         exit();
                         break;
                     case 6:
-                        //Medico
+                        //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                         exit();
                         break;
@@ -598,7 +598,7 @@
                 }
             }
         }
-        //2.2 Funcion para consultar TODOS los TRAMITES ESPECIFICOS DE ALGÚN TIPO.
+        //2.2 Función para consultar TODOS los TRÁMITES ESPECIFICOS DE ALGÚN TIPO.
         public function consultarPorTipoTramite(){
             $direccion = null; // default: null
             $idTramite = null;
@@ -614,7 +614,7 @@
 
             switch($idDepto){
                 case 2:
-                    //Dirección academica - justificantes
+                    //Dirección académica - justificantes
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     exit();
                     break;
@@ -634,7 +634,7 @@
                     exit();
                     break;
                 case 6:
-                    //Medico
+                    //Médico
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                     exit();
                     break;
@@ -649,7 +649,7 @@
             }
         }
         
-        //2.3 Función para consultar TODOS los TRAMITES realizados por algún alumno (por Matrícula)
+        //2.3 Función para consultar TODOS los TRÁMITES realizados por algún alumno (por Matrícula)
         public function consultarPorMatricula(){
             $direccion = null; // default: null
             $matricula = null;
@@ -663,10 +663,10 @@
                 $direccion = $this->directionModel->consultarTramitesPorMatricula($matricula);
             }
 
-            //Evaluamos que tipo de direccion es para Incluirlo
+            //Evaluamos que tipo de dirección es para Incluirlo
             switch($idDepto){
                 case 2:
-                    //Dirección academica - justificantes
+                    //Dirección académica - justificantes
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     exit();
                     break;
@@ -686,7 +686,7 @@
                     exit();
                     break;
                 case 6:
-                    //Medico
+                    //Médico
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                     exit();
                     break;
@@ -701,7 +701,7 @@
             }
         }
         
-        //2.4 Función para consultar TRAMITES por Folio
+        //2.4 Función para consultar TRÁMITES por Folio
         public function consultarPorFolio(){
             $direccion = null; // default: null
             $folio = null;
@@ -714,10 +714,10 @@
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarTramitePorFolio($folio);
             }
-            //Evaluamos que tipo de direccion es para Incluirlo
+            //Evaluamos que tipo de dirección es para Incluirlo
             switch($idDepto){
                 case 2:
-                    //Dirección academica - justificantes
+                    //Dirección académica - justificantes
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     exit();
                     break;
@@ -737,7 +737,7 @@
                     exit();
                     break;
                 case 6:
-                    //Medico
+                    //Médico
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
                     exit();
                     break;
@@ -752,13 +752,13 @@
             }
         }
 
-        /*Funcion para realizar la actualización de datos dentro del Tramite*/
+        /*Función para realizar la actualización de datos dentro del Trámite*/
         public function actualizarTramite(){
             $row = null;
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
             if(isset($_GET['Folio'])){
                 $FolioRegistro = $_GET['Folio'];
-                //Llamar al metodo del modelo para hacer la consulta
+                //Llamar al método del modelo para hacer la consulta
                 $result = $this->directionModel->consultarTramitePorFolio($FolioRegistro);
                 
                 // Obtener el primer registro del resultado
@@ -769,7 +769,7 @@
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        //Dirección academica - justificantes
+                        //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
                         //exit();
                         break;
@@ -789,7 +789,7 @@
                         //exit();
                         break;
                     case 6:
-                        //Medico
+                        //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
                         //exit();
                         break;
@@ -892,7 +892,7 @@
             if(isset($_POST['Actualizar_Tramite'])){
                 $FolioRegistro = trim($_POST['FolioAct']);
                 $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
-                //Llamar al metodo del modelo para hacer la consulta
+                //Llamar al método del modelo para hacer la consulta
                 $result = $this->directionModel->consultarTramitePorFolio($FolioRegistro);
                 
                 // Obtener el primer registro del resultado
@@ -902,7 +902,7 @@
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        //Dirección academica - justificantes
+                        //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
                         //exit();
                         break;
@@ -922,7 +922,7 @@
                         //exit();
                         break;
                     case 6:
-                        //Medico
+                        //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
                         //exit();
                         break;
@@ -1031,10 +1031,10 @@
                 // Incluir la vista primero
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
                 
-                //Evaluamos que tipo de direccion es para Incluirlo
+                //Evaluamos que tipo de dirección es para Incluirlo
                 switch($idDepto){
                     case 2:
-                        //Dirección academica - justificantes
+                        //Dirección académica - justificantes
                         $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
                         //exit();
@@ -1058,7 +1058,7 @@
                         //exit();
                         break;
                     case 6:
-                        //Medico
+                        //Médico
                         $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                         //exit();
@@ -1113,10 +1113,10 @@
             
             // Incluir la vista con el resultado
             
-            //Evaluamos que tipo de direccion es para Incluirlo
+            //Evaluamos que tipo de dirección es para Incluirlo
             switch($idDepto){
                 case 2:
-                    //Dirección academica - justificantes
+                    //Dirección académica - justificantes
                     $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
                     //exit();
@@ -1140,7 +1140,7 @@
                     //exit();
                     break;
                 case 6:
-                    //Medico
+                    //Médico
                     $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
                     //exit();

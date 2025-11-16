@@ -43,7 +43,7 @@
                     if($usrN != null) {
                         echo "Se registro adecuadamente el usuario";
                         
-                        // Aquí podríamos obtener el ID generado y la fecha de registro si es necesario
+                        // Aquí podríamos obtener el ID generado y la fecha de registrÓ si es necesario
                         // Suponiendo que el método registrarUsuarioSP ahora devuelve estos valores
                         //echo "Usuario: " . $usrN->getUsr() . "<br>";
                         //echo "Contraseña: " . $usrN->getPassw() . "<br>";
@@ -55,11 +55,11 @@
                         /* Creamos las variables para mandar el correo y mostrar  */
                         /* 
                             $to = $usrN->getEmail();  // Usamos el correo del objeto Usuario
-                            $subject = "Bienvenido a IdentiQR - ¡Tu registro está completo! (Non-reply)";
+                            $subject = "Bienvenido a IdentiQR - ¡Tu registrÓ está completo! (Non-reply)";
 
                             $message = "Hola " . $usrN->getNombre() . " " . $usrN->getApellidoPaterno().",\n\n";
                             $message .= "¡Gracias por registrarte en IdentiQR! Nos alegra darte la bienvenida.\n"; 
-                            $message .= "Este correo es para confirmar que tu registro se ha completado con éxito.\n\n";
+                            $message .= "Este correo es para confirmar que tu registrÓ se ha completado con éxito.\n\n";
                             $message .= "\tTus datos de acceso son:  || Usuario: " .$usrN->getUsr()."\n";
                             $message .= "\n La próxima vez que accedas, este será el usuario que deberás usar. \n";
                             $message .= "------------------------------------------------------------------------------\n";
@@ -114,7 +114,7 @@
                 include_once(__DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php');
             }
             
-            //Metodo para iniciar sesion
+            //Método para iniciar sesion
             public function loginUsuario(){
                 if (isset($_POST['enviarLogin'])) {
                     $usuario = trim($_POST['usuario']) ?? '';
@@ -145,7 +145,7 @@
                 }
             }
 
-            //Metodo para cerrar sesion
+            //Método para cerrar sesion
             public function logoutUsuario(){
                 session_start();
                 session_unset();
@@ -154,18 +154,18 @@
                 exit();
             }
 
-            //Metodo para modificar datos de un usuario
+            //Método para modificar datos de un usuario
             public function actualizarUsuario(){
                 if(isset($_GET['id']) && is_numeric($_GET['id'])){
                     $id_browser = (int) $_GET['id'];
-                    //Llamar al metood el modelo para acer la consulta
+                    //Llamar al método el modelo para hacer la consulta
                     $row = $this -> modelUser -> consultarUsuarioPorID($id_browser);
                     //echo "<script>alert('Consulta realizada correctamente.');</script>";
 
                     include_once("../Views/gestionesGeneralesUsuarios/modificacionUsuario.php");
                     return;
                 }
-                /*EVALUAMOS SI ESTA VACIO LA ACTUALIZACIÓN*/
+                /*EVALUAMOS SI ESTÁ VACÍO LA ACTUALIZACIÓN*/
                 if(isset($_POST['actualizarDatosUSER'])){
                     /*Creamos un constructor del USUARIO y mandamos la info nuevamente*/
                     $usuario = new Usuario(
@@ -195,7 +195,7 @@
                 return;
             }
 
-            //Metodo para buscar al usuario
+            //Método para buscar al usuario
             public function buscarUsuario(){
                 if(isset($_POST['buscarUsuarioBtn'])){
                     $credencial = trim($_POST['idUsuario_Buscar']);
@@ -224,7 +224,7 @@
 
             
             }
-            //Metodo para hacer la eliminación del usuario
+            //Método para hacer la eliminación del usuario
             public function eliminarUsuario() {
                 $credencial = null;
                 
@@ -263,7 +263,7 @@
         }
         
         //Realizamos las validaciones
-        // Realizamos la instancia del metodo de inserción
+        // Realizamos la instancia del método de inserción
         $db = new Connection_BD();
         $conn = $db->getConnection(); 
 

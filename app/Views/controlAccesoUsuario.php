@@ -34,7 +34,7 @@
     <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!--FALTA IMPLEMENTAR EL CODIGO EN CSS (ARCH. APARTE)-->
+    <!--FALTA IMPLEMENTAR EL CÓDIGO EN CSS (ARCH. APARTE)-->
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -262,7 +262,7 @@
                         </li>
                         <li class="role-item">
                             <i class="bi bi-journals"></i>
-                            <span>Desarrollo Academico</span>
+                            <span>Desarrollo Académico</span>
                         </li>
                         <li class="role-item">
                             <i class="bi bi-people"></i>
@@ -270,7 +270,7 @@
                         </li>
                         <li class="role-item">
                             <i class="bi bi-building"></i>
-                            <span>Dirección Academica</span>
+                            <span>Dirección Académica</span>
                         </li>
                         <li class="role-item">
                             <i class="bi bi-clipboard2-pulse"></i>

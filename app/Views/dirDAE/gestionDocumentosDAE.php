@@ -1,6 +1,6 @@
 <?php
-    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
-    $idDepto = 5; //Esta variable permitira ser modificada para cada departamentp
+    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
+    $idDepto = 5; //Esta variable permitirá ser modificada para cada departamento
     $contro = "dirDAE";
 ?>
 <!DOCTYPE html>
@@ -15,10 +15,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
-        <title>DireccionACADEMICA_IdentiQR</title>
+        <title>DireccionAsuntosEstudiantiles_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -31,7 +31,7 @@
                             <li><a href="#">TEMAS</a></li>
                             <li><a href="#">CONTACTOS</a></li>
                             <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
-                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARA-->
+                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
             
@@ -49,20 +49,20 @@
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
         
         <div id = "generarTramite">
-            <h2>Gestión de Tramites de DAE</h2>
+            <h2>Gestión de Trámites de DAE</h2>
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
             <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=insert" method="POST">
                 <fieldset>
                     <legend>Generar/Inscripción a extracurricular</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <!--!: Aquí se encontrará toda la información relevante para obtener un QR-->
+                    <!--*A partir de acá se solicitará la información de la matrícula del estudiante escaneado-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la cámara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
-                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
-                    <!--APARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
-                    <label for="idTramite">Tramite a realizar: </label>
+                    <!--A PARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
+                    <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
                             <option no value="" disabled="disabled" selected>Seleccione</option>
                             <option value="0001">Inscripción a extracurricular</option>
@@ -85,13 +85,13 @@
                         </select>
                     <br>
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
-                    <input type="submit" value="Registrar extracurricular alumno" name = "registrarTramite_dirDAE" onclick="alert('Datos enviados con exito')">
+                    <input type="submit" value="Registrar extracurricular alumno" name = "registrarTramite_dirDAE" onclick="alert('Datos enviados con éxito')">
                 </fieldset>
             </form>
         </div>
 
         <div id = "revisarTramite">
-                <!--Aquí se incluira la tabla del justificante hecho.-->
+                <!--Aquí se incluirá la tabla del trámite hecho.-->
                 <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
                 <form action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=consult" method="POST">    
                     <!-- Selección de tipo de búsqueda -->
@@ -122,11 +122,11 @@
                     <!-- Campo: Mostrar Todos -->
                     <div id="campoTodosConsulta" style="display:none;">
                         <p>Se mostrarán todos los trámites del departamento.</p>
-                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiará-->
                         <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
                     </div>
 
-                    <!-- Campo: Matricula (con escaneo QR) -->
+                    <!-- Campo: Matrícula (con escaneo QR) -->
                     <div id="campoMatriculaConsulta" style="display:none;">
                         <label for="matriculaConsulta">Escanear QR para consultar por Matrícula:</label>
                         <button type="button" id="btnEscanearConsulta">Escanear QR</button>
@@ -159,10 +159,10 @@
                         <thead>
                             <th>Folio de Registro</th>
                             <th>Folio de Seguimiento</th>
-                            <th>Tramite</th>
+                            <th>Trámite</th>
                             <th>Fecha y Hora</th>
-                            <th>Matricula</th>
-                            <th>Descripcion</th>
+                            <th>Matrícula</th>
+                            <th>Descripción</th>
                             <th>Estatus</th>
                             <th>Extracurricular</th>
                             <th>ACCIONES</th>
@@ -208,10 +208,10 @@
             <form action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=updateManualDAE" method="POST">
                 <fieldset>
                     <table></table>
-                    <legend>Actualizar justificante</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <legend>Actualizar extracurricular</legend>
+                    <!--!: Aquí se encontrará toda la información relevante para obtener un QR-->
                     <label for="folioConsulta">Ingrese Folio:</label>
-                    <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
+                    <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la cámara para escanear-->
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
                     <input type="submit" value="Actualizar registro" name = "Actualizar_Tramite" onclick="alert('Redirección a página de actualización')">
                 </fieldset>
@@ -222,7 +222,7 @@
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)"> --> 
             <form action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=deleteFS" method="POST" onsubmit="return confirmarEliminacionFS(event)">
                 <fieldset>
-                    <legend>Eliminar justificante por Folio de Seguimiento</legend>
+                    <legend>Dar de baja al alumno del extracurricular por Folio de Seguimiento</legend>
                     <label for="FolioSeguimiento">Folio de Seguimiento a eliminar: </label>
                     <input type="text" name="FolioSeguimiento" id="FolioSeguimiento" placeholder="Ej. MATRICULA-DATOS-4LETRAS etc. (Consultar en su vista)" required>
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
@@ -243,9 +243,9 @@
                     </p>
                 </div>
                 <div class="footer__links">
-                    <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
+                    <!--*: Todo esto tiene que ver con los LINKS que se involucrarán al diseñar el sitio web-->
                     <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                    <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
             </div>
 

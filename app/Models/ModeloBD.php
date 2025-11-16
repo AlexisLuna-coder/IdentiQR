@@ -7,8 +7,8 @@
         }
 
 
-        /*PARA LLAMAR A LOS METODOS DEL BACKUP Y ASÍ */
-        /* METODO ORIGINAL DE backup.php
+        /*PARA LLAMAR A LOS MÉTODOS DEL BACKUP Y ASÍ */
+        /* MÉTODO ORIGINAL DE backup.php
         public function backupDBs(){
             $conn = $this->conn;
             // Opciones para la configuración y generación de la BD respaldada
@@ -148,7 +148,7 @@
                 //}
                 
             } else {
-                echo "<b>ATENCION: Probablemente ha ocurrido un error - headers ya fueron enviados</b><br />\n<pre>\n$dump\n</pre>";
+                echo "<b>ATENCIÓN: Probablemente ha ocurrido un error - headers ya fueron enviados</b><br />\n<pre>\n$dump\n</pre>";
             }
 
             $conn->close();
@@ -266,7 +266,7 @@
 
             $dump .= "\nSET FOREIGN_KEY_CHECKS=1;\n";
 
-            // --- LÓGICA DE GUARDADO (Modelo: SÓLO escribe) ---
+            // --- LÓGICA DE GUARDADO (Modelo: solo escribe) ---
             $filePath = __DIR__ . '/../../config/Backups/' . $fileName;
             
             $success = file_put_contents($filePath, $dump);
@@ -277,7 +277,7 @@
             return $success ? $filePath : false;
         }
 
-        /*PARA LLAMAR A LOS METODOS DEL RESTORE */
+        /*PARA LLAMAR A LOS MÉTODOS DEL RESTORE */
         public function restoreDBs($ruta){
             $conn = $this->conn;
             

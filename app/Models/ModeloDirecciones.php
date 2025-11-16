@@ -2,12 +2,12 @@
     class DireccionesModel{
         private $conn;
 
-        /*Metodo constructor del modelo de las Direcciones */
+        /*Método constructor del modelo de las Direcciones */
         public function __construct($conn){
             $this -> conn = $conn;
         }
 
-        /*Funciones para generar los tramites.*/
+        /*Funciones para generar los trámites.*/
         public function registrarTramite($Matricula,$idTramite,$descripcion){
             //$sql_statement = "INSERT INTO registroservicio (Matricula,idTramite,descripcion,estatusT) VALUES (?,?,?,?)";
             $sql_statement = "INSERT INTO registroservicio (Matricula,idTramite,descripcion) VALUES (?,?,?)";
@@ -17,28 +17,28 @@
                 die("Error al preparar la llamada: " . $this->conn->error);
             }
 
-            /*PASAMOS LOS PARAMETROS - CON ATRIBUTOS DE LA CLASE TramiteServicio(falta crear)*/
+            /*PASAMOS LOS PARÁMETROS - CON ATRIBUTOS DE LA CLASE TramiteServicio(falta crear)*/
             /*
             $Matricula = $unTramite->getMatricula();
             $idTramite = (int)$unTramite->getIdTramite();
             $descripcion = $unTramite->getDescripcion();
             $estatusT = $unTramite->getEstatusT();
             */
-            /*PASAMOS LOS PARAMETROS - CON VARIABLES*/
+            /*PASAMOS LOS PARÁMETROS - CON VARIABLES*/
             //$stmt->bind_param("siss",$Matricula,$idTramite,$descripcion,$estatusT);
             $stmt->bind_param("sis",$Matricula,$idTramite,$descripcion);
             return ($stmt->execute()); //Retornamos la ejecución.
         }
 
-        /*Funciones para realizar la consulta de un Tramite o Todos*/
-        //Realiza una consulta GENERAL A TODA LA TABLA
+        /*Funciones para realizar la consulta de un trámite o todos*/
+        //Realiza una consulta general a toda la tabla. Verifica que tramítes tiene
         public function consultarTramites(){
             $sql_statement = "SELECT * FROM registroservicio";
             $result = $this -> connection -> query($sql_statement);
             return $result; //Regresa el resultado de la consulta
         }
         
-        //Realiza una consulta GENERAL a toda la tabla, DONDE se encuentren con un ALUMNO ESPECIFICO
+        //Realiza una consulta general a toda la tabla, donde se encuentren con un ALUMNO ESPECÍFICO
         public function consultarTramitesPorMatricula($Matricula){
             $sql_statement = "SELECT * FROM registroservicio
                             WHERE Matricula = ? ORDER BY registroservicio.FechaHora DESC;";
@@ -57,7 +57,7 @@
             $result = $statement->get_result();
             return $result; //Regresa el resultado de la consulta
         }
-        //Realiza una consulta GENERAL a toda la tabla, DONDE se encuentren con un DEPARTAMENTO ESPECIFICO
+        //Realiza una consulta general a toda la tabla, donde se encuentren con un DEPARTAMENTO ESPECÍFICO
         public function consultarTramitesPorDepto($idDepto){
             // SQL: unimos registroservicio con serviciotramite para filtrar por idDepto
             $sql_statement = "SELECT registroservicio.* FROM registroservicio INNER JOIN serviciotramite
@@ -105,7 +105,7 @@
             return $result; //Regresa el resultado de la consulta
         }
 
-        //Realiza una consulta especifica a un TRAMITE dentro de la tabla por Folio
+        //Realiza una consulta específica a un trámite dentro de la tabla por Folio
         public function consultarTramitePorFolio($FolioRegistro){
             $sql_statement = "SELECT * FROM registroservicio 
                             WHERE FolioRegistro = ? OR FolioSeguimiento = ? 
@@ -125,9 +125,7 @@
             $result = $statement->get_result();
             return $result; //Regresa el resultado de la consulta
         }
-        //Realiza una consulta GENERAL a toda la tabla, DONDE se haya realizado POR UN MISMO ALUMNO.
-
-        /*Funciones para realizar las eliminaciones/bajas del tramite*/
+        /*Funciones para realizar las eliminaciones/bajas del trámite*/
         public function cancelarTramiteFR($FolioRegistro){
             $sql_statement = "CALL cancelarTramite(?,@eliminado)";
             $stmt = $this->conn->prepare($sql_statement);
@@ -173,7 +171,7 @@
             return 0;
         }
 
-        /*Funciones para hacer el update*/
+        /*Funciones para hacer el la acrualización/update/modificación del trámite*/
         public function actualizarTramite($descripcion, $estatus, $FolioRegistro, $FolioSeguimiento){
             $sql_statement = "UPDATE registroservicio set descripcion = ?, estatusT = ? where (FolioRegistro = ?) or (FolioSeguimiento = ?)";
             //Crear el statement

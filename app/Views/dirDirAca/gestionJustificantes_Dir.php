@@ -14,7 +14,7 @@
         <title>DireccionACADEMICA_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
             
@@ -49,14 +49,14 @@
             <form id="formGenerarJustificante" action="/IdentiQR/redireccionAcciones.php?controller=dirDirAca&action=insert" method="POST">
                 <fieldset>
                     <legend>Generar trámite</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <!--!: Aquí se encontrará toda la información relevante para obtener un QR y generar el justificante-->
+                    <!--*A partir de acá se solicitará la información de la matrícula del estudiante escaneado-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la cámara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
-                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
-                    <!--APARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
+                    <!--A PARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
                     <br><br>
                     <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
@@ -71,7 +71,7 @@
                     <br><br>
 
                     <label for="requisitos">Requisitos: </label>
-                        <textarea rows="2" cols="30" id = "Requisitos" name = "Requisitos" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco. Ejemplo [Motivo de salud, personal, etc.]"></textarea>
+                        <textarea rows="2" cols="30" id = "Requisitos" name = "Requisitos" placeholder="Requisitos o notas aquí, si no aplica dejar en blanco. Ejemplo [Motivo de salud, personal, etc. ], Ejemplo [POO,FPOO,ABD,...]"></textarea>
                     <hr>
 
                     
@@ -81,7 +81,7 @@
         </div>
 
         <div id = "revisarJustificante">
-                <!--Aquí se incluira la tabla del justificante hecho.-->
+                <!--Aquí se incluirá la tabla del justificante hecho.-->
                 <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
                 <form action="/IdentiQR/redireccionAcciones.php?controller=dirDirAca&action=consult" method="POST">    
                     <!-- Selección de tipo de búsqueda -->
@@ -149,10 +149,10 @@
                         <thead>
                             <th>FolioRegistro</th>
                             <th>FolioSeguimiento</th>
-                            <th>Tramite</th>
+                            <th>Trámite</th>
                             <th>Fecha y Hora</th>
-                            <th>Matricula</th>
-                            <th>Descripcion</th>
+                            <th>Matrícula</th>
+                            <th>Descripción</th>
                             <th>Estatus</th>
                             <th>ACCIONES</th>
                         </thead>
@@ -230,9 +230,9 @@
                     </p>
                 </div>
                 <div class="footer__links">
-                    <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
+                    <!--*: Todo esto tiene que ver con los LINKS que se involucrarán al diseñar el sitio web-->
                     <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                    <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
             </div>
 

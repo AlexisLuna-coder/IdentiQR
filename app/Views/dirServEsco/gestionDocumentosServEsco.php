@@ -1,6 +1,6 @@
 <?php
-    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los metodos
-    $idDepto = 3; //Esta variable permitira ser modificada para cada departamentp
+    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
+    $idDepto = 3; //Esta variable permitirá ser modificada para cada departamento
     $contro = "dirServEsco";
 ?>
 <!DOCTYPE html>
@@ -18,10 +18,10 @@
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
-        <title>DireccionACADEMICA_IdentiQR</title>
+        <title>DireccionServiciosEscolares_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -34,7 +34,7 @@
                             <li><a href="#">TEMAS</a></li>
                             <li><a href="#">CONTACTOS</a></li>
                             <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
-                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARA-->
+                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARá-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
             
@@ -56,31 +56,31 @@
             <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=insert" method="POST"> --> 
             <form id="formGenerarTramite" action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro; ?>&action=insert" method="POST">
                 <fieldset>
-                    <legend>Generar Tramites o servicios - Servicios Escolares</legend>
-                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
-                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la camara para escanear-->
+                    <legend>Generar Trámites o servicios - Servicios Escolares</legend>
+                    <!--*A partir de acá se solicitará la información de la matrícula del estudiante escaneado-->
+                    <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la cámara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
-                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
-                    <!--APARTIR DE AQUÍ SE INCLUYE TODO EL TRAMITE QUE SE PUEDE HACER EN SERV_ESCO-->
+                    <!--A PARTIR DE AQUÍ SE INCLUYE TODO EL TRÁMITE QUE SE PUEDE HACER EN SERV_ESCO-->
                     <br><br>
-                    <label for="idTramite">Tramite a realizar: </label>
+                    <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
                             <option no value=""></option>
-                            <option value="0003">Reinscripcion</option>
-                            <option value="0004">Inscripcion</option>
+                            <option value="0003">Reinscripción</option>
+                            <option value="0004">Inscripción</option>
                             <option value="0010">Reposicion Credencial</option>
                             <option value="0015">Constancias e historial</option>
                         </select>
                     <br>
-                    <label for="metodoPago">Metodo de pago: </label>
+                    <label for="metodoPago">Método de pago: </label>
                         <select name="metodoPago" id="metodoPago">
                             <option name="metodoPago" id="metodoPago" disabled="disabled" selected>Seleccione una opción</option>
-                            <option value="TDD">Debito</option>
-                            <option value="TDC">Credito</option>
+                            <option value="TDD">Débito</option>
+                            <option value="TDC">Crédito</option>
                             <option value="Transferencia">Transferencia</option>
-                            <option value="Deposito">Deposito</option>
+                            <option value="Deposito">Depósito</option>
                         </select>
                     <br>
                     <label for="montoPagado">Monto Pagado ($):</label>
@@ -118,13 +118,13 @@
                     
                     <hr>
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
-                    <input type="submit" value="Registrar tramite - Serv. esco" name = "registrarTramite_dirServEsco" onclick="alert('Datos enviados con exito')">
+                    <input type="submit" value="Registrar tramite - Serv. esco" name = "registrarTramite_dirServEsco" onclick="alert('Datos enviados con éxito')">
                 </fieldset>
             </form>
         </div>
 
         <div id = "revisarTramite">
-                <!--Aquí se incluira la tabla del justificante hecho.-->
+                <!--Aquí se incluirá la tabla del trámite hecho.-->
                 <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
                 <form action="/IdentiQR/redireccionAcciones.php?controller=<?php echo $contro; ?>&action=consult" method="POST">    
                     <!-- Selección de tipo de búsqueda -->
@@ -155,11 +155,11 @@
                     <!-- Campo: Mostrar Todos -->
                     <div id="campoTodosConsulta" style="display:none;">
                         <p>Se mostrarán todos los trámites del departamento.</p>
-                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiara-->
+                        <input type="hidden" name="idDepto" value ="<?php echo $idDepto;?>"> <!--NOTA: Considerar que este tipo HIDDEN el valor siempre cambiará-->
                         <input type="submit" value="Mostrar Todos los Trámites" name="consultarTramite_Depto">
                     </div>
 
-                    <!-- Campo: Matricula (con escaneo QR) -->
+                    <!-- Campo: Matrícula (con escaneo QR) -->
                     <div id="campoMatriculaConsulta" style="display:none;">
                         <label for="matriculaConsulta">Escanear QR para consultar por Matrícula:</label>
                         <button type="button" id="btnEscanearConsulta">Escanear QR</button>
@@ -195,16 +195,16 @@
                         <thead>
                             <th>Folio de Registro</th>
                             <th>Folio de Seguimiento</th>
-                            <th>Tramite</th>
+                            <th>Trámite</th>
                             <th>Fecha y Hora</th>
-                            <th>Matricula</th>
-                            <th>Descripcion</th>
+                            <th>Matrícula</th>
+                            <th>Descripción</th>
                             <th>Estatus</th>
-                            <th>METODO PAGO</th>
-                            <th>COSTO</th>
-                            <th>MOTIVO</th>
-                            <th>EXTRAS</th>
-                            <th>ACCIONES</th>
+                            <th>Método pago</th>
+                            <th>Costo</th>
+                            <th>Motivo</th>
+                            <th>Extras</th>
+                            <th>Acciones</th>
                         </thead>
                         <tbody>
                             <?php
@@ -251,7 +251,7 @@
                 <fieldset>
                     <table></table>
                     <legend>Actualizar Tramite de Servicio (Papeleo)</legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
+                    <!--!: Aquí se encontrará toda la información relevante para obtener un QR -->
                     <label for="folioConsulta">Ingrese Folio:</label>
                     <input type="text" name="FolioAct" id="FolioAct" placeholder="Ej. FOL12345 o [0001,0002]"> <!--*: Aquí debería abrir la camara para escanear-->
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
@@ -287,7 +287,7 @@
                 <div class="footer__links">
                     <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
                     <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                    <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
             </div>
 

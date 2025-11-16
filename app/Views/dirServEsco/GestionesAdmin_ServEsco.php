@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
-        <title>DireccionACADEMICA_IdentiQR</title>
+        <title>Gestion_DireccionServiciosEscolares_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
 
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
@@ -39,10 +39,10 @@
         <div class = "contenedorCentral">
             <section>
                 <h2>Gestión de Servicios Escolares</h2>
-                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#generarTramite">Generar Tramite Administrativo - Servicios Escolares</a>
-                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#modificarTramite">Modificar Tramite Administrativo - Servicios Escolares</a>
-                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#eliminarTramite">Eliminar Tramite Administrativo - Servicios Escolares</a>
-                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#revisarTramite">Consultar/Revisar Tramite Administrativo - Servicios Escolares</a>
+                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#generarTramite">Generar Trámite Administrativo - Servicios Escolares</a>
+                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#modificarTramite">Modificar Trámite Administrativo - Servicios Escolares</a>
+                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#eliminarTramite">Eliminar Trámite Administrativo - Servicios Escolares</a>
+                <a href = "/IdentiQR/app/Views/dirServEsco/gestionDocumentosServEsco.php#revisarTramite">Consultar/Revisar Trámite Administrativo - Servicios Escolares</a>
             </section>
             <hr>
 

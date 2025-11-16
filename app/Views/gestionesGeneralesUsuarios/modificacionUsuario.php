@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesUsuarios.css">
-        <title>Actualización de datos... IdentiQR</title>
+        <title>Actualización de datos usuarios... IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -71,7 +71,7 @@
                     <br><br>
                     <!--*: Aquí se debe considerar que para registrar debe ser dominio UPEMOR-->
                     <div class="form-group row">
-                        <label for="Email" class="col-4 col-form-label">Correo electronico</label>
+                        <label for="Email" class="col-4 col-form-label">Correo electrónico</label>
                         <div class="col-8">
                             <div class="input-group">
                                 <div class="input-group-prepend">
@@ -106,27 +106,27 @@
                             <select id="rol" name="rol" selected = "<?php echo $row['rol'];?>" required>
                                 <option disabled>Selecciona una opción</option>
                                 <option value="Administrador">Administrador</option>
-                                <option value="Administrativo_Vinculacion">Vinculacion</option>
+                                <option value="Administrativo_Vinculacion">Vinculación</option>
                                 <option value="Administrativo_ServicioEsco">Servicios Escolares</option>
-                                <option value="Administrativo_DesaAca">Desarrollo Academico</option>
+                                <option value="Administrativo_DesaAca">Desarrollo Académico</option>
                                 <option value="Administrativo_DAE">Asuntos Estudiantiles</option>
-                                <option value="Administrativo_Direccion">Dirección Academica</option>
+                                <option value="Administrativo_Direccion">Dirección Académica</option>
                                 <option value="Administrativo_Medico">Consultorio Médico</option>
                             </select>
                         </div>
                     </div>
                     <br><br>
-                    <!--TODO: Considerar que si selecciono alguna opción que tenga que ver con su DEPARTAMENTO, este se le asignara por predeterminado la opción
+                    <!--TODO: Considerar que si selecciono alguna opción que tenga que ver con su DEPARTAMENTO, este se le asignará por predeterminado la opción
                     del departamento a escoger || NOTA. 2025-09-25-->
                     <div class="form-group row">
                         <label for="Departamento" class="col-4 col-form-label">Departamento:</label> 
                         <div class="col-8">
                             <select id="depto" name="idDepto" selected = "<?php echo $row['idDepto'];?>" required disabled>
                                 <option value="" disabled>Selecciona una opción</option>
-                                <option value="1">Ninguna especifica</option>
-                                <option value="2">Direccion Academica</option>
+                                <option value="1">Ninguna específica</option>
+                                <option value="2">Dirección Académica</option>
                                 <option value="3">Servicios Escolares</option>
-                                <option value="4">Dirección Desarrollo Academico(DDA)</option>
+                                <option value="4">Dirección Desarrollo Académico(DDA)</option>
                                 <option value="5">Dirección Asuntos Estudiantiles(DAE)</option>
                                 <option value="6">Consultorio de atención de primer contacto</option>
                                 <option value="7">Vinculación</option>
@@ -229,7 +229,7 @@
                 <div class="footer__links">
                     <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
                     <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                    <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
             </div>
 

@@ -10,10 +10,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
-        <title>DireccionACADEMICA_IdentiQR</title>
+        <title>Modificación_DirecciónVinculacion_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
         <div id="HeaderLogin">
             <h2><center>IdentiQR</center></h2>
             
@@ -46,11 +46,11 @@
             <h2>Gestión de Asistencia a Tutorías - DDA</h2>
             <form action="/IdentiQR/redireccionAcciones.php?controller=dirVinc&action=updateVinc" method="POST">
                 <fieldset>
-                    <legend>Actualización de Tramite - <?php echo $row['FolioSeguimiento']; ?> </legend>
-                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR y generar el justificante-->
-                    <!--*AApartir de aca se solicitará la información de la matricula del estudiante escaneado-->
+                    <legend>Actualización de Trámite - <?php echo $row['FolioSeguimiento']; ?> </legend>
+                    <!--!: Aquí se encontrara toda la información relevante para obtener un QR-->
+                    <!--*A partir de acá se solicitará la información de la matrícula del estudiante escaneado-->
                     <label for="matriculaEscaneadoBD">Alumno: </label>
-                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled value = "<?php echo $row['Matricula'];?>" > <!--Se encontrará desabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled value = "<?php echo $row['Matricula'];?>" > <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
                     <input type="hidden" name="FolioRegistro" id = "FolioRegistro"       value = "<?php echo $row['FolioRegistro']?>">
@@ -68,9 +68,9 @@
                         <option value="Completado" <?php if($row['estatusT'] == 'Completado') echo 'selected'; ?>>Completado</option>
                         <option value="Cancelado" <?php if($row['estatusT'] == 'Cancelado') echo 'selected'; ?>>Cancelado</option>
                     </select>
-                    <input type="hidden" name="idDepto" id = "idDepto" value = "7"> <!--CONSIDERAR QUE CAMBIARA EL VALUE-->
+                    <input type="hidden" name="idDepto" id = "idDepto" value = "7"> <!--CONSIDERAR QUE CAMBIARá EL VALUE-->
 
-                    <input type="submit" value="Actualizar Tramite (VINCULACIÓN)" name = "actualizarTramite_Tramite" onclick="alert('Datos actualizados con exito')">
+                    <input type="submit" value="Actualizar Tramite (VINCULACIÓN)" name = "actualizarTramite_Tramite" onclick="alert('Datos actualizados con éxito')">
                 </fieldset>
             </form>
         <br>
@@ -85,9 +85,9 @@
                     </p>
                 </div>
                 <div class="footer__links">
-                    <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
+                    <!--*: Todo esto tiene que ver con los LINKS que se involucrarán al diseñar el sitio web-->
                     <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                    <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
             </div>
 

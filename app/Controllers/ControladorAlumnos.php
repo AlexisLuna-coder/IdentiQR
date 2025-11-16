@@ -11,9 +11,9 @@
             $this->modelAlumno = new AlumnoModel($conn);
             //Se crea una instancia del modelo
         }
+        /*Esta función permitirá realizar la inserción/registro dentro de Alumno*/
         public function insertarAlumno(){
-            //Este es el controlador (se debe encontrar en un METODO)
-            /* Este IF verifica que el metodo que fue mandado es un POST */
+            /* Este IF verifica que el método que fue mandado es un POST */
             if(isset($_POST['Enviar_Alumno'])) { //isset() Determina si una variable está definida y no es null
                 // Crear objeto Alumno que almacena los datos del formulario
                 $feIngreso = sprintf('%04d-09-01', $_POST['FeIngreso']); //https://www.php.net/manual/es/function.sprintf.php
@@ -48,20 +48,20 @@
                     if(!$insertInfoMed){
                         echo "<h2 style='color: red;'>Error al registrar la información médica</h2>";
                     }
-                    /*AQUÍ SE DEBE GENERAR EL CODIGO QR */
+                    /*AQUÍ SE DEBE GENERAR EL CÓDIGO QR */
                     $codigosQR = new codigosQR();
                     $rutaQR = $codigosQR->generarQR_Alumno($Alumno);
-                    /*CODIFICACIÓN DEL QR - GENERANDO UNICAMENTE SU HASH */
-                    $hashQR = hash('sha256', $rutaQR->getString()); //Esta solo permite identificar el QR (No de puede decodificar despues)
+                    /*CODIFICACIÓN DEL QR - GENERANDO ÚNICAMENTE SU HASH */
+                    $hashQR = hash('sha256', $rutaQR->getString()); //Esta sólo permite identificar el QR (No de puede decodificar después)
                     $Alumno->setQRHash($hashQR);
 
-                    /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUES */
-                    //$hashQR_B64 = base64_encode($rutaQR->getString()); //Esta si permite guardar todo el QR COMPLETO (Si se puede decodificar despues)
+                    /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUÉS */
+                    //$hashQR_B64 = base64_encode($rutaQR->getString()); //Esta sí permite guardar todo el QR COMPLETO (Si se puede decodificar después)
                     //$Alumno->setQRHash($hashQR_B64);
                     if(!$this->modelAlumno->asignarHashQR($Alumno)){
                         die("Error al asignar el código QR al alumno.");
                     }
-                    /*USANDO EL METODO DEL ARCHIVO enviarCorreo.php 2025-10-15 */
+                    /*USANDO EL MÉTODO DEL ARCHIVO enviarCorreo.php 2025-10-15 */
                     include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
                     enviarCorreoAlumno($Alumno, $rutaQR->getString());
                     echo "<script>registroAlumno();</script>";
@@ -74,7 +74,7 @@
             $viewPath = __DIR__ . '/../Views/gestionesGenerales/GestionesAlumnos.php';
             if (file_exists($viewPath)) {
                 include_once $viewPath;
-            } else {
+                } else {
                 // Manejo de error amigable (en dev puedes usar echo, en prod loguear)
                 error_log("Vista no encontrada: $viewPath");
                 echo "<h2 style='color:red;'>Error: vista no encontrada.</h2>";
@@ -221,9 +221,9 @@
             exit();
         }
 
-        /*METODO/FUNCIÓN PARA QUE SE ACTUALICE EL NUEVO CODIGO QR*/ 
+        /*MÉTODO/FUNCIÓN PARA QUE SE ACTUALICE EL NUEVO CÓDIGO QR*/ 
         public function actualizarQR(){
-            //CONFIRMAR SI EL BOTON SE ENVIO//
+            //CONFIRMAR SI EL BOTÓN SE ENVIO//
             $result = $this->modelAlumno->obtenerTodosAlumnos();
 
             if(!$result){
@@ -278,7 +278,7 @@
 
     }
     
-    // Realizamos la instancia del metodo de inserción
+    // Realizamos la instancia del método de inserción
     // Asegúrate que $conn exista
     $db = new Connection_BD();
     $conn = $db->getConnection();

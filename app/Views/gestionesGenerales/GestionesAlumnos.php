@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,10 +15,10 @@
         <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js"></script> <!-- JS -->
         <!--*: Da formato frente para el registro - MODIFICAR-->
-        <title>IdentiQR</title>
+        <title>GestionAlumnos_IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*A partir de acá se inicializara la parte de la página general, áa nuestro tema central e identificación de lo que contendrá-->
 
         <div id="Index1">
             <h1><center>IdentiQR</center></h1>
@@ -48,7 +48,7 @@
         <p class = "Textos_GeneralIndex1">
             Genera tu código QR único para la identificación y mejora de la recopilación de tus datos, al realizar los trámites.
             <br>
-            <i>Escanea cualquier código QR</i> para acceder a facilmente a los datos y mucho más con un solo toque.
+            <i>Escanea cualquier código QR</i> para acceder a fácilmente a los datos y mucho más con un solo toque.
         </p>
         <hr> <!-- TODO: Aquí empezaremos con la parte de ingreso o registro de los Alumnos-->
         <!-- *Formulario para el registro de los alumnos-->
@@ -91,7 +91,7 @@
                         <label for="FechaNac">Fecha de nacimiento</label>
                         <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" required>
                     </div>
-                    <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matricula-->
+                    <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" name="correo" placeholder="matricula@upemor.edu.mx" required>
@@ -165,7 +165,7 @@
                     </div>
                     <br>
                     </fieldset>
-                    <!--!: Esta parte del formulario permitira registrar el formulario de la ficha medica-->
+                    <!--!: Esta parte del formulario permitirá registrar el formulario de la ficha médica-->
                     <fieldset id = "fichaMedica">
                         <legend>Ficha médica</legend>
                         <div>
@@ -190,7 +190,7 @@
                             <input type="tel" id="contactoEmergencia" name="contactoEmergencia" placeholder="777-###-####" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
                         </div>
                     </fieldset>
-                    <!--Este será el boton para enviar los datos-->
+                    <!--Este será el botón para enviar los datos-->
                     <div class="form-group row">
                         <div class="col-12 text-center">
                             <input type="submit" name="Enviar_Alumno" value = "Enviar_Alumno"  class="btn btn-primary" onclick = "registroAlumno()">
@@ -210,7 +210,7 @@
                         <button id="btnEscanear" type="button" class="btn btn-primary">Escanear QR</button>
                     </div>
                     <!-- !: Aquí se deberá escanear el QR-->
-                    <!--*: Implementar modulo para escanear el QR aquí y verificar-->
+                    <!--*: Implementar módulo para escanear el QR aquí y verificar-->
                 </fieldset>
             </form>
 

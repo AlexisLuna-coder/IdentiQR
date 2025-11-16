@@ -15,7 +15,7 @@
         <title>Modificación de Alumno - IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrara el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el emcabezado, este podrá cambiar: nota-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </header>
-        <!--*Apartir de acá se inicializara la parte de la página general, sera nuestro tema central e identificación de lo que contendra-->
+        <!--*Apartir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
 
         <div id="Index1">
             <h1><center>Modificación de Alumno</center></h1>
@@ -83,7 +83,7 @@
                         <label for="FechaNac">Fecha de nacimiento</label>
                         <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" value="<?php echo $row['FechaNac']; ?>" required>
                     </div>
-                    <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matricula-->
+                    <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" name="correo" placeholder="matricula@upemor.edu.mx" value="<?php echo $row['Correo']; ?>" required>
@@ -149,7 +149,7 @@
                     </div>
                     <br>
                 </fieldset>
-                <!--!: Esta parte del formulario permitira registrar el formulario de la ficha medica-->
+                <!--!: Esta parte del formulario permitirá registrar el formulario de la ficha médica-->
                 <fieldset id = "fichaMedica">
                     <legend>Ficha médica</legend>
                     <div>
@@ -174,7 +174,7 @@
                         <input type="tel" id="contactoEmergencia" name="contactoEmergencia" placeholder="777-###-####" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value="<?php echo $row['contacto_emergencia']; ?>">
                     </div>
                 </fieldset>
-                <!--Este será el boton para enviar los datos-->
+                <!--Este será el botón para enviar los datos-->
                 <div class="form-group row">
                     <div class="offset-4 col-8">
                         <input type="submit" name="Actualizar_Alumno" value = "Actualizar_Alumno"  class="btn btn-primary">
@@ -184,30 +184,26 @@
         </section>
 
         <hr>
-        <footer class="FooterIndex1" id = "FooterIndex1">
-            <div class="FooterIndex1">
+        <footer class="FooterIndex1" id="FooterIndex1">
+            <div class="footer__container">
                 <div class="footer__info">
-                    <h3>IdentiQR</h3>
-                    <p>
-                        ©2025 IdentiQR. Todos los derechos reservados.
-                        <br>
-                        Diseñado por: Lizbeth B. y Alexis S.
-                    </p>
+                <h3>IdentiQR</h3>
+                <p>
+                    ©2025 IdentiQR. Todos los derechos reservados.<br>
+                    Diseñado por: Lizbeth B. y Alexis S.
+                </p>
                 </div>
                 <div class="footer__links">
-                    <!--*: Todo esto tiene que ver con los LINKS que se involucraran al diseñar el sitio web-->
-                    <a href="mailto: IdentiQR.info@gmail.com">Contact Us</a>
-                    <a href="#Terms_Index1">Terminos del servicio</a>
+                <a href="mailto:IdentiQR.info@gmail.com">Contact Us</a>
+                <a href="#Terms_Index1">Términos del servicio</a>
                 </div>
-            </div>
-
-            <!-- Nuevo div de términos -->
-            <div id="Terms_Index1">
+                <div class="footer__terms" id="Terms_Index1">
                 <p>
-                    Toda información resguardada será de carácter relevante.
-                    No se podrá acceder a este sistema si no se cuenta con previo registro.
+                    Toda información resguardada será de carácter relevante. 
+                    No se podrá acceder a este sistema si no se cuenta con previo registro. 
                     Por ningún motivo el estudiante podrá acceder al sistema.
                 </p>
+                </div>
             </div>
         </footer>
     </body>
