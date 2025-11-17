@@ -84,7 +84,7 @@
     function obtenerEstatura($descripcion) {
         // Busca 'Altura:' seguido de un número decimal (dígitos, punto, dígitos)
         if (preg_match('/Altura:\s*([\d\.]+)/u', $descripcion, $coincidencia)) {
-            return trim($coincidencia[1]) . "m"; // Añade la unidad
+            return trim($coincidencia[1]) . "cm"; // Añade la unidad
         }
         return "N/A";
     }

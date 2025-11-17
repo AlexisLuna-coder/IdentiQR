@@ -18,7 +18,7 @@
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
-        <title>GestionMireccionMedica_IdentiQR</title>
+        <title>GestionDireccionMedica_IdentiQR</title>
     </head>
     <body>
         <!-- !Aquí se encontrará el encabezado, este podrá cambiar: nota-->

@@ -3,7 +3,8 @@
     require_once __DIR__ . '/../../config/Connection_BD.php';
     require_once __DIR__ . '/../Models/ModeloDirecciones.php';
     require_once __DIR__ . '/../Models/ModeloAlumno.php';
-
+    require_once __DIR__ . '/../../public/PHP/FPDF/fpdf.php';
+    
     class DirectionsController{
         private $directionModel;
         private $alumnoModel;
@@ -1180,5 +1181,280 @@
             }
             
         }
+
+
+        /*Apatir de acá se encontrarán las funciones para Generar los reportes para cada dirección.*/
+        //idDepto = 2; Dirección acádemica
+        //idDepto = 3; Servicios escolares
+        //idDepto = 4; Dirección Desarrollo Academico
+        //idDepto = 5; Dirección Asuntos Estudiantiles
+        //idDepto = 6; Consultorio de atención de primer contacto
+        public function reporteInd_DirMed(){
+            date_default_timezone_set('America/Mexico_City');
+            if(!isset($_POST['reporteIndividualizado_DirMed'])) return;
+                $tipoReporte = $_POST['tipoReporte'] ?? 1;
+                $hoy = date('Y-m-d');
+                $fechaHora = date('Y-m-d_H-i-s'); //Año-Mes-Dia_Hora-Minutos-Segundos
+                $fe1 = (!empty($_POST['fe1'])) ? $_POST['fe1'] : $hoy;
+                $fe2 = (!empty($_POST['fe2'])) ? $_POST['fe2'] : $hoy;
+                $genero = (!empty($_POST['genero'])) ? $_POST['genero'] : "Otro";
+                $idDepto = (int)($_POST['idDepto'] ?? 0);
+
+                // Modelo (devuelve array de result sets)
+                $allSets = $this->directionModel->reporteInd_DirMed(
+                    $tipoReporte, $fe1, $fe2, $genero, $idDepto
+                );
+                if ($allSets === false) {
+                    echo "Error al generar el reporte.";
+                    return;
+                }
+
+                require_once __DIR__ . '/../../public/PHP/FPDF/fpdf.php';
+                include __DIR__ . '/../../public/PHP/extraccionDatos_Tablas.php'; // funciones de extracción
+
+                $pdf = new FPDF();
+                $pdf->AliasNbPages();
+                $pdf->SetAutoPageBreak(true, 50);
+                $pdf->SetTitle(utf8_decode('REPORTE INDIVIDUALIZADO - DIRECCIÓN MEDICA'));
+                $pdf->SetAuthor('IdentiQR');
+
+                $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php'); // https://www.fpdf.org/makefont/
+
+                $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+                $logoPathDir = realpath(__DIR__ . '/../../public/Media/img/Consultorio_Index1.png');
+                $generatedPages = 0;
+
+                foreach ($allSets as $setIndex => $rows) {
+                    if (empty($rows)) 
+                        continue;
+                    foreach ($rows as $r) {
+                        $generatedPages++;
+                        $pdf->AddPage();
+                        // Header: logo + titulo + fecha
+                        if ($logoPath && file_exists($logoPath)) {
+                            $pdf->Image($logoPath, 12, 8, 28);
+                        }
+                        if (!empty($logoPathDir) && file_exists($logoPathDir)) {
+                            // Logo derecho
+                            // Posición: alineado al margen derecho
+                            $rightX = $pdf->GetPageWidth() - 12 - 28; // (margen derecho = 12, ancho logo = 28)
+                            $pdf->Image($logoPathDir, $rightX, 8, 28);
+                        }                        
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',14);
+                        $pdf->SetXY(40, 10);
+                        $pdf->Cell(110, 7, utf8_decode('REPORTE INDIVIDUALIZADO - DIRECCIÓN MÉDICA'), 0, 1, 'C');
+
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',9);
+                        $pdf->SetXY(40, 17);
+                        $pdf->Cell(110, 5, 'Fecha del reporte: ' . $hoy, 0, 1, 'C');
+
+                        $pdf->SetDrawColor(180,180,180);
+                        $pdf->Line(10, 30, $pdf->GetPageWidth() - 10, 30);
+                        $pdf->Ln(6);
+
+                        // Datos defensivos (NO decodear aqui para pasar a funciones)
+                        $matriRaw   = $r['Matri']   ?? ($r['matricula'] ?? '');
+                        $nomRaw     = $r['Nom']     ?? ($r['Nombre'] ?? '');
+                        $apatRaw    = $r['Pat']     ?? ($r['ApePat'] ?? '');
+                        $amatRaw    = $r['Mat']     ?? ($r['ApeMat'] ?? '');
+                        $fehorRaw   = $r['FeHor']   ?? ($r['FechaHora'] ?? '');
+                        $rawDescripcion = $r['DesServ'] ?? $r['DescripcionServ'] ?? ($r['descripcion'] ?? '');
+
+                        // Imprimir: convertimos a ISO para FPDF al mostrar, pero mantenemos UTF-8 para parsing
+                        $matri = utf8_decode($matriRaw);
+                        $fullname = utf8_decode(trim("$nomRaw $apatRaw $amatRaw"));
+                        $fehor = utf8_decode($fehorRaw);
+                        $descForPrint = utf8_decode($rawDescripcion);
+
+                        // Bloque superior - 2 columnas
+                        $leftX  = 12;
+                        $rightX = 120;
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $yStart = $pdf->GetY() + 5;
+
+                        // Columna izquierda: datos personales
+                        $pdf->SetXY($leftX, $yStart);
+                        $pdf->Cell(30,6, utf8_decode('Matrícula:'), 0, 0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(60,6, $matri, 0, 1);
+
+                        $pdf->SetXY($leftX, $pdf->GetY());
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6, 'Nombre:', 0, 0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->MultiCell(78,6, $fullname, 0, 'L');
+
+                        $pdf->SetXY($leftX, $pdf->GetY());
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6,'Fecha/Hora:',0,0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(60,6, $fehor, 0, 1);
+
+                        // Columna derecha: resumen médico -> PASAMOS raw UTF-8 a las funciones
+                        $pdf->SetXY($rightX, $yStart);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6,'Estatura:',0,0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(0,6, obtenerEstatura($rawDescripcion), 0, 1);
+
+                        $pdf->SetXY($rightX, $pdf->GetY());
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6,'Peso:',0,0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(0,6, obtenerPeso($rawDescripcion), 0, 1);
+
+                        $pdf->SetXY($rightX, $pdf->GetY());
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6,'Alergias:',0,0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(0,6, obtenerAlergias($rawDescripcion), 0, 1);
+
+                        $pdf->SetXY($rightX, $pdf->GetY());
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(30,6,'Tipo sangre:',0,0);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(0,6, obtenerTipoSangre($rawDescripcion), 0, 1);
+
+                        $pdf->Ln(6);
+
+                        // Caja de descripcion (usar descForPrint para mostrar)
+                        $pdf->SetDrawColor(200,200,200);
+                        $pdf->SetFillColor(245,245,245);
+                        $pdf->SetFont('ShadowsIntoLight-Regular','',11);
+                        $pdf->Cell(0,7, utf8_decode('Descripción / Notas'), 1, 1, 'L', true);
+
+                        $pdf->SetFont('Arial','',10);
+                        // MultiCell con altura 6 para evitar saltos excesivos
+                        $pdf->MultiCell(0,5, $descForPrint ?: utf8_decode('Sin descripción'), 1, 'L');
+                        $pdf->Ln(4);
+                        // Footer por página
+                        $pageWidth = $pdf->GetPageWidth();
+                        //$pdf->setXY(50,225);
+                        $margin = 50;
+                        $pdf->SetFont('Arial','I',9);
+                        $pdf->SetTextColor(80);
+
+                        // Texto a la izquierda (usamos '-' en vez de '•' para evitar '?')
+                        $leftText = utf8_decode("Generado por: IdentiQR - Fecha del reporte: $hoy");
+
+                        // Escribimos el texto izquierdo ocupando casi todo el ancho, luego sobrescribimos la parte derecha con la página
+                        $pdf->SetX($margin);
+                        $pdf->Cell($pageWidth - 2*$margin - 40, 6, $leftText, 0, 0, 'L');
+
+                    // Número de página a la derecha (reserva 40mm para esto)
+                    $pdf->SetX($pageWidth - $margin - 40);
+                    $pdf->Cell(40, 6, utf8_decode('Página ') . $pdf->PageNo() . '/{nb}', 0, 0, 'R');
+
+                    // restaurar color por si hace falta
+                        $pdf->SetTextColor(0);
+
+                        // Pie informativo
+                        /*
+                        $pdf->SetFont('Arial','I',9);
+                        $pdf->SetTextColor(110);
+                        $pdf->Cell(0,5, utf8_decode("Generado por: IdentiQR • Fecha del reporte: $hoy"), 0, 1, 'L');
+                        $pdf->SetTextColor(0);
+                        */
+                    }
+                }
+                // Si no se generó nada
+                if ($generatedPages === 0) {
+                    $pdf->AddPage();
+                    $pdf->SetFont('Arial','B',12);
+                    $pdf->Cell(0,10, utf8_decode('No se encontraron registros para los parámetros indicados'), 0, 1, 'C');
+                }
+
+                // Entrega PDF
+                if (headers_sent($file, $line)) {
+                    error_log("No se puede enviar PDF, headers already sent in $file on line $line");
+                    echo "No se pudo generar el PDF: ya se envió salida previamente.";
+                    return;
+                }
+
+                //$pdf->Output('I', 'reporte_individualizado.pdf'); //Lo abre en el navegador
+                $pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
+        }
+        
+        /*Aquí se encontrará el reporte individualizado de PORCENTAJES */
+        /*public function reporteInd_DirMed(){
+            if(isset($_POST['reporteIndividualizado_DirMed'])){
+                $tipoReporte = $_POST['tipoReporte'];
+                // Fechas: si vienen vacías o no definidas, asignar la fecha de hoy
+                $hoy = date('Y-m-d');
+
+                $fe1 = (!empty($_POST['fe1'])) ? $_POST['fe1'] : $hoy;
+                $fe2 = (!empty($_POST['fe2'])) ? $_POST['fe2'] : $hoy;
+
+                // Género: si viene vacío o no existe, asignar "Otro"
+                $genero = (!empty($_POST['genero'])) ? $_POST['genero'] : "Otro";
+
+                // idDepto siempre viene desde tu form hidden
+                $idDepto = $_POST['idDepto'];
+                
+                //Aquí tendremos que mandar a llamar.
+                //$rows = $this->directionModel->reporteInd_DirMed($tipoReporte,$fe1,$fe2,$genero,$idDepto);
+                $allSets = $this->directionModel->reporteInd_DirMed($tipoReporte,$fe1,$fe2,$genero,$idDepto);
+                //$rows = $result->fetch_all(MYSQLI_ASSOC);
+                //INSTANCIAMOS, CREAMOS UN OBJETO DE LA CLASE FPDF(PDF)
+                $pdf = new FPDF();
+                date_default_timezone_set('America/Mexico_City');
+                $pdf->AliasNbPages();
+                $fecha = $_POST['fechaReporte'] ?? date('Y-m-d');
+                $title = utf8_decode('REPORTE INDIVIDUALIZADO - DIRECCIÓN MEDICA');
+                //$pdf->AddPage();
+
+                $pdf->SetTitle($title);
+                $page = 0;
+
+                foreach ($allSets as $setIndex => $rows) {
+                    $page++;
+                    $pdf->AddPage();
+                    $pdf->SetFont('Arial','B',12);
+                    $pdf->Cell(0,8,"Hoja $page - Consulta [".($setIndex+1)."]",0,1,'C');
+                    $pdf->Ln(4);
+                    $pdf -> SetCreator("IdentiQR", true);
+                    // Page number
+                    
+                    if (empty($rows)) {
+                        $pdf->SetFont('Arial','I',10);
+                        $pdf->Cell(0,6,"(Sin datos en el Reporte)",0,1);
+                        continue;
+                    }
+
+                    $pdf->SetFont('Arial','',11);
+                    $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+
+                    foreach ($rows as $r) {
+                        if ($logoPath && file_exists($logoPath)) {
+                            $pdf->Image($logoPath, 10, 8, 33);
+                        }
+                        $pdf->Cell(0,30, "Matricula: " . ($r['Matri'] ?? ''), 0, 1);
+                        $pdf->Cell(0,10, "Nombre: " . (($r['Nom'] ?? '') . ' ' . ($r['Pat'] ?? '') . ' ' . ($r['Mat'] ?? '')), 0, 1);
+                        $pdf->Cell(0,10, "Fecha Hora: " . ($r['FeHor'] ?? ''), 0, 1);
+                        $pdf->MultiCell(0,5, "Descripcion: " . utf8_decode($r['DesServ'] ?? ''), 0, 1);
+
+                        $pdf->Cell(0,10, "Estatura: " . obtenerEstatura($r['DesServ'] ?? ''), 0, 1);
+                        $pdf->Cell(0,10, "Peso: " . obtenerPeso($r['DesServ'] ?? ''), 0, 1);
+                        $pdf->Cell(0,10, "Alergias: " . obtenerAlergias($r['DesServ'] ?? ''), 0, 1);
+                        $pdf->Cell(0,10, "Tipo de sangre: " . obtenerTipoSangre($r['DesServ'] ?? ''), 0, 1);
+
+                        $pdf->Ln(3);
+                        $pdf->Cell(0,0,'','T',1);
+                        $pdf->Ln(3);
+                    }
+                    $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/{nb}',0,0,'C');
+                }
+
+
+                $pdf->Output();
+                
+                //INCLUIMOS LA VISTA
+                $vista = __DIR__ . '/../Views/dirMedica/GestionesAdmin_Medico.php';
+                if (file_exists($vista)) {
+                    include $vista; // o require_once $vista;
+                }
+            }
+        }
+        */
     }
 ?>

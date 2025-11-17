@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
+
+        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
+
         <title>DireccionMedica_IdentiQR</title>
     </head>
     <body>
@@ -47,8 +52,60 @@
             <hr>
 
             <section>
-                <h2>Consultas generales</h2>
+                <h2>Reportes PDF</h2>
+                <div class="reporte-container">
+                    <h3>Reporte individualizado de Citas por Día y Género</h3>
+                    <form id="formRepInd" action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=repInd_DirMed" method="POST" novalidate>
+                        <label>Tipo de Reporte:</label><br>
+                        <input type="radio" id="tipo1" name="tipoReporte" value="1"> Rango de fechas<br>
+                        <input type="radio" id="tipo2" name="tipoReporte" value="2"> Género<br>
 
+                        <div id="camposFechas" style="display:none; margin-top:8px;">
+                            <label for="fe1">Fecha 1:</label>
+                            <input type="date" name="fe1" id="fe1">
+                            <label for="fe2">Fecha 2:</label>
+                            <input type="date" name="fe2" id="fe2">
+                            <div id="err-fechas" style="color:#b00; display:none;"></div>
+                        </div>
+
+                        <div id="camposGenero" style="display:none; margin-top:8px;">
+                            <label for="genero">Género</label>
+                            <select type="select" id="genero" name="genero" required>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="Otro">Otro</option>
+                                <option value="PrefieroNoDecirlo">Prefiero no decirlo</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" name="idDepto" value="6">
+                        <div style="margin-top:10px;">
+                            <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día" name = "reporteIndividualizado_DirMed">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="reporte-container">
+                    <h3>Reporte de Citas por Día</h3>
+                    <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=reporteCitasDia" method="POST">
+                        <label for="fechaReporte">Selecciona la fecha:</label>
+                        <input type="date" name="fechaReporte" id="fechaReporte" required>
+                        <input type="hidden" name="idDepto" value="6">
+                        <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día">
+                    </form>
+                </div>
+
+                <div class="reporte-container">
+                    <h3>Reporte General por Género</h3>
+                    <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=reporteGenero" method="POST">
+                        <label for="fechaInicio">Fecha Inicio:</label>
+                        <input type="date" name="fechaInicio" id="fechaInicio" required>
+                        <label for="fechaFin">Fecha Fin:</label>
+                        <input type="date" name="fechaFin" id="fechaFin" required>
+                        <input type="hidden" name="idDepto" value="6">
+                        <input type="submit" class="btn-submit" value="Generar Reporte por Género">
+                    </form>
+                </div>
             </section>
         </div>
 

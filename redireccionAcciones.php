@@ -115,17 +115,29 @@
             break;
         case 'inicio':
             break;
-        /*AQUÍ ESTARAN LAS ACCIONES PARA EL BACKUP Y RESTORE DE LA BASE DE DATOS*/
+        /*AQUÍ ESTARÁN LAS ACCIONES PARA EL BACKUP Y RESTORE DE LA BASE DE DATOS*/
         case 'backup':
             $controllerInstance -> backupDBs();
             break;
         case 'restore':
             $controllerInstance -> restoreDBs();
             break;
+        /*AQUÍ ESTARÁN  LAS ACCIONES QUE SE HARA PARA LOS REPORTES INDIVIDUALIZADOS DE CADA DIRECCIÓN*/
+        //idDepto = 2; Dirección acádemica
+        //idDepto = 3; Servicios escolares
+        //idDepto = 4; Dirección Desarrollo Academico
+        //idDepto = 5; Dirección Asuntos Estudiantiles
+        //idDepto = 6; Consultorio de atención de primer contacto
+        case 'repInd_DirMed':
+            $controllerInstance ->reporteInd_DirMed();
+            break;
+        //idDepto = 7; Vinculación
         default:
             //echo "Error al encontrar el controlador";
             include "app/Views/index.html";
             //include "app/views/form_index.php";
             break;
+        
+
     }
 ?>

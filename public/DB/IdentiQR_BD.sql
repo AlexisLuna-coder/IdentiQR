@@ -145,7 +145,6 @@ create table if not exists HistorialInfoQR(
     descripcion text null,
     usuarioRealizado varchar(45) not null
 );
-
 /*		Implementación de disparadores					*/
 delimiter //
 create trigger IngresoUsuario before insert on Usuario
@@ -234,7 +233,6 @@ INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `a
 INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-A1*/
 INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Vinc', 'identiQR.info_Vinc@identiqr.com', 'IdentiQR_Vinc', 'Administrativo_Vinculacion',7);/*Vinc - IQC2025-A3*/
 select * from usuario;
-
 select * from departamento;
 /* DISPARADOR PARA EL REGISTRO DE LA CONTRASEÑA INICIAL - Falta*/
 
@@ -432,9 +430,96 @@ SELECT
                 LEFT JOIN carrera c ON a.idCarrera = c.idCarrera
                 LEFT JOIN informacionmedica im ON a.Matricula = im.Matricula
                 WHERE a.Matricula = "SLAO230036";
-                
-                select * from registroservicio;
-                
+                                
 #BORRAR EN PRODUCCIÓN
 select * from registroservicio;
 select * from usuario;
+
+SELECT 
+                    a.*, 
+                    c.*, 
+                    im.*,
+                    registroservicio.*,
+                    
+                    calcCuatrimestre(a.FeIngreso) AS Cuatri,
+                    calcPeriodo(a.FeIngreso) AS Periodo
+                FROM alumno a
+                LEFT JOIN carrera c ON a.idCarrera = c.idCarrera
+                LEFT JOIN informacionmedica im ON a.Matricula = im.Matricula
+                LEFT JOIN registroservicio on a.Matricula = registroservicio.Matricula
+                WHERE a.Matricula = "SLAO230036";
+/*	FUNCIONES - TRANSACCIONES DISTRIBUIDAS. PERMITIR REALIZAR REPORTES */
+/* Diseña un procedimiento que permita. 1. Consultar por un rango de fechas, 2. Consultar si es Hombre o mujer en consultas/reportes individualizados*/
+drop procedure if exists reporteInd_DirMed;
+delimiter //
+create procedure reporteInd_DirMed (in opc int,in f1 date,in f2 date, in g varchar(15)) #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
+begin
+
+	#Declaramos los atributos en donde se va a almacenar la información
+    declare Matri,Nom,Pat,Mat,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,Per,ContEme varchar(60); #Matricula, Nombre, Paterno, Materno, Correo, Telefono,Ciudad,Estado,Genero,TipoSangre,Alergias,Periodo,Contacto_emergencia
+    declare Des,plEst varchar(45); #descripción, planEstudios,
+    declare idCar, idDep, idInf, FolReg int; #idCarrera,idDepto,idInfoM
+    declare DesServ, EstT, FolSeg text; #Descripción(registroservicio), estatusT, FolioSeguimiento
+    declare FeNac,FeIng date; #FechaNacimiento, FechaIngreso
+    declare FeHor datetime; #FechaHora
+    declare buscarRep_DirMed cursor for
+		SELECT
+            a.Matricula,
+            a.Nombre,
+            a.ApePat,
+            a.ApeMat,
+            a.FechaNac,
+            a.FeIngreso,
+            a.Correo,
+            a.Telefono,
+            a.Ciudad,
+            a.Estado,
+            a.Genero,
+            im.TipoSangre,
+            im.Alergias,
+            im.contacto_Emergencia,
+            c.idCarrera,
+            rs.folioRegistro AS IdRegistro,
+            rs.descripcion AS DescripcionServ,
+            rs.EstatusT AS EstatusServ,
+            rs.FolioSeguimiento,
+            rs.FechaHora AS FechaHoraServ
+		FROM alumno a
+        LEFT JOIN carrera c ON a.idCarrera = c.idCarrera
+        LEFT JOIN informacionmedica im ON a.Matricula = im.Matricula
+        LEFT JOIN registroservicio rs ON a.Matricula = rs.Matricula
+        WHERE
+            (opc = 1 AND rs.FechaHora BETWEEN f1 AND f2)
+		OR
+            (opc = 2 AND a.Genero = g)
+        ORDER BY rs.FechaHora DESC;
+	declare continue handler for not found set @x = true;
+    open buscarRep_DirMed;
+    
+     -- Validación simple de parámetro
+    IF opc NOT IN (1,2) THEN
+        SIGNAL SQLSTATE '22003' 
+            SET MESSAGE_TEXT = 'Opción no válida. Usa 1 = rango fechas o 2 = género';
+    END IF;
+    
+    loop1:loop
+		fetch buscarRep_DirMed into Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor;
+    if @x then
+		leave loop1;
+	end if;
+		select Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor;
+	end loop;
+    close buscarRep_DirMed;
+end //
+
+#Pruebas que se borraran en PRODUCCIÓN.
+call reporteInd_DirMed (2,curdate(),curdate(),"Femenino"); #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
+call reporteInd_DirMed (2,curdate(),curdate(),"Masculino");
+
+/*
+SELECT alumno.Genero, COUNT(*) as total
+                            FROM registroservicio
+                            INNER JOIN serviciotramite ON registroservicio.idTramite = serviciotramite.idTramite
+                            INNER JOIN alumno ON registroservicio.Matricula = alumno.Matricula
+                            WHERE DATE(registroservicio.FechaHora) BETWEEN ? AND ? AND serviciotramite.idDepto = ?
+                            GROUP BY alumno.Genero;*/

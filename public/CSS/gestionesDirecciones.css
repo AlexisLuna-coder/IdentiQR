@@ -194,6 +194,77 @@ footer {
     border-color: #6e0990;
 }
 
+/* Estilos para los contenedores de reportes */
+.reporte-container {
+    border: 2px solid #6e0990;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.reporte-container h3 {
+    color: #f6ac35;
+    border-bottom: 3px solid #6e0990;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.reporte-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.reporte-container input[type="radio"] {
+    margin-right: 5px;
+}
+
+.reporte-container input[type="date"],
+.reporte-container select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.reporte-container input[type="date"]:focus,
+.reporte-container select:focus {
+    border-color: #6e0990;
+    outline: none;
+    box-shadow: 0 0 5px rgba(110, 9, 144, 0.5);
+}
+
+.reporte-container #err-fechas {
+    color: #d43e1d;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Estilos para los botones de submit */
+input[type="submit"] {
+    background: linear-gradient(90deg, #f6ac35 0%, #ffb74d 100%);
+    color: #333;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background: linear-gradient(90deg, #ffb74d 0%, #f6ac35 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .container__header {
@@ -217,5 +288,9 @@ footer {
 
     section {
         padding: 15px;
+    }
+
+    .reporte-container {
+        padding: 10px;
     }
 }

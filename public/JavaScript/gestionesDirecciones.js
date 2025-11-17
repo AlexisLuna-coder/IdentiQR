@@ -190,9 +190,10 @@ function escapeHtml(text) {
 }
 
 // Event listeners
-document.addEventListener("DOMContentLoaded", function() {
+window.addEventListener("load", function() {
     cargarTutoriasIndividuales(); //Así hacemos que se pueda usar el check
     setFechaSolicitudHoy(); //Función para la asignación de fechas
+    reporteIndividualizado_DirMed(); // Función para el reporte individualizado
     // Event listener para el botón de escaneo (registro)
     const btnEscanear = document.getElementById('btnEscanear');
     if (btnEscanear) {
@@ -391,7 +392,87 @@ function setFechaSolicitudHoy() {
     });
 }
 /********************************************** */
+// Función para el reporte individualizado de la dirección médica
+function reporteIndividualizado_DirMed() {
+    // Evitar inicializar dos veces
+    if (reporteIndividualizado_DirMed._inited) return;
+    reporteIndividualizado_DirMed._inited = true;
 
+    const radios = Array.from(document.querySelectorAll('input[name="tipoReporte"]'));
+    const camposFechas = document.getElementById('camposFechas');
+    const camposGenero = document.getElementById('camposGenero');
+    const fe1 = document.getElementById('fe1');
+    const fe2 = document.getElementById('fe2');
+    const form = document.getElementById('formRepInd') || document.querySelector('form[action*="repInd_DirMed"]');
+
+    if (!radios.length) return; // Si no hay radios, salimos
+
+    function toggleCampos() {
+        const selected = document.querySelector('input[name="tipoReporte"]:checked');
+        const value = selected ? selected.value : null;
+
+        // 1. Solamente oculta hasta que el radio esté en su opción (display: '')
+        if (camposFechas) camposFechas.style.display = (value === '1') ? 'block' : 'none';
+        if (camposGenero) camposGenero.style.display = (value === '2') ? 'block' : 'none';
+    }
+
+    // Añadir listener a radios
+    radios.forEach(r => {
+        if (!r._repListenerAdded) {
+            r.addEventListener('change', toggleCampos);
+            r._repListenerAdded = true;
+        }
+    });
+
+    // Validación inmediata de fe2 respecto a fe1 (AL FINAL DE LA LÍNEA)
+    if (fe2 && fe1 && !fe2._repListenerAdded) {
+        fe2.addEventListener('change', () => {
+            if (fe1.value && fe2.value) {
+                const d1 = new Date(fe1.value);
+                const d2 = new Date(fe2.value);
+                if (d2 < d1) {
+                    // Manda alert()
+                    alert('La Fecha 2 no puede ser previa a la Fecha 1.');
+                    fe2.value = '';
+                    fe2.focus();
+                }
+            }
+        });
+        fe2._repListenerAdded = true;
+    }
+
+    // Prevención del submit (Validación mínima requerida)
+    if (form && !form._repSubmitAdded) {
+        form.addEventListener('submit', (e) => {
+            const selected = document.querySelector('input[name="tipoReporte"]:checked');
+            
+            if (!selected) {
+                e.preventDefault();
+                alert('Debes elegir el tipo de reporte (Rango de fechas o Género).');
+                return;
+            }
+
+            if (selected.value === '1') {
+                // Modo rango de fechas: solo validar el orden de fe2 respecto a fe1 (ya validado en change)
+                if (fe1.value && fe2.value) {
+                    const d1 = new Date(fe1.value);
+                    const d2 = new Date(fe2.value);
+                    if (d2 < d1) {
+                        // Aunque el change debería haberlo prevenido, lo bloqueamos aquí por seguridad.
+                        e.preventDefault();
+                        alert('La Fecha 2 no puede ser previa a la Fecha 1.');
+                        return;
+                    }
+                }
+            }
+            // Si todo OK o si es modo Género, permite enviar
+        });
+        form._repSubmitAdded = true;
+    }
+
+    // Inicializar estado de campos (IMPORTANTE para cuando carga la página)
+    toggleCampos();
+}
 /*
         <script>
             // Evitar regresar con el botón "Atrás"
