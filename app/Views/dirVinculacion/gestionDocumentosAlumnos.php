@@ -1,5 +1,5 @@
 <?php
-    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
+    include_once __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
     $idDepto = 7; //Esta variable permitirá ser modificada para cada departamento
     $contro = "dirVinc";
 ?>
@@ -18,6 +18,9 @@
 
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
+        <title>DirecciónVinculación_Documentos_IdentiQR</title>
+    </head>
+    <body>
         <title>DirecciónVinculación_Documentos_IdentiQR</title>
     </head>
     <body>
