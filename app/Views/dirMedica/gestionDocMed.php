@@ -1,5 +1,5 @@
 <?php
-    include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
+    //include __DIR__ . '/../../../public/PHP/extraccionDatos_Tablas.php'; // Permite hacer uso de los métodos
     $idDepto = 6; //Esta variable permitirá ser modificada para cada departamento
     $contro = "dirMedica";
 ?>

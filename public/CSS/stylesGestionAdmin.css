@@ -1,42 +1,76 @@
-body {
-    margin: 0;
-    font-family: 'Times New Roman', Times, serif
-}
-/*TODO: ENCABEZADOS DEL HEADER*/
-header{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f6ac35;
-    min-height: 110px;
-    margin: 0;
-}
-header .container__header{
-    font-family: 'Times New Roman', Times, serif;
-    color: #fff;
-    margin-right: 0;
-    margin-left: 0;
-    font-size: 10px;
-    text-align: center;
-    display:flex;
+/* Estilos generales para GestionesAdministradorG */
+/* Paleta de colores: amarillo #f6ac35, morado #6e0990, rojo #d43e1d */
+
+* {
+    box-sizing: border-box;
 }
 
-.logo{
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Georgia', 'Times New Roman', Times, serif;
+    background: linear-gradient(135deg, #f4f4f4 0%, #e9ecef 100%);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 248, 248, 0.95) 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 2px solid #f6ac35;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #f6ac35 0%, #ffb74d 100%);
+    min-height: 110px;
+    margin: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 15px 15px;
+}
+
+.Usuario {
+    flex: 1;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.Usuario h1 {
+    font-size: 1.5em;
+    margin: 0;
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
     display: flex;
     align-items: center;
 }
-.logo img{
+
+.logo img {
     height: 150px;
     width: 300px;
     margin-left: 20px;
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
 }
 
 nav {
     margin-top: 16px;
-    display:flex;
-    align-items:center;
-    text-align: center;
 }
+
 nav ul {
     list-style: none;
     margin: 0;
@@ -48,69 +82,211 @@ nav ul {
     margin: 0;
     flex-wrap: wrap;
 }
+
 nav a {
     color: #fff;
     text-decoration: none;
     margin: 0 18px;
     font-weight: 500;
-    transition: color 0.2s;
-    padding-right: 15px;
+    transition: all 0.3s ease;
+    padding: 10px 15px;
+    border-radius: 5px;
     font-family: 'Times New Roman', Times, serif;
 }
 
 nav a:hover {
     color: #d43e1d;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
 }
 
-/*TODO: Aquí va la asignación de colores para el Footer*/
+/* Secciones */
+section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-left: 5px solid #6e0990;
+}
+
+section:hover {
+    transform: translateY(-5px);
+}
+
+section h2 {
+    color: #f6ac35;
+    border-bottom: 3px solid #6e0990;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+section p, section label {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Formularios y elementos */
+form, .SeguridadDatos {
+    border: 2px solid #f6ac35;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fafafa;
+    color: #333;
+}
+
+form *, .SeguridadDatos * {
+    color: #333;
+}
+
+form label, .SeguridadDatos label {
+    color: #333;
+    font-weight: 600;
+}
+
+button, input[type="submit"], .btn {
+    background: linear-gradient(90deg, #f6ac35 0%, #ffb74d 100%);
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover, input[type="submit"]:hover, .btn:hover {
+    background: linear-gradient(90deg, #d43e1d 0%, #f6ac35 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #6e0990;
+    box-shadow: 0 0 5px rgba(110, 9, 144, 0.5);
+}
+
+a {
+    color: #6e0990;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #d43e1d;
+    text-decoration: underline;
+}
+
+legend {
+    color: #6e0990;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+/* Modal */
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    background: linear-gradient(90deg, #6e0990 0%, #8e24aa 100%);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+
+.modal-footer .btn-primary {
+    background: #f6ac35;
+    border: none;
+}
+
+.modal-footer .btn-primary:hover {
+    background: #d43e1d;
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 18px 0;
-    background: #701875;
+    padding: 2rem 0;
+    background: linear-gradient(90deg, #701875 0%, #9c27b0 100%);
     color: #fff;
     margin-top: 48px;
     font-size: 1rem;
     letter-spacing: 1px;
-    border-top: 1px solid #eaeaea;
-    min-width: 100px;
-    height: auto;
-    padding: 2rem 0;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 15px 15px 0 0;
 }
-.footer__container{
+
+.footer__container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     max-width: 1200px;
     margin: 0 auto;
 }
-.footer__container p{
+
+.footer__container p {
     font-family: 'Times New Roman', Times, serif;
-
+    margin: 0;
 }
-/* Columnas internas */
-.footer__info,
-.footer__links,
-.footer__terms {
+
+.footer__info, .footer__links, .footer__terms {
     flex: 1 1 300px;
+    margin: 10px;
 }
 
-/* Enlaces */
 .footer__links a {
     display: block;
     color: #fff;
     text-decoration: none;
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
 }
 
 .footer__links a:hover {
+    color: #f6ac35;
     text-decoration: underline;
-    border-color:#6e0990
 }
 
-/*!: Con esto pondremos estilos al body - container*/
-body .container p-5 my-5 bg-dark text-white{
-    background-color: #343a40;
-    color: #ffffff;
-    padding: 0;
-    border: #6e0990;
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .logo img {
+        height: 120px;
+        width: 240px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    section {
+        padding: 15px;
+    }
 }

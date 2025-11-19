@@ -63,16 +63,16 @@
                                 <i class="fa fa-address-card"></i>
                             </div>
                         </div>
-                        <input type="text" id="matricula" name="matricula" value="<?php echo $row['Matricula']; ?>" required>
+                        <input type="text" id="matricula" name="matricula" value="<?php echo $row['Matricula']; ?>" required readonly>
                     </div>
                     <br>
                     <div class="form-group row">
                         <label for="Nombre(s)">Nombre(s)</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $row['Nombre']; ?>" required>
+                        <input type="text" id="nombre" name="nombre" value="<?php echo $row['Nombre']; ?>" required readonly>
                     </div>
                     <div class="form-group row">
                         <label for="ApePat">Apellido paterno</label>
-                        <input type="text" id="ApPat" name="ApPat" value="<?php echo $row['ApePat']; ?>" required>
+                        <input type="text" id="ApPat" name="ApPat" value="<?php echo $row['ApePat']; ?>" required readonly>
                     </div>
 
                     <div class="form-group row">
@@ -86,7 +86,7 @@
                     <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">
                         <label for="correo">Correo</label>
-                        <input type="email" id="correo" name="correo" placeholder="matricula@upemor.edu.mx" value="<?php echo $row['Correo']; ?>" required>
+                        <input type="email" id="correo" name="correo" placeholder="matricula@upemor.edu.mx" value="<?php echo $row['Correo']; ?>" required readonly>
                     </div>
                     <div class="form-group row">
                         <label for="direccion">Dirección</label>
@@ -130,7 +130,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="anioIngreso">Año de Ingreso</label>
-                        <input type="number" id="FeIngreso" name="FeIngreso" min="2004" placeholder = "2006" value="<?php echo date('Y', strtotime($row['FeIngreso'])); ?>" required>
+                        <input type="number" id="FeIngreso" name="FeIngreso" min="2004" placeholder = "2006" value="<?php echo date('Y', strtotime($row['FeIngreso'])); ?>" required readonly>
                         <script> //Nota.- 2025-05-10 SCRIPT Para la fecha
                             // poner el año actual como valor por defecto y como máximo
                             const input = document.getElementById("FeIngreso");
@@ -140,7 +140,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="Carrea">Carrera </label>
-                        <select type="select" id="carrera" name="carrera" value="<?php echo $row['idCarrera']; ?>" required>
+                        <select type="select" id="carrera" name="carrera" value="<?php echo $row['idCarrera']; ?>" required readonly>
                             <option value="1" <?php if($row['idCarrera'] == 1) echo 'selected'; ?>>ITI-H18</option>
                             <option value="2" <?php if($row['idCarrera'] == 2) echo 'selected'; ?>>TSU-DS-NM24</option>
                             <option value="3" <?php if($row['idCarrera'] == 3) echo 'selected'; ?>>IET-H18</option>

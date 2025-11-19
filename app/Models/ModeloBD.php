@@ -180,7 +180,7 @@
             $bdRow = $conn->query("SELECT DATABASE() AS db");
             $bd = ($bdRow && $r = $bdRow->fetch_assoc()) ? $r['db'] : 'unknown';
 
-            // Obtener lista de tablas
+            // Obtener lista de tablas y funciones
             if (empty($tablas)) {
                 $tablas = [];
                 $res = $conn->query("SHOW TABLES");
@@ -189,6 +189,31 @@
                 }
                 while ($row = $res->fetch_row()) {
                     $tablas[] = $row[0];
+                }
+
+                // Agregar funciones, procedimientos y triggers a la lista de elementos a respaldar
+                $funciones = [];
+                $resFunc = $conn->query("SHOW FUNCTION STATUS WHERE Db = DATABASE()");
+                if ($resFunc) {
+                    while ($row = $resFunc->fetch_assoc()) {
+                        $funciones[] = $row['Name'];
+                    }
+                }
+
+                $procedimientos = [];
+                $resProc = $conn->query("SHOW PROCEDURE STATUS WHERE Db = DATABASE()");
+                if ($resProc) {
+                    while ($row = $resProc->fetch_assoc()) {
+                        $procedimientos[] = $row['Name'];
+                    }
+                }
+
+                $triggers = [];
+                $resTrig = $conn->query("SHOW TRIGGERS");
+                if ($resTrig) {
+                    while ($row = $resTrig->fetch_assoc()) {
+                        $triggers[] = $row['Trigger'];
+                    }
                 }
             }
 
@@ -199,8 +224,11 @@
             $info['mysqlver'] = $conn->server_info;
             $info['phpver'] = phpversion();
 
-            // Representación breve de tablas
+            // Representación breve de tablas, funciones, procedimientos y triggers
             $info['tablas'] = implode(";  ", $tablas);
+            $info['funciones'] = implode(";  ", $funciones);
+            $info['procedimientos'] = implode(";  ", $procedimientos);
+            $info['triggers'] = implode(";  ", $triggers);
 
             $dump = <<<EOT
             # +===================================================================
@@ -211,10 +239,58 @@
             # | PHP Version: {$info['phpver']}
             # | Base de datos: '{$bd}'
             # | Tablas: {$info['tablas']}
+            # | Funciones: {$info['funciones']}
+            # | Procedimientos: {$info['procedimientos']}
+            # | Triggers: {$info['triggers']}
             # |
             # +-------------------------------------------------------------------
             EOT;
             $dump .= "\n\nSET FOREIGN_KEY_CHECKS=0;\n\n";
+
+            // Agregar funciones
+            foreach ($funciones as $funcion) {
+                $create_function_query = "";
+                $resFuncCreate = $conn->query("SHOW CREATE FUNCTION `{$funcion}`");
+                if ($resFuncCreate && $r = $resFuncCreate->fetch_row()) {
+                    $create_function_query = "DELIMITER //\n" . $r[2] . "//\nDELIMITER ;\n";
+                } else {
+                    $create_function_query = "# Error obteniendo función: " . $conn->error . "\n";
+                }
+
+                $dump .= "\n# | Función '{$funcion}'\n";
+                $dump .= "# +------------------------------------->\n";
+                $dump .= $create_function_query . "\n";
+            }
+
+            // Agregar procedimientos
+            foreach ($procedimientos as $procedimiento) {
+                $create_procedure_query = "";
+                $resProcCreate = $conn->query("SHOW CREATE PROCEDURE `{$procedimiento}`");
+                if ($resProcCreate && $r = $resProcCreate->fetch_row()) {
+                    $create_procedure_query = "DELIMITER //\n" . $r[2] . "//\nDELIMITER ;\n";
+                } else {
+                    $create_procedure_query = "# Error obteniendo procedimiento: " . $conn->error . "\n";
+                }
+
+                $dump .= "\n# | Procedimiento '{$procedimiento}'\n";
+                $dump .= "# +------------------------------------->\n";
+                $dump .= $create_procedure_query . "\n";
+            }
+
+            // Agregar triggers
+            foreach ($triggers as $trigger) {
+                $create_trigger_query = "";
+                $resTrigCreate = $conn->query("SHOW CREATE TRIGGER `{$trigger}`");
+                if ($resTrigCreate && $r = $resTrigCreate->fetch_row()) {
+                    $create_trigger_query = $r[2] . ";\n";
+                } else {
+                    $create_trigger_query = "# Error obteniendo trigger: " . $conn->error . "\n";
+                }
+
+                $dump .= "\n# | Trigger '{$trigger}'\n";
+                $dump .= "# +------------------------------------->\n";
+                $dump .= $create_trigger_query . "\n";
+            }
 
             foreach ($tablas as $tabla) {
                 // DROP TABLE
@@ -266,7 +342,7 @@
 
             $dump .= "\nSET FOREIGN_KEY_CHECKS=1;\n";
 
-            // --- LÓGICA DE GUARDADO (Modelo: solo escribe) ---
+            // --- LÓGICA DE GUARDADO (Modelo: SÓLO escribe) ---
             $filePath = __DIR__ . '/../../config/Backups/' . $fileName;
             
             $success = file_put_contents($filePath, $dump);

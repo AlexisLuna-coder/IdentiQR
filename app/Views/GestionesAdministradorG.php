@@ -34,8 +34,8 @@
                         <li><a href="Productos.html">Gestión de Productos</a></li>
                         <li><a href="Pedidos.html">Gestión de Pedidos</a></li>
                     -->
-                    <li><a href="Reportes.html">Reportes</a></li>
-                    <li><a href="Configuracion.html">Configuración</a></li>
+                    <li><a href="/IdentiQR/app/Views/GestionesAdministradorG.php#reportesGenerales">Reportes</a></li>
+                    <li><a href="/IdentiQR/app/Views/GestionesAdministradorG.php#ExportarDatos">Configuración</a></li>
                     <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                 </ul>
             </nav>
@@ -50,20 +50,8 @@
                 <form action="/IdentiQR/redireccionAcciones.php?controller=BackRest_DBs&action=restore" method="post" enctype="multipart/form-data">
                     <label for="backupFile"><i class="fa-solid fa-file"></i>Suba un archivo .sql (máx 50MB):</label><br>
                         <input type="file" id="backupFile" name="backupFile" accept=".sql" required><br><br>
-
-                    <!-- checkbox para elegir método si quieres (opcional) -->
-                    <label>
-                        <input type="checkbox" name="use_cli" value="1">
-                    </label><br><br>
-
-                    <button type="submit"><i class="fa-solid fa-file"></i>Cargar y restaurar</button>
+                        <button type="submit"><i class="fa-solid fa-file"></i>Cargar y restaurar</button>
                 </form>
-                
-                <!-- Botones para exportar diferentes tipos de datos 
-                <button onclick="exportarUsuarios()">Exportar Usuarios</button>
-                <button onclick="exportarProductos()">Exportar Productos</button>
-                <button onclick="exportarPedidos()">Exportar Pedidos</button>
-                -->
             </div>
                 
             <main>
@@ -121,22 +109,61 @@
                     <hr>
                     <div id = "card-DirServEsco">
                         <legend>Dirección de Servicios Escolares</legend>
-                        <a href="dirServEsco/gestionDocumentosServEsco.php">Gestión de documentos Estudiantiles</a>
+                        <a href="dirServEsco/gestionDocumentosServEsco.php">Gestión de documentos Estudiantiles - DAE</a>
                     </div>
                     <hr>
                 </section>
-                <section>
-                    <h2>Reportes</h2>
-                    <form action="GenerarReporte.php" method="post">
+                <section id = "reportesGenerales">
+                    <h2><i class="fa-solid fa-clipboard"></i>Reportes</h2>
+                    <form id="formReportes" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=restore" method="post">
                         <label for="tipoReporte">Tipo de Reporte:</label>
                         <select id="tipoReporte" name="tipoReporte">
+                            <option value="" disabled selected>Selecciona una opción...</option>
+                            <option value="Tramites">Tramites generales</option>
                             <option value="Usuarios">Usuarios</option>
-                            <option value="#">?</option>
-                            <option value="#">?</option>
+                            <option value="Alumnos">Alumnos</option>
                         </select>
                         <button type="submit">Generar Reporte</button>
                     </form>
                 </section>
+
+                <!--SCRIPT PARA MODIFICAR EL ACTION / CONSIDERAR PONERLO EN OTRO .JS-->
+                <script>
+                (function(){
+                    const mapping = {
+                        'Tramites': 'tramitesGenerales',
+                        'Usuarios': 'usuariosGenerales',
+                        'Alumnos': 'alumnosGenerales'
+                    };
+
+                    const form = document.getElementById('formReportes');
+                    const select = document.getElementById('tipoReporte');
+
+                    // Al cambiar la selección actualizamos la acción del form (buena UX)
+                    select.addEventListener('change', () => {
+                        const val = select.value;
+                        const act = mapping[val];
+                        if (act) {
+                            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
+                        }
+                    });
+
+                    // Por seguridad: antes de enviar, validamos selección y forzamos la acción correcta
+                    form.addEventListener('submit', (e) => {
+                        const val = select.value;
+                        if (!val) {
+                            e.preventDefault();
+                            alert('Por favor selecciona el tipo de reporte que deseas generar.');
+                            select.focus();
+                            return;
+                        }
+                        const act = mapping[val];
+                        if (act) {
+                            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
+                        }
+                    });
+                })();
+                </script>
             </main>
         </div>
 

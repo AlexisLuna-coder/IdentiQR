@@ -55,15 +55,15 @@
                 <h2>Reportes PDF</h2>
                 <div class="reporte-container">
                     <h3>Reporte individualizado de Citas por Día y Género</h3>
-                    <form id="formRepInd" action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=repInd_DirMed" method="POST" novalidate>
+                    <form id="formRepInd" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=repInd_DirMed" method="POST" novalidate>
                         <label>Tipo de Reporte:</label><br>
                         <input type="radio" id="tipo1" name="tipoReporte" value="1"> Rango de fechas<br>
                         <input type="radio" id="tipo2" name="tipoReporte" value="2"> Género<br>
 
                         <div id="camposFechas" style="display:none; margin-top:8px;">
-                            <label for="fe1">Fecha 1:</label>
+                            <label for="fe1">Fecha mínima (Fecha 1):</label>
                             <input type="date" name="fe1" id="fe1">
-                            <label for="fe2">Fecha 2:</label>
+                            <label for="fe2">Fecha máxima(Fecha 2):</label>
                             <input type="date" name="fe2" id="fe2">
                             <div id="err-fechas" style="color:#b00; display:none;"></div>
                         </div>
@@ -86,17 +86,17 @@
                 </div>
 
                 <div class="reporte-container">
-                    <h3>Reporte de Citas por Día</h3>
-                    <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=reporteCitasDia" method="POST">
+                    <h3>Reporte de Citas por Día (Porcentual)</h3>
+                    <form action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=reporteCitasDia" method="POST">
                         <label for="fechaReporte">Selecciona la fecha:</label>
                         <input type="date" name="fechaReporte" id="fechaReporte" required>
                         <input type="hidden" name="idDepto" value="6">
-                        <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día">
+                        <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día" name = "reporteCitasDia">
                     </form>
                 </div>
 
                 <div class="reporte-container">
-                    <h3>Reporte General por Género</h3>
+                    <h3>Reporte General por Género (Porcentual)</h3>
                     <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=reporteGenero" method="POST">
                         <label for="fechaInicio">Fecha Inicio:</label>
                         <input type="date" name="fechaInicio" id="fechaInicio" required>

@@ -104,7 +104,7 @@ create table Alumno (
     FeIngreso date not null,
     Correo varchar(60) unique,
     Direccion varchar(60) not null,
-    Telefono varchar(11) not null,
+    Telefono varchar(15) not null,
     Ciudad varchar(45) not null,
     Estado varchar(45) null,
     Genero varchar(10) default "Otro",
@@ -452,13 +452,14 @@ SELECT
 /* Diseña un procedimiento que permita. 1. Consultar por un rango de fechas, 2. Consultar si es Hombre o mujer en consultas/reportes individualizados*/
 drop procedure if exists reporteInd_DirMed;
 delimiter //
-create procedure reporteInd_DirMed (in opc int,in f1 date,in f2 date, in g varchar(15)) #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
+create procedure reporteInd_DirMed (in opc int,in f1 date,in f2 date, in g varchar(15), in idD int) #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer), idDepto: (A que departamento es el tramite)
 begin
 
 	#Declaramos los atributos en donde se va a almacenar la información
+    declare idDe int default 6; #Este sera una variable para modificar que departamento se refiere
     declare Matri,Nom,Pat,Mat,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,Per,ContEme varchar(60); #Matricula, Nombre, Paterno, Materno, Correo, Telefono,Ciudad,Estado,Genero,TipoSangre,Alergias,Periodo,Contacto_emergencia
     declare Des,plEst varchar(45); #descripción, planEstudios,
-    declare idCar, idDep, idInf, FolReg int; #idCarrera,idDepto,idInfoM
+    declare idCar, idDep, idInf, FolReg, idTra int; #idCarrera,idDepto,idInfoM, idTramite, idDepto
     declare DesServ, EstT, FolSeg text; #Descripción(registroservicio), estatusT, FolioSeguimiento
     declare FeNac,FeIng date; #FechaNacimiento, FechaIngreso
     declare FeHor datetime; #FechaHora
@@ -483,15 +484,20 @@ begin
             rs.descripcion AS DescripcionServ,
             rs.EstatusT AS EstatusServ,
             rs.FolioSeguimiento,
-            rs.FechaHora AS FechaHoraServ
+            rs.FechaHora AS FechaHoraServ,
+            st.idTramite AS idTramite,
+            st.idDepto AS idDepto
 		FROM alumno a
         LEFT JOIN carrera c ON a.idCarrera = c.idCarrera
         LEFT JOIN informacionmedica im ON a.Matricula = im.Matricula
         LEFT JOIN registroservicio rs ON a.Matricula = rs.Matricula
+        LEFT JOIN serviciotramite st ON st.idTramite = rs.idTramite
         WHERE
             (opc = 1 AND rs.FechaHora BETWEEN f1 AND f2)
 		OR
             (opc = 2 AND a.Genero = g)
+		AND
+			(idD = idDe)
         ORDER BY rs.FechaHora DESC;
 	declare continue handler for not found set @x = true;
     open buscarRep_DirMed;
@@ -503,19 +509,20 @@ begin
     END IF;
     
     loop1:loop
-		fetch buscarRep_DirMed into Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor;
+		fetch buscarRep_DirMed into Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor,idTra,idDep;
     if @x then
 		leave loop1;
 	end if;
-		select Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor;
+		select Matri,Nom,Pat,Mat,FeNac,FeIng,Corr,Tel,Ciu,Est,Gen,TipSan,Aler,ContEme,idCar,FolReg,DesServ,EstT,FolSeg,FeHor,idTra,idDep;
 	end loop;
     close buscarRep_DirMed;
 end //
 
 #Pruebas que se borraran en PRODUCCIÓN.
-call reporteInd_DirMed (2,curdate(),curdate(),"Femenino"); #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
-call reporteInd_DirMed (2,curdate(),curdate(),"Masculino");
+call reporteInd_DirMed (2,curdate(),curdate(),"Femenino", 6); #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
+call reporteInd_DirMed (2,curdate(),curdate(),"Masculino", 6);
 
+SELECT registroservicio.*,serviciotramite.Descripcion as Descripcion, serviciotramite.idDepto as idDepto, departamento.Nombre as NombreDepto FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite inner join departamento on servicioTramite.idDepto = departamento.idDepto;
 /*
 SELECT alumno.Genero, COUNT(*) as total
                             FROM registroservicio

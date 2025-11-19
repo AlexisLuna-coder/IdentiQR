@@ -4,6 +4,7 @@
     //include_once "app/Controllers/ControladorAlumnos.php";
     include_once "app/Controllers/ControladorDirecciones.php";
     include_once "app/Controllers/ControladorBD.php";
+    include_once "app/Controllers/ControladorReportes.php";
     //include_once "app/Controllers/ControladorUsuario.php";
     
     // Crear la conexión a la base de datos
@@ -40,6 +41,9 @@
             break;
         case 'BackRest_DBs': //Back: Backup y Rest: Restore
             $controllerInstance = new ControllerBD($conn);
+            break;
+        case 'reportsGeneral':
+            $controllerInstance = new ReportsController($conn);
             break;
         /*case 'alumno':
             $controllerInstance = new AlumnoController($conn);
@@ -123,6 +127,13 @@
             $controllerInstance -> restoreDBs();
             break;
         /*AQUÍ ESTARÁN  LAS ACCIONES QUE SE HARA PARA LOS REPORTES INDIVIDUALIZADOS DE CADA DIRECCIÓN*/
+        //idDepto = 1; Sin dirección asignada - ADMINISTRADOR GENERAL
+        case 'tramitesGenerales':
+            $controllerInstance -> reporteGeneral1_Admin();
+            break;
+        case 'usuariosGenerales':
+            $controllerInstance -> reporteGeneral2_Admin();
+            break;            
         //idDepto = 2; Dirección acádemica
         //idDepto = 3; Servicios escolares
         //idDepto = 4; Dirección Desarrollo Academico
@@ -130,6 +141,9 @@
         //idDepto = 6; Consultorio de atención de primer contacto
         case 'repInd_DirMed':
             $controllerInstance ->reporteInd_DirMed();
+            break;
+        case 'reporteCitasDia':
+            $controllerInstance ->reportePorDia_DirMed();
             break;
         //idDepto = 7; Vinculación
         default:
