@@ -14,15 +14,6 @@
     if (!$conn) {
         die("Error: No se pudo establecer conexión con la base de datos.");
     }
-    
-    // -- ESTO EVITA HACER ACCIONES SI LA SESIÓN NO SE ENCUENTRA ACTIVA. REDIRIGE TODO AL LOGIN
-    //NOTA.- 2025-11-19 17:25pm - DESCOMENTAR
-    /*session_start();
-    if (!isset($_SESSION['rol'])) {
-        header('Location: /IdentiQR/app/Views/Login.php');
-        exit;
-    }*/
-
     // ---------------------------------------------------------------------------------------
     // VALIDACIÓN DE SESIÓN CON SWEETALERT
     // ---------------------------------------------------------------------------------------

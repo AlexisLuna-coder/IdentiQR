@@ -52,6 +52,48 @@ function registroAlumno(){
         showConfirmButton: false
     });
 }
+
+/*2.3 Alerta de consulta/s */
+function consultarConCarga(event) {
+    event.preventDefault(); // Detenemos el envío inmediato
+    const form = event.target;
+    const submitter = event.submitter; // Detectamos qué botón se presionó
+
+    let titulo = "Consultando...";
+    let texto = "Buscando información en la base de datos.";
+
+    // Personalizamos el mensaje según el botón presionado
+    if (submitter && submitter.name === 'consultarTodo') {
+        titulo = "Consultando todos los alumnos";
+        texto = "Esto puede tardar unos segundos...";
+    } else if (submitter && submitter.name === 'consultarMatricula') {
+        titulo = "Consultando alumno";
+        texto = "Buscando matrícula específica...";
+    }
+
+    Swal.fire({
+        title: titulo,
+        text: texto,
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 1000, // Tiempo estético
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    }).then(() => {
+        // Inyectar el botón presionado como hidden input para que PHP lo detecte
+        if (submitter && submitter.name) {
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = submitter.name;
+            hiddenInput.value = submitter.value;
+            form.appendChild(hiddenInput);
+        }
+        form.submit();
+    });
+}
+
 /*2.4 Alerta de eliminación o lo que se haya hecho */
 function mostrarAlerta(tipo, mensaje) {
     Swal.fire({

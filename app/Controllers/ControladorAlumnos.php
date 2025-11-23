@@ -15,6 +15,28 @@
         public function insertarAlumno(){
             /* Este IF verifica que el método que fue mandado es un POST */
             if(isset($_POST['Enviar_Alumno'])) { //isset() Determina si una variable está definida y no es null
+                //Validamos que el ALUMNO no sea menor de edad. Nota (Considerar ponerlo en un trigger)
+                try {
+                    $fechaNacimiento = new DateTime($_POST['FeNac']);
+                    $hoy = new DateTime();
+                    $edad = $hoy->diff($fechaNacimiento)->y; // Calcula la diferencia en años
+
+                    if ($edad < 16) {
+                        // Si es menor de 16, definimos mensaje de error y NO registramos
+                        $resultadoExito = false;
+                        $mensaje = "El alumno no puede ser registrado. Edad actual: $edad años. La edad mínima requerida es de 16 años.";
+                        
+                        // Cargamos la vista con el error y detenemos la función
+                        include_once __DIR__ . '/../Views/gestionesGenerales/GestionesAlumnos.php';
+                        return; 
+                    }
+                } catch (Exception $e) {
+                    $resultadoExito = false;
+                    $mensaje = "Error al validar la fecha de nacimiento.";
+                    include_once __DIR__ . '/../Views/gestionesGenerales/GestionesAlumnos.php';
+                    return;
+                }
+
                 // Crear objeto Alumno que almacena los datos del formulario
                 $feIngreso = sprintf('%04d-09-01', $_POST['FeIngreso']); //https://www.php.net/manual/es/function.sprintf.php
                 $Alumno = new Alumno(
@@ -54,20 +76,21 @@
                     /*CODIFICACIÓN DEL QR - GENERANDO ÚNICAMENTE SU HASH */
                     $hashQR = hash('sha256', $rutaQR->getString()); //Esta sólo permite identificar el QR (No de puede decodificar después)
                     $Alumno->setQRHash($hashQR);
+                    
 
                     /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUÉS */
-                    //$hashQR_B64 = base64_encode($rutaQR->getString()); //Esta sí permite guardar todo el QR COMPLETO (Si se puede decodificar después)
-                    //$Alumno->setQRHash($hashQR_B64);
                     if(!$this->modelAlumno->asignarHashQR($Alumno)){
                         die("Error al asignar el código QR al alumno.");
                     }
                     /*USANDO EL MÉTODO DEL ARCHIVO enviarCorreo.php 2025-10-15 */
                     include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
                     enviarCorreoAlumno($Alumno, $rutaQR->getString());
-                    echo "<script>registroAlumno();</script>";
-                    //echo "<h2 style='color: green;'>Registro exitoso</h2>";
+                    $resultadoExito = true;
+                    // $mensaje no es necesario aquí porque registroAlumno() tiene su propio texto, 
+                    // pero podemos dejarlo por consistencia.
+                    $mensaje = "Registro Exitoso";
                 } else {
-                    //echo "<h2 style='color: red;'>Registro fallido</h2>";
+                    $mensaje = "Error al registrar al alumno en la base de datos.";
                 }
             }
             //include_once '/../../Views/RegistroAlumno.html';
@@ -156,12 +179,19 @@
             $result = null;
             $mostrarMensajeBusqueda = false;
             $mensajeBusqueda = '';
+            $resultadoExito = null; // Inicializamos como null
 
             // Si se presiona el botón "Consultar todo"
             if (isset($_POST['consultarTodo'])) {
                 $result = $this->modelAlumno->obtenerTodosAlumnos();
-                $mostrarMensajeBusqueda = false;
-                $mensajeBusqueda = '';
+                
+                if ($result && $result->num_rows > 0) {
+                    $resultadoExito = true;
+                    $mensaje = "Consulta de todos los alumnos realizada correctamente.";
+                } else {
+                    $resultadoExito = false;
+                    $mensaje = "No hay alumnos registrados en el sistema.";
+                }
             }
 
             include_once(__DIR__ . '/../Views/gestionesGenerales/GestionesAlumnos.php');

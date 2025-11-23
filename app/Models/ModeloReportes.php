@@ -10,29 +10,31 @@
         /*Apatir de acá se encontrarán las funciones para Generar los reportes para cada dirección.*/
         //idDepto = 1; Administrador general - Sin dirección asociada
         public function reporteGeneral_Admin(){
-            $statement_query = "SELECT registroservicio.*,serviciotramite.Descripcion as Descripcion, serviciotramite.idDepto as idDepto, departamento.Nombre as NombreDepto FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite inner join departamento on servicioTramite.idDepto = departamento.idDepto;";    
-            //$sql_query = "SELECT *, count(idDepto) as Cantidad FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite group by serviciotramite.idDepto;"
-
+            $statement_query = "SELECT registroservicio.*,serviciotramite.Descripcion as Descripcion, serviciotramite.idDepto as idDepto, departamento.Nombre as NombreDepto FROM registroservicio 
+            inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite inner join departamento on servicioTramite.idDepto = departamento.idDepto;";    
             $result = $this->conn->query($statement_query);
-            
             $data = []; //Declaramos el arreglo vacio para los datos que se encuentran en la consulta
-
-            //Hacemos el ciclo que recuperará la información
+            //Hacemos el ciclo que recuperará la información y generar un arreglo asociativo dentro de un arreglo. Arreglos dentro de arreglos
             while($row = $result ->fetch_assoc()){
                 //Arreglos dentro de arreglos
-                $data[] = [$row['FolioRegistro'], $row['Matricula'],$row['idTramite'],$row['FechaHora'],$row['descripcion'],$row['estatusT'],$row['FolioSeguimiento'],$row['Descripcion'],(int)$row['idDepto'], $row['NombreDepto']];
+                $data[] = [$row['FolioRegistro'], $row['Matricula'],$row['idTramite'],$row['FechaHora'],$row['descripcion'],$row['estatusT'],$row['FolioSeguimiento'],
+                $row['Descripcion'],(int)$row['idDepto'], $row['NombreDepto']];
             }
-
             //Retornamos el arreglo
             return $data;
         }
+
         public function reporteGeneral2_Admin_Pastel(){
-            $sql_statement = "select departamento.Nombre, count(*) as Total FROM USUARIO INNER JOIN departamento ON usuario.idDepto = departamento.idDepto group by usuario.idDepto;";
+            //Creamos la sentencia en SQL para realizar un conteo de todos los departamentos (como estan registrados)
+            $sql_statement = "select departamento.Nombre, count(*) as Total FROM USUARIO 
+            INNER JOIN departamento ON usuario.idDepto = departamento.idDepto group by usuario.idDepto;";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
-            while ($row = $result -> fetch_assoc()){
+            $data = []; //Variable de tipo arreglo vacio para los datos que se encuentran en la consulta
+            while ($row = $result -> fetch_assoc()){ //Realizamos el ciclo y lo vamos almacenando dentro de nuestra variable. 
+                //Arreglos dentro de arreglos
                 $data[] = [$row['Nombre'], (int) $row['Total']];
             }
+            //Retornamos el arreglo
             return $data;
         }
         public function reporteGeneral2_Datos(){

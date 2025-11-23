@@ -1,3 +1,6 @@
+<?php 
+    $fechaMaximaPermitida = date('Y-m-d', strtotime('-16 years'));
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -58,7 +61,7 @@
         <div class="contenedor-secciones">
             <section id="seccionRegistrarAlumno" class = "seccionRegistrarAlumno">
                 <!-- <form action = "../Controllers/ControladorAlumnos.php" method="POST" > -->
-                <form action = "/IdentiQR/app/Controllers/ControladorAlumnos.php?action=registroAlumno" method = "POST">
+                <form action = "/IdentiQR/app/Controllers/ControladorAlumnos.php?action=registroAlumno" method = "POST" onsubmit = "return validarEdadAlumno(event)">
                     <fieldset>
                     <legend><h3>Formulario de Registro - Alta de alumno</h3></legend>
                     <p>Por favor, rellena este formulario para registrar un alumno.</p>
@@ -90,7 +93,11 @@
                     </div>
                     <div class="form-group row">
                         <label for="FechaNac">Fecha de nacimiento</label>
-                        <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" required>
+                        <input type="date" id="FeNac" name="FeNac" 
+                            min="2002-01-01" 
+                            max="<?php echo $fechaMaximaPermitida; ?>" 
+                            required>
+                        <small class="form-text text-muted">Solo se permiten alumnos mayores de 16 años.</small>
                     </div>
                     <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">
@@ -137,13 +144,6 @@
                             <option value="PrefieroNoDecirlo">Prefiero no decirlo</option>
                         </select>
                     </div>
-                    <!--TODO: Considerar que sea (Año de ingreso) para ver el tiempo hasta la fecha, que sea INT no DATE-->
-                    <!--
-                        <div class="form-group row">
-                            <label for="FeIngreso">Fecha de Ingreso(Año):</label>
-                            <input type="date" id="FeIngreso" name="FeIngreso" min = "2004-07-07" max = "2100-12-31" required>
-                        </div>
-                    -->
                     <div class="form-group row">
                         <label for="anioIngreso">Año de Ingreso</label>
                         <input type="number" id="FeIngreso" name="FeIngreso" min="2004" placeholder = "2006" required>
@@ -153,7 +153,6 @@
                             const year = new Date().getFullYear();
                             input.max = year;
                         </script>
-                        <!-- <small>Se guardará como: AAAA-09-01</small> -->
                     </div>
                     <div class="form-group row">
                         <label for="Carrea">Carrera </label>
@@ -194,7 +193,7 @@
                     <!--Este será el botón para enviar los datos-->
                     <div class="form-group row">
                         <div class="col-12 text-center">
-                            <input type="submit" name="Enviar_Alumno" value = "Enviar_Alumno"  class="btn btn-primary" onclick = "registroAlumno()">
+                            <input type="submit" name="Enviar_Alumno" value = "Enviar_Alumno"  class="btn btn-primary">
                         </div>
                     </div>
                 </form>
@@ -221,7 +220,7 @@
                 </fieldset>
             </form>
 
-            <form action="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=consultarAlumnos" id="formConsultaUsuario" method="POST">
+            <form action="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=consultarAlumnos" id="formConsultaUsuario" method="POST" onsubmit="return consultarConCarga(event)">
                 <fieldset>
                     <legend>Consulta todos los alumnos</legend>
                     <label for="idUsuario">Matrícula a buscar:</label>
@@ -337,17 +336,23 @@
             </div>
         </footer>
 
+        <!-- ALERTAS PHP -> JS -->
         <?php if (isset($resultadoExito) && $resultadoExito === true): ?>
-            <script>
-                // Llamar a tu función JS que muestra la alerta de éxito
-                mostrarAlerta('success', '<?php echo addslashes($mensaje); ?>');
+            <script> 
+                // Si viene de registro, usa la función especial
+                <?php if(isset($_POST['Enviar_Alumno'])): ?>
+                    registroAlumno(); 
+                <?php else: ?>
+                    // Si viene de consulta u otra cosa
+                    mostrarAlerta('success', '<?php echo addslashes($mensaje); ?>');
+                <?php endif; ?>
             </script>
         <?php elseif (isset($resultadoExito) && $resultadoExito === false): ?>
-            <script>
-                // Llamar a tu función JS que muestra la alerta de error
-                mostrarAlerta('error', '<?php echo addslashes($mensaje); ?>');
+            <script> 
+                mostrarAlerta('error', '<?php echo addslashes($mensaje); ?>'); 
             </script>
         <?php endif; ?>
+
 
         <!-- Modal -->
         <div id="modalEscanear" class="modal" style="display: none;">
@@ -380,124 +385,5 @@
                 </div>
             </div>
         </div>
-        <!--
-        <script>
-            let scanner = null;
-            let video = document.getElementById('video');
-            let estado = document.getElementById('estado');
-            let datosQR = document.getElementById('datosQR');
-
-            document.getElementById('btnEscanear').addEventListener('click', function(e) {
-                e.preventDefault(); // Prevenir el envío del formulario
-                abrirModal();
-            });
-
-            function abrirModal() {
-                document.getElementById('modalEscanear').style.display = 'block';
-                iniciarScanner();
-            }
-
-            function cerrarModal() {
-                document.getElementById('modalEscanear').style.display = 'none';
-                detenerScanner();
-                datosQR.innerHTML = '<p class="text-muted">Acerque el Código QR a escanear.</p>';
-                estado.innerHTML = '';
-            }
-
-            function iniciarScanner() {
-                scanner = new Instascan.Scanner({ video: video });
-
-                scanner.addListener('scan', function (content) {
-                    estado.innerHTML = '<span class="text-success">QR detectado! Procesando...</span>';
-                    datosQR.innerHTML = '<h6>Datos del QR:</h6><pre>' + content + '</pre>';
-                    detenerScanner(); // Detener la cámara después de detectar el QR
-
-                    // Enviar el contenido escaneado al controlador para procesar
-                    fetch('/IdentiQR/app/Controllers/ControladorAlumnos.php?action=procesarQR', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'qrContent=' + encodeURIComponent(content)
-                    })
-                    .then(response => response.text())
-                    .then(data => {
-                        // Mostrar resultado y botones para confirmar redirección
-                        if (data.includes('redirect:')) {
-                            const url = data.split('redirect:')[1];
-                            datosQR.innerHTML += '<br><p>¿Desea proceder con la redirección?</p>';
-                            datosQR.innerHTML += '<button id="aceptarBtn" class="btn btn-success">Aceptar</button> ';
-                            datosQR.innerHTML += '<button id="cancelarBtn" class="btn btn-danger">Cancelar</button> ';
-                            datosQR.innerHTML += '<button id="usarMatriculaBtn" class="btn btn-info">Solamente usar Matricula</button>';
-
-                            // Event listeners para los botones
-                            document.getElementById('aceptarBtn').addEventListener('click', function() {
-                                window.location.href = url;
-                            });
-                            document.getElementById('cancelarBtn').addEventListener('click', function() {
-                                cerrarModal();
-                            });
-                            document.getElementById('usarMatriculaBtn').addEventListener('click', function() {
-                                // Extraer la matrícula del contenido del QR
-                                const lines = content.split('\n');
-                                const matriculaLine = lines.find(line => line.startsWith('Matricula:'));
-                                if (matriculaLine) {
-                                    const matricula = matriculaLine.split(':')[1].trim();
-                                    document.getElementById('idAlumno_BajaUSUARIO').value = matricula;
-                                }
-                                cerrarModal();
-                            });
-                        } else {
-                            datosQR.innerHTML += '<br><span class="text-danger">' + data + '</span>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        datosQR.innerHTML += '<br><span class="text-danger">Error al procesar el QR.</span>';
-                    });
-                });
-
-                Instascan.Camera.getCameras().then(function (cameras) {
-                    if (cameras.length > 0) {
-                        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                        let selectedCamera = cameras[0];
-                        if (isMobile) {
-                            // Preferir cámara trasera en dispositivos móviles
-                            for (let cam of cameras) {
-                                if (cam.name.toLowerCase().includes('back') || cam.name.toLowerCase().includes('rear') || cam.name.toLowerCase().includes('trasera')) {
-                                    selectedCamera = cam;
-                                    break;
-                                }
-                            }
-                            // Si no se encontró por nombre, asumir que la última es la trasera
-                            if (selectedCamera === cameras[0] && cameras.length > 1) {
-                                selectedCamera = cameras[cameras.length - 1];
-                            }
-                        }
-                        scanner.start(selectedCamera);
-                        estado.innerHTML = 'Cámara activada. Escaneando...';
-                    } else {
-                        estado.innerHTML = '<span class="text-danger">No se encontraron cámaras.</span>';
-                    }
-                }).catch(function (e) {
-                    estado.innerHTML = '<span class="text-danger">Error al acceder a la cámara: ' + e.message + '</span>';
-                });
-            }
-
-            function detenerScanner() {
-                if (scanner) {
-                    scanner.stop();
-                    scanner = null;
-                }
-            }
-
-            // Cerrar modal al hacer clic fuera
-            window.onclick = function(event) {
-                if (event.target == document.getElementById('modalEscanear')) {
-                    cerrarModal();
-                }
-            }
-        </script>
-    -->
     </body>
 </html>

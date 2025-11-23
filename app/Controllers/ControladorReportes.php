@@ -18,9 +18,23 @@
         /*Apatir de acá se encontrarán las funciones para Generar los reportes para cada dirección.*/
         //idDepto = 1; Administrador general - Sin dirección asociada
         public function reporteGeneral1_Admin(){
-
             $data = $this->reportModel->reporteGeneral_Admin();
-
+            //Validamos que este vacio
+            if (empty($data)) {
+                // Generar PDF con mensaje de error/sin datos
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 16);
+                $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                $pdf->Ln(20);
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
+                date_default_timezone_set('America/Mexico_City');
+                $fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep = "ReporteAdmin_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
+                $pdf->Output('D', $nombreRep);
+                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+            }
             //Creamos nuestras variables contadoras
             $cont = [];
             $datosO = [];
@@ -35,7 +49,6 @@
                 }
                 $cont[$key]++;
             }
-            // Preparar arreglo para PHPlot: formato text-data => [ ['Etiqueta', 'Valor'], ... ]
             $plot_data = [];
             foreach($datosO as $lab){
                 $plot_data[] = [$lab, $cont[$lab]];
@@ -57,44 +70,34 @@
             //Generar gráfica
             date_default_timezone_set('America/Mexico_City'); // Ajusta tu zona horaria
             $fechaHora = date('Y-m-d_H-i-s'); //Año-Mes-Dia_Hora-Minutos-Segundos
-
-
             $filename = "public/Media/graphs/grafica_General1_".$fechaHora.".png";            
             $plot->SetOutputFile($filename);//Guardar imagen de la gráfica
             $plot -> SetIsInline(true); //Guardar gráfica en el sistema
             $plot -> DrawGraph(); // Genera la gráfica
-
+            
             //Generar el PDF
             $pdf = new FPDF();
             $pdf -> AddPage();
-            // --- ENCABEZADO Y LOGOS ---
+            // Añade el encabezado y logos (si es que se desean)
             $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
-                
+            //Realiza una validación. Si la imagen existe, la pone dentro del PDF    
             if ($logoPath && file_exists($logoPath)) {
                 $pdf->Image($logoPath, 25, 10, 45);
             }
-
             $pdf -> SetFont('Arial','B',16);
             $pdf -> Cell(0,10,utf8_decode('Reporte General - Servicios/Trámites'),0,1,'C');
             $pdf->SetFont('Arial','',10);
             $pdf->Cell(0,6, utf8_decode('Generado: ' . date('Y-m-d H:i:s')), 0, 1, 'C');
             $pdf->Ln(4);
             $pdf -> Image($filename,25,40,160,160);
-
-            // --- Nueva página: tabla con todas las consultas ---
+            // La página NUEVA CREADA - Permitira imprimir las consultas que se obtuvieron de la BD
             $pdf->AddPage();
             $pdf->SetFont('Arial','B',12);
             $pdf->Cell(0,8, utf8_decode('Detalle de consultas registradas'), 0, 1, 'C');
-            //foreach($data as $r){
-                //$pdf->Cell(0,8,$r['NombreDepto'],0,1,'C');
-                //$nombreDepto = isset($r[9]) ? $r[9] : ''; // índice 9 = NombreDepto según tu array
-                //$pdf->Cell(0,8, utf8_decode($nombreDepto), 0, 1, 'C');
-            //}
             $pdf->Ln(2);
-
             // Encabezado de tabla
             $pdf->SetFont('Arial','B',9);
-            // Definir anchos de columna (ajusta según lo que necesites)
+            // Definimos la anchura que tendra cada Celda impresa en el PDF
             $w = [
                 'Folio' => 18,
                 'Matricula' => 40,
@@ -110,21 +113,13 @@
             $pdf->Cell($w['FechaHora'],7, utf8_decode('FechaHora'),1,0,'C');
             $pdf->Cell($w['Estatus'],7, utf8_decode('Estatus'),1,0,'C');
             $pdf->Cell($w['Tramite'],7, utf8_decode('Trámite'),1,0,'C');
-
-            // Para la descripción usamos la columna restante: calculamos el ancho disponible
-            $descWidth = 80; // Ancho fijo para la columna de descripción
-            
-            //$pdf->Cell($descWidth,7, utf8_decode('Descripción'),1,1,'C');
-            //$pdf->Cell($w['Folio'],7,'',1,0); // espacio para alinear
             $pdf->Ln();
-            
-            // Filas
+
+            // Filas para poner en cada descripción ó texto recuperado de la BD
             $pdf->SetFont('Arial','',9);
-
-            $descWidth = 158; // ancho fijo para descripción
-
+            $descWidth = 158; // Ancho para poner en la descripción
             foreach($data as $r){
-                // --- ENCABEZADO Y LOGOS ---
+                // Ingresamos/añadimos los encabezados y logos a cada HOJA (a la hoja en que se empiece a escribir)
                 if ($logoPath && file_exists($logoPath)) {
                     $pdf->Image($logoPath, 25, 10, 45);
                 }
@@ -136,60 +131,63 @@
                 $estatus = utf8_decode($r[5] ?: $r[6]);
                 $tramiteDesc = utf8_decode($r[7]);
                 $descripcion = utf8_decode($r[4]);
-
-                // --- Primera fila (sin descripción) ---
+                // Insertamos la fila de los datos generales, sin incluir la descripción
                 $pdf->Cell($w['Folio'],6, $folio,1,0,'C');
                 $pdf->Cell($w['Matricula'],6, $mat,1,0,'C');
                 $pdf->Cell($w['IdTramite'],6, $idTr,1,0,'C');
                 $pdf->Cell($w['FechaHora'],6, $fecha,1,0,'C');
                 $pdf->Cell($w['Estatus'],6, $estatus,1,0,'C');
                 $pdf->Cell($w['Tramite'],6, (strlen($tramiteDesc)>30? substr($tramiteDesc,0,27).'...': $tramiteDesc),1,1,'L');
-
-                // --- Segunda fila: Descripción debajo de Folio ---
+                // La segunda fila incluira la descripción, se encontrará debajo de FOLIO
                 //$pdf->Ln();
                 $pdf->SetFont('Arial','B',9);
                 $pdf->Cell($w['Folio'],18, utf8_decode('Descripción'),1,0,'C');
-                
-
                 // Celda de descripción usando MultiCell
                 $pdf->SetFont('Arial','',9);
                 $pdf->MultiCell($descWidth,6, $descripcion,1,'L');
-
                 $pdf->Ln(7);
             }
-            //$pdf -> Output();
+            //Impresión/generar o mandar a Descargas el PDF generado
             $nombreRep = "ReporteAdmin_General_Tramites_-".$fechaHora.".pdf";
             $pdf->Output('D', $nombreRep);
         }
 
         public function reporteGeneral2_Admin(){
             $dataPastel = $this->reportModel->reporteGeneral2_Admin_Pastel();
-            //$data = $this->reportModel->reporteGeneral2_Usuarios_Admin();
-            
+            //Si los datos no existen, o son NULOS(VACIOS), GENERARA UNA GRÁFICA TEMPORAL
+            if (empty($dataPastel)) {
+                // Generar PDF con mensaje de error/sin datos
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 16);
+                $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                $pdf->Ln(20);
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(0, 10, utf8_decode('No se encontraron resultados en la BD para este reporte.'), 0, 1, 'C');
+                
+                date_default_timezone_set('America/Mexico_City');
+                $fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep = "ReporteAdmin_General_SIN_DATOS_".$fechaHora.".pdf";
+                $pdf->Output('D', $nombreRep);
+                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+            }
             //Creamos la gráfica
             $plot = new PHPLot(800,600);//plot: Referencia a PHPLot
-
             $plot -> SetDataValues($dataPastel); //Agregar los datos de la gráfica
             $plot -> SetPlotType("pie"); //pie - Pastel || Indicar que la gráfica es de pastel
             $plot -> SetDataType('text-data-single'); //Indicar que los datos se manejan como texto
             $plot -> SetTitle(utf8_decode('Porcentaje de Usuarios registrados por Dirección'));
-
-            //$dataPaste_Decode = utf8_decode($dataPastel);
             $plot -> SetLegend(array_column($dataPastel, 0)); //Indicar la simbología de la gráfica
-
             date_default_timezone_set('America/Mexico_City'); // Ajusta tu zona horaria
             $fechaHora = date('Y-m-d_H-i-s'); //Año-Mes-Dia_Hora-Minutos-Segundos
-
             $filename = "public/media/graphs/graficaUsuariosRegistrados_".$fechaHora.".png";
-
             $plot -> SetOutputFile($filename);
             $plot -> setIsInline(true); //Se queda guardada en el sistema
             $plot -> DrawGraph();
-
             //GENERAR PDF
             $pdf = new FPDF();
             $pdf -> AddPage();
-            // --- ENCABEZADO Y LOGOS ---
+            // Encabezado y logo para incluir dentro de el Reporte
             $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
                 
             if ($logoPath && file_exists($logoPath)) {
@@ -198,13 +196,9 @@
             $pdf->SetFont('Arial','B',16);
             $pdf->Cell(0,10,'Reporte de Usuarios', 0,1,'C');
             $pdf->AliasNbPages();
-            //pdf -> Image(ruta, X, Y, ancho, alto);
-            $pdf -> Image($filename,30,30,150,100);
+            $pdf -> Image($filename,30,60,150,180);
             $pdf->Ln(10);
-            
-            
             $pdf->SetAutoPageBreak(true, 50);
-
             $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php'); // https://www.fpdf.org/makefont/
             $pdf->AddFont('DMSerifText-Regular','','DMSerifText-Regular.php'); // https://www.fpdf.org/makefont/
             $pdf->AddFont('DMSerifText-Italic','','DMSerifText-Italic.php'); // https://www.fpdf.org/makefont/
@@ -243,47 +237,43 @@
                 $idDepto = utf8_decode($D['idDepto'] ??  ($D[9] ?? ''));
                 $feReg = utf8_decode($D['FechaRegistro'] ??  ($D[10] ?? ''));
                 $nomD = utf8_decode($D['NombreDepto'] ??  ($D[11] ?? ''));
-
-                $fullname = ($n. " " . $apP . " " . $apM);
-
-                // Bloque superior - 2 columnas
-                $leftX  = 12;
-                $rightX = 120;
+                $nombreCompleto = ($n. " " . $apP . " " . $apM);
+                $ladoIzqEnX  = 12;
+                $ladoDerEnX = 120;
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $yStart = $pdf->GetY() + 5;
-                // Columna izquierda: datos personales
-                $pdf->SetXY($leftX, $yStart);
+
+                $pdf->SetXY($ladoIzqEnX, $yStart);
                 $pdf->Cell(30,6, utf8_decode('Usuario:'), 0, 0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
                 $pdf->Cell(60,6, $usr, 0, 1);
-                $pdf->SetXY($leftX, $pdf->GetY());
+                $pdf->SetXY($ladoIzqEnX, $pdf->GetY());
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6, 'Nombre:', 0, 0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
-                $pdf->MultiCell(78,6, $fullname, 0, 'L');
-                $pdf->SetXY($leftX, $pdf->GetY());
+                $pdf->MultiCell(78,6, $nombreCompleto, 0, 'L');
+                $pdf->SetXY($ladoIzqEnX, $pdf->GetY());
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6,'Registro: ',0,0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
                 $pdf->Cell(30,6, $feReg, 0, 1);
                 
-                // Columna derecha: Resumen de datos
-                $pdf->SetXY($rightX, $yStart);
+                $pdf->SetXY($ladoDerEnX, $yStart);
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6,'Departamento:',0,0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
                 $pdf->Cell(0,6, ($idDepto ."-".$nomD), 0, 1);
-                $pdf->SetXY($rightX, $pdf->GetY());
+                $pdf->SetXY($ladoDerEnX, $pdf->GetY());
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6,utf8_decode('Género:'),0,0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
                 $pdf->Cell(0,6, $gen, 0, 1);
-                $pdf->SetXY($rightX, $pdf->GetY());
+                $pdf->SetXY($ladoDerEnX, $pdf->GetY());
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6,'Email:',0,0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
                 $pdf->Cell(0,6, $ema, 0, 1);
-                $pdf->SetXY($rightX, $pdf->GetY());
+                $pdf->SetXY($ladoDerEnX, $pdf->GetY());
                 $pdf->SetFont('DMSerifText-Regular','',11);
                 $pdf->Cell(30,6,'Rol:',0,0);
                 $pdf->SetFont('Alegreya-VariableFont_wght','',11);
@@ -292,27 +282,16 @@
                 
                 // Footer por página
                 $pageWidth = $pdf->GetPageWidth();
-                //$pdf->setXY(50,225);
                 $margin = 50;
                 $pdf->SetFont('ShadowsIntoLight-Regular','',9);
                 $pdf->SetTextColor(80);
-                // Texto a la izquierda (usamos '-' en vez de '•' para evitar '?')
                 $leftText = utf8_decode("Generado por: IdentiQR - Fecha del reporte: $fechaHora");
-                // Escribimos el texto izquierdo ocupando casi todo el ancho, luego sobrescribimos la parte derecha con la página
                 $pdf->SetX($margin);
                 $pdf->Cell($pageWidth - 2*$margin - 40, 6, $leftText, 0, 0, 'L');
-                // Número de página a la derecha (reserva 40mm para esto)
                 $pdf->SetX($pageWidth - $margin - 40);
                 $pdf->Cell(40, 6, utf8_decode('Página ') . $pdf->PageNo() . '/{nb}', 0, 0, 'R');
                 // restaurar color por si hace falta
                 $pdf->SetTextColor(0);
-                // Pie informativo
-                /*
-                $pdf->SetFont('Arial','I',9);
-                $pdf->SetTextColor(110);
-                $pdf->Cell(0,5, utf8_decode("Generado por: IdentiQR • Fecha del reporte: $hoy"), 0, 1, 'L');
-                $pdf->SetTextColor(0);
-                */
             }
             // Si no se generó nada
             if ($generatedPages === 0) {
@@ -339,6 +318,22 @@
         public function reporteGeneral3_Admin(){
             $dataPastel = $this->reportModel->reporteGeneral3_AlumnosAdmin_Pastel();
             //$data = $this->reportModel->reporteGeneral2_Usuarios_Admin();
+            if (empty($dataPastel)) {
+                // Generar PDF con mensaje de error/sin datos
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 16);
+                $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                $pdf->Ln(20);
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(0, 10, utf8_decode('No se encontraron resultados en la BD para este reporte de Alumnos.'), 0, 1, 'C');
+                
+                date_default_timezone_set('America/Mexico_City');
+                $fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep = "ReporteAdmin_General_Alumnos_SIN_DATOS_".$fechaHora.".pdf";
+                $pdf->Output('D', $nombreRep);
+                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+            }
             
             //Creamos la gráfica
             $plot = new PHPLot(800,600);//plot: Referencia a PHPLot
@@ -515,6 +510,23 @@
             if(isset($_POST['reporteIndividualizado_DirAca'])){
                 $dataPastel = $this->reportModel->reporteGeneral3_AlumnosAdmin_Pastel();
                 $dataPastel2 = $this->reportModel->reporteGeneral_DirAca_Pastel();
+
+                if (empty($dataPastel) || empty($dataPastel2) || empty($dataPastel) && empty($dataPastel2)) {
+                    // Generar PDF con mensaje de error/sin datos
+                    $pdf = new FPDF();
+                    $pdf->AddPage();
+                    $pdf->SetFont('Arial', 'B', 16);
+                    $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                    $pdf->Ln(20);
+                    $pdf->SetFont('Arial', '', 12);
+                    $pdf->Cell(0, 10, utf8_decode('No se encontraron resultados en la BD para este reporte.'), 0, 1, 'C');
+                    
+                    date_default_timezone_set('America/Mexico_City');
+                    $fechaHora = date('Y-m-d_H-i-s');
+                    $nombreRep = "ReporteAdmin_Gen_SIN_DATOS_".$fechaHora.".pdf";
+                    $pdf->Output('D', $nombreRep);
+                    exit(); // Detener la ejecución para no intentar dibujar la gráfica
+                }
                 
                 
                 //Creamos la gráfica 1
@@ -698,140 +710,30 @@
                 exit();
             }
         }
-        /*
-            public function reporteGeneral_DirAca(){
-            if(isset($_POST['reporteIndividualizado_DirAca'])) {
-                $dataPastel  = $this->reportModel->reporteGeneral3_AlumnosAdmin_Pastel();
-                $dataPastel2 = $this->reportModel->reporteGeneral_DirAca_Pastel();
-
-                // Directorio para almacenar gráficas
-                $dir = __DIR__ . '/../../public/media/graphs/';
-                if (!is_dir($dir)) {
-                    if (!mkdir($dir, 0755, true)) {
-                        error_log("No se pudo crear el directorio de graphs: $dir");
-                    }
-                }
-
-                // Generar timestamp único
-                $fechaHora = date('Y-m-d_H-i-s') . '_' . substr((string)microtime(), 2, 6);
-
-                // Función auxiliar: crear placeholder PNG si no hay datos
-                $create_placeholder = function($path, $text = 'No hay datos para mostrar') {
-                    $w = 800; $h = 600;
-                    $img = imagecreatetruecolor($w, $h);
-                    $bg = imagecolorallocate($img, 255, 255, 255);
-                    $textcol = imagecolorallocate($img, 80, 80, 80);
-                    imagefilledrectangle($img, 0, 0, $w, $h, $bg);
-                    // Escribir texto centrado con imagestring (fuente builtin)
-                    $font_h = 5; // tamaño de fuente builtin
-                    $txt_w = imagefontwidth($font_h) * strlen($text);
-                    $x = max(10, ($w - $txt_w) / 2);
-                    $y = ($h - imagefontheight($font_h)) / 2;
-                    imagestring($img, $font_h, (int)$x, (int)$y, $text, $textcol);
-                    imagepng($img, $path);
-                    imagedestroy($img);
-                };
-
-                // --- GRÁFICA 1 ---
-                $filename = $dir . "graficaAlumnosRegistrados_".$fechaHora.".png";
-                if (is_array($dataPastel) && count($dataPastel) > 0) {
-                    $plot = new PHPLot(800,600);
-                    $plot->SetDataValues($dataPastel);
-                    $plot->SetPlotType('pie');
-                    $plot->SetDataType('text-data-single');
-                    $plot->SetTitle(utf8_decode('Porcentaje de Alumnos registrados por Carrera'));
-                    $plot->SetLegend(array_column($dataPastel, 0));
-                    $plot->SetOutputFile($filename);
-                    $plot->setIsInline(false); // asegurar que se guarde en disco
-                    // Intentar dibujar; capturar errores simples
-                    try {
-                        $plot->DrawGraph();
-                    } catch (Exception $e) {
-                        error_log("PHPlot error gráfica 1: " . $e->getMessage());
-                    }
-                    if (!file_exists($filename)) {
-                        error_log("No se generó gráfica 1, creando placeholder: $filename");
-                        $create_placeholder($filename, 'No hay datos para gráfica 1');
-                    } else {
-                        error_log("OK: gráfica 1 generada -> " . $filename);
-                    }
-                } else {
-                    // No hay datos — crear placeholder para la grafica 1
-                    error_log("Dataseries 1 vacía, se generará placeholder.");
-                    $create_placeholder($filename, 'No hay datos: Alumnos registrados');
-                }
-
-                // --- GRÁFICA 2 ---
-                $filename2 = $dir . "graficaAlumnosTramites_".$fechaHora.".png";
-                if (is_array($dataPastel2) && count($dataPastel2) > 0) {
-                    $plot2 = new PHPLot(800,600);
-                    $plot2->SetDataValues($dataPastel2);
-                    $plot2->SetPlotType('pie');
-                    $plot2->SetDataType('text-data-single');
-                    $plot2->SetTitle(utf8_decode('Porcentaje de Tramites realizados por alumnos'));
-                    $plot2->SetLegend(array_column($dataPastel2, 0));
-                    $plot2->SetOutputFile($filename2);
-                    $plot2->setIsInline(false);
-                    try {
-                        $plot2->DrawGraph();
-                    } catch (Exception $e) {
-                        error_log("PHPlot error gráfica 2: " . $e->getMessage());
-                    }
-                    if (!file_exists($filename2)) {
-                        error_log("No se generó gráfica 2, creando placeholder: $filename2");
-                        $create_placeholder($filename2, 'No hay datos para gráfica 2');
-                    } else {
-                        error_log("OK: gráfica 2 generada -> " . $filename2);
-                    }
-                } else {
-                    // No hay datos — crear placeholder para la grafica 2
-                    error_log("Dataseries 2 vacía, se generará placeholder.");
-                    $create_placeholder($filename2, 'No hay datos: Trámites por alumnos');
-                }
-
-                // --- GENERAR PDF ---
-                $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
-                $pdf = new FPDF('L', 'mm', 'A4');
-                $pdf->AddPage();
-                $pdf->SetFont('Arial','B',16);
-                $pdf->Cell(0,10,'Reporte de Alumnos y Tramites', 0,1,'C');
-                $pdf->AliasNbPages();
-
-                if ($logoPath && file_exists($logoPath)) {
-                    $pdf->Image($logoPath, 12, 8, 28);
-                }
-
-                // Insertar primera imagen solo si existe (placeholder generado arriba si faltaba)
-                if (file_exists($filename)) {
-                    $pdf->Image($filename,50,50,200,120);
-                } else {
-                    $pdf->Ln(10);
-                    $pdf->SetFont('Arial','B',12);
-                    $pdf->Cell(0,10,'(Imagen 1 no disponible)',0,1,'C');
-                }
-
-                $pdf->Ln(10);
-                $pdf->AddPage();
-
-                // Insertar segunda imagen
-                if (file_exists($filename2)) {
-                    $pdf->Image($filename2,50,50,200,120);
-                } else {
-                    $pdf->Ln(10);
-                    $pdf->SetFont('Arial','B',12);
-                    $pdf->Cell(0,10,'(Imagen 2 no disponible)',0,1,'C');
-                }
-
-                // ... el resto de tu generación de PDF sigue igual ...
-                // (fuera de este fragmento ya continuas con la carga de fuentes y la tabla)
-            }
-        }
-        */
+        
         //Falta implementar cuantos tramites se realizarón
         //idDepto = 3; Servicios escolares
         public function reporteGeneral_ServEsco(){
             if(isset($_POST['reporteIndividualizado_ServEsco'])){
-                $dataPastel = $this->reportModel->reporteGeneral_ServEsco_Pastel();                
+                $dataPastel = $this->reportModel->reporteGeneral_ServEsco_Pastel();   
+                //Validamos que la gráfica NO se encuentre vacia
+                if (empty($data)) {
+                    // Generar PDF con mensaje de error/sin datos
+                    $pdf = new FPDF();
+                    $pdf->AddPage();
+                    $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
+                    $pdf->SetFont('ShadowsIntoLight', '', 16);
+                    $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                    $pdf->Ln(20);
+                    $pdf->SetFont('Arial', '', 12);
+                    $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
+                    
+                    date_default_timezone_set('America/Mexico_City');
+                    $fechaHora = date('Y-m-d_H-i-s');
+                    $nombreRep = "Reporte_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
+                    $pdf->Output('D', $nombreRep);
+                    exit(); // Detener la ejecución para no intentar dibujar la gráfica
+                }             
                 
                 //Creamos la gráfica 1
                 $plot = new PHPLot(800,600);//plot: Referencia a PHPLot
@@ -1427,58 +1329,6 @@
         }
 
         public function reportePorDia_DirMed(){
-            
-            /*date_default_timezone_set('America/Mexico_City');
-            $result;
-            $cant = 0;
-            //Validar que el formulario NO VAYA VACIO
-            if(isset($_POST['reporteCitasDia'])){
-                $fe = $_POST['fechaReporte']; 
-                $idDepto = (int)$_POST['idDepto'];
-
-                $cant = $this->reportModel->reporteDiario_Grafico($fe,$idDepto);
-                //echo $cant;
-                $result = $this->reportModel->reportePorDia_DirMed($fe, $idDepto);
-                //Instanciamos la clase FPDF
-
-                $pdf = new FPDF();
-                $pdf->AliasNbPages();
-                $pdf->SetAutoPageBreak(true, 50);
-                $pdf->SetTitle(utf8_decode('REPORTE DIARIO - DIRECCIÓN MEDICA'));
-                $pdf->SetAuthor('IdentiQR');
-                $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php'); // https://www.fpdf.org/makefont/
-
-                //Margenes
-                $left   = 20;
-                $top    = 20;
-                $right  = 20;
-                $bottom = 20;
-                // Dibujar rectángulo (marco)
-                $pageWidth  = $pdf->GetPageWidth();
-                $pageHeight = $pdf->GetPageHeight();
-                $pdf->SetMargins(20, 20, 20);   // 20mm por cada lado
-                $pdf->SetLeftMargin($left);
-                $pdf->SetRightMargin($right);
-                $pdf->SetTopMargin($top);
-                
-
-                $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
-                $logoPathDir = realpath(__DIR__ . '/../../public/Media/img/Consultorio_Index1.png');
-                $generatedPages = 0;
-                $pdf->AddPage();
-                $pdf->SetLineWidth(0.5); // grosor de la línea
-                $pdf->Rect(
-                    $left,
-                    $top,
-                    $pageWidth - $left - $right,
-                    $pageHeight - $top - $bottom
-                );
-                // Header: logo + titulo + fecha
-                if ($logoPath && file_exists($logoPath)) {
-                    $pdf->Image($logoPath, 75, 8, 60);
-                
-            }
-            */
             date_default_timezone_set('America/Mexico_City');
             if (!isset($_POST['reporteCitasDia'])) return;
 
@@ -1489,6 +1339,25 @@
 
             $cant = $this->reportModel->reporteDiario_Grafico($fe, $idDepto); // int
             $result = $this->reportModel->reportePorDia_DirMed($fe, $idDepto);
+
+            //Validamos que la gráfica NO se encuentre vacia
+            if (empty($cant)) {
+                // Generar PDF con mensaje de error/sin datos
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
+                $pdf->SetFont('ShadowsIntoLight', '', 16);
+                $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                $pdf->Ln(20);
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
+                    
+                date_default_timezone_set('America/Mexico_City');
+                $fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep = "Reporte_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
+                $pdf->Output('D', $nombreRep);
+                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+            }    
 
             // Normalizar filas
             $rows = [];
@@ -1510,8 +1379,6 @@
 
             $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png'); // tu logo
             $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php'); // si no tienes fuente extra puedes borrar esta línea
-
-            // ---- FUNCIONES "IN-LINE" HECHAS CON LLAMADAS FPDF (no definimos funciones) ----
 
             // --- PORTADA ---
             $pdf->AddPage();
@@ -1699,6 +1566,24 @@
                 $dataPastel = $this->reportModel->reporteGeneral_Vinc_Datos();
                 // Nota: reporteGeneral_Vinc devuelve un objeto mysqli_result
                 $resultData = $this->reportModel->reporteGeneral_Vinc($fe1, $fe2, $idDepto);
+
+                //Validamos que los datos para las gráficas NO SEAN VACIOS; de lo contrario no continuara
+                if (empty($dataPastel) || empty($resultData) || empty($dataPastel) && empty($resultData)) {
+                    // Generar PDF con mensaje de error/sin datos
+                    $pdf = new FPDF();
+                    $pdf->AddPage();
+                    $pdf->SetFont('Arial', 'B', 16);
+                    $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                    $pdf->Ln(20);
+                    $pdf->SetFont('Arial', '', 12);
+                    $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
+                    
+                    date_default_timezone_set('America/Mexico_City');
+                    $fechaHora = date('Y-m-d_H-i-s');
+                    $nombreRep = "ReporteAdmin_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
+                    $pdf->Output('D', $nombreRep);
+                    exit(); // Detener la ejecución para no intentar dibujar la gráfica
+                }
                 
                 // 3. Generar Gráfica (Mantenemos tu lógica original)
                 $plot = new PHPLot(800,600);

@@ -30,12 +30,7 @@
             </div>
             <nav class = "nav">
                 <ul>
-                    <!-- <li><a href="index.html">Inicio</a></li> -->
-                    <li><a href="Usuarios.html">Gestión de Usuarios</a></li>
-                    <!--
-                        <li><a href="Productos.html">Gestión de Productos</a></li>
-                        <li><a href="Pedidos.html">Gestión de Pedidos</a></li>
-                    -->
+                    <li><a href="/IdentiQR/app/Views/GestionesAdministradorG.php#GestorUsuarios">Gestión de Usuarios</a></li>
                     <li><a href="/IdentiQR/app/Views/GestionesAdministradorG.php#reportesGenerales">Reportes</a></li>
                     <li><a href="/IdentiQR/app/Views/GestionesAdministradorG.php#ExportarDatos">Configuración</a></li>
                     <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
@@ -44,11 +39,16 @@
         </header>
         <div class="container p-5 my-5 bg-dark text-white"> <!--TODO: Considerar quitar o dejar.-->
             <!-- !Aquí se encontrará los diferentes usos que podrá tener el admin, este podrá cambiar: nota-->    
+            <!-- Sección para Exportación (Backup) y Recuperación (Restore) de la base de datos -->
             <div id = "ExportarDatos" class = "SeguridadDatos">
                 <h2>Exportación y recuperación de Datos</h2>
-                <a href="/IdentiQR/redireccionAcciones.php?controller=BackRest_DBs&action=backup" onclick="confirmarBackup(event, this.href)"> <!--NOTA. ACABAR-->
+                <!-- Botón para generar y descargar el respaldo de la base de datos -->
+                <!-- Llama a la acción 'backup' del controlador 'BackRest_DBs' -->
+                <a href="/IdentiQR/redireccionAcciones.php?controller=BackRest_DBs&action=backup" onclick="confirmarBackup(event, this.href)">
                     <button onclick=""><i class="fa-solid fa-download"></i>Respaldar Base de datos</button>
                 </a>
+                <!-- Formulario para cargar un archivo SQL y realizar la restauración -->
+                <!-- Llama a la acción 'restore' del controlador 'BackRest_DBs' -->
                 <form action="/IdentiQR/redireccionAcciones.php?controller=BackRest_DBs&action=restore" method="post" enctype="multipart/form-data" onsubmit="confirmarRestore(event)">
                     <label for="backupFile"><i class="fa-solid fa-file"></i>Suba un archivo .sql (máx 50MB):</label><br>
                         <input type="file" id="backupFile" name="backupFile" accept=".sql" required><br><br>
@@ -116,7 +116,7 @@
                 </section>
                 <section id = "reportesGenerales">
                     <h2><i class="fa-solid fa-clipboard"></i>Reportes</h2>
-                    <form id="formReportes" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=restore" method="post" onsubmit="return generarReporteAlert()">
+                        <form id="formReportes" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=usuariosGenerales" method="post" onsubmit="return generarReporteAlert()">                        
                         <label for="tipoReporte">Tipo de Reporte:</label>
                         <select id="tipoReporte" name="tipoReporte">
                             <option value="" disabled selected>Selecciona una opción...</option>
@@ -127,44 +127,6 @@
                         <button type="submit">Generar Reporte</button>
                     </form>
                 </section>
-
-                <!--SCRIPT PARA MODIFICAR EL ACTION / CONSIDERAR PONERLO EN OTRO .JS-->
-                <script>
-                (function(){
-                    const mapping = {
-                        'Tramites': 'tramitesGenerales',
-                        'Usuarios': 'usuariosGenerales',
-                        'Alumnos': 'alumnosGenerales'
-                    };
-
-                    const form = document.getElementById('formReportes');
-                    const select = document.getElementById('tipoReporte');
-
-                    // Al cambiar la selección actualizamos la acción del form (buena UX)
-                    select.addEventListener('change', () => {
-                        const val = select.value;
-                        const act = mapping[val];
-                        if (act) {
-                            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
-                        }
-                    });
-
-                    // Por seguridad: antes de enviar, validamos selección y forzamos la acción correcta
-                    form.addEventListener('submit', (e) => {
-                        const val = select.value;
-                        if (!val) {
-                            e.preventDefault();
-                            alert('Por favor selecciona el tipo de reporte que deseas generar.');
-                            select.focus();
-                            return;
-                        }
-                        const act = mapping[val];
-                        if (act) {
-                            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
-                        }
-                    });
-                })();
-                </script>
             </main>
         </div>
 

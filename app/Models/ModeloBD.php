@@ -6,7 +6,12 @@ class BDModel {
         $this->conn = $conn;
     }
 
-    /*PARA LLAMAR A LOS MÉTODOS DEL BACKUP */
+    /*
+        !Método para generar el BACKUP de la base de datos.
+        * Este método genera un archivo SQL con toda la estructura y contenido de la base de datos actual,
+        * incluyendo tablas, datos, funciones, procedimientos almacenados y triggers.
+        * Retorna: la ruta al archivo generado o false en caso de error.
+     */
     public function backupDBs() {
         $conn = $this->conn;
         date_default_timezone_set('America/Mexico_City');
@@ -84,7 +89,7 @@ class BDModel {
             $dump .= "\n";
         }
 
-        // Rutinas con DELIMITER correcto
+        // Funciones, Procedimientos y Disparadores con DELIMITER funcional
         foreach ($funciones as $funcion) {
             if ($drop) $dump .= "DROP FUNCTION IF EXISTS `{$funcion}`;\n";
             $resCreate = $conn->query("SHOW CREATE FUNCTION `{$funcion}`");
@@ -112,54 +117,50 @@ class BDModel {
         return $success ? $filePath : false;
     }
 
-    /*PARA LLAMAR A LOS MÉTODOS DEL RESTORE */
+    /*
+    ! Método para restaurar la base de datos a partir de un archivo SQL.
+     *  Lee el archivo línea por línea, maneja correctamente los delimitadores y ejecuta las consultas.
+     *  
+     */ 
     public function restoreDBs($ruta) {
         $conn = $this->conn;
-        $lines = file($ruta);
-        
-        if ($lines === false) return "Error: No se pudo leer el archivo SQL.";
-
+        $sentenciaSQL = file($ruta);
+        if ($sentenciaSQL === false) 
+            return "Error: No se pudo leer el archivo SQL.";
+        // Deshabilitar temporalmente las llaves foráneas para evitar errores
         $conn->query("SET FOREIGN_KEY_CHECKS=0");
-        
-        $current_query = "";
+        $queryAEjecutar = "";
         $delimiter = ";";
-        
-        foreach ($lines as $line) {
+        foreach ($sentenciaSQL as $line) {
             $trimLine = trim($line);
-
-            // Solo ignoramos líneas vacías y comentarios de una sola línea (-- o #)
-            // Los comentarios /* ... */ se deben enviar a MySQL para evitar romper bloques.
+            // Evitar/ignoramos los comentarios y espacios
             if (empty($trimLine) || strpos($trimLine, "--") === 0 || strpos($trimLine, "#") === 0) {
                 continue;
             }
-
-            // Detectar cambio de DELIMITER
-            if (preg_match('/^DELIMITER\s+(\S+)/i', $trimLine, $matches)) {
-                $delimiter = $matches[1]; 
+            // Verificación de delimitador (por ejemplo para procedimientos/triggers/funciones)
+            if (preg_match('/^DELIMITER\s+(\S+)/i', $trimLine, $coincidencia)) {
+                $delimiter = $coincidencia[1]; 
                 continue;
             }
-
-            $current_query .= $line;
-
-            // Verificar si termina con el delimitador actual
+            // Acumular en la consulta actual
+            $queryAEjecutar .= $line;
+            // Verificar si la línea termina con el delimitador actual para ejecutar la consulta por bloques
             if (preg_match('/' . preg_quote($delimiter, '/') . '\s*$/', $trimLine)) {
-                $sqlToRun = substr(trim($current_query), 0, -strlen($delimiter));
-
+                $sqlToRun = substr(trim($queryAEjecutar), 0, -strlen($delimiter));
                 if (!empty(trim($sqlToRun))) {
                     try {
                         $conn->query($sqlToRun);
                     } catch (mysqli_sql_exception $e) {
-                        // Capturamos el error para mostrarlo bonito y reactivar FK
+                        // En caso de error, reactivar las constraints FK y devolver error
                         $conn->query("SET FOREIGN_KEY_CHECKS=1");
                         return "Error SQL en restauración: " . $e->getMessage();
                     }
                 }
-                $current_query = ""; 
+                $queryAEjecutar = ""; 
             }
         }
-
+        // Reactivar las llaves foraneás que se tengan. SOLO AL ACABAR DE ESCRIBIR TODO EL SQL
         $conn->query("SET FOREIGN_KEY_CHECKS=1");
-        //return "Restauración exitosa :D";
         return true;
     }
 }

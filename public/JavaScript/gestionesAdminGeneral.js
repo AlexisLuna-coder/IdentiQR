@@ -1,16 +1,22 @@
-/*AQUÍ IRA LOS DEL BACKUP Y RESTORE. ASÍ COMO PARA "GENERANDO REPORTES" */
-/*GESTIONES ADMIN GENERAL */
-/**
+/* 
  * Archivo JS para las gestiones generales del Administrador (Backup, Restore, Reportes)
+ * Este archivo contiene funciones que muestran diálogos de confirmación y alertas
+ * usando SweetAlert2 para las operaciones de respaldo y restauración de la base de datos,
+ * así como para la generación de reportes.
  */
 
 document.addEventListener("DOMContentLoaded", function() {
-    // Verificar si hay alertas pendientes del servidor (Restore success/error)
+    // Al cargar la página, verificar si hay alertas generadas por el servidor (ej. éxito o error de restauración)
     manejarAlertasBD();
+    //Lógica para manejar el formulario de reportes
+    configurarFormularioReportes();
 });
 
 /**
- * Muestra alerta de carga para el BACKUP y luego redirige a la descarga
+ * Muestra alerta de carga para el BACKUP y luego redirige a la descarga.
+ * 
+ * @param {Event} event - Evento click a cancelar para mostrar alerta primero.
+ * @param {string} url - URL para descarga del backup.
  */
 function confirmarBackup(event, url) {
     event.preventDefault(); // Evita que el link navegue inmediatamente
@@ -35,19 +41,22 @@ function confirmarBackup(event, url) {
 }
 
 /**
- * Muestra alerta de carga infinita para el RESTORE hasta que el servidor responda
+ * Muestra alerta de confirmación para el RESTORE.
+ * Valida que haya archivo seleccionado y pregunta confirmación antes de enviar el formulario.
+ * Muestra alerta de carga mientras el servidor procesa la restauración.
+ * 
  */
 function confirmarRestore(event) {
     event.preventDefault(); // Detenemos el envío inmediato del formulario
     
-    // Validar que haya archivo seleccionado
+    // Validar que haya archivo seleccionado para restaurar
     const input = document.getElementById('backupFile');
     if (!input || !input.files.length) {
         Swal.fire('Atención', 'Por favor selecciona un archivo .sql primero', 'warning');
         return;
     }
 
-    // Mostrar alerta de confirmación (Pregunta de seguridad)
+    // Mostrar alerta de confirmación para que usuario confirme restauración de BD
     Swal.fire({
         title: '¿Confirmar Restauración?',
         text: "Esta acción reemplazará los datos actuales con el archivo seleccionado. Se recomienda haber hecho un respaldo previo.",
@@ -59,7 +68,7 @@ function confirmarRestore(event) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Si el usuario confirma, mostramos la alerta de carga
+            // Si el usuario confirma, mostramos la alerta de carga durante el proceso
             Swal.fire({
                 title: 'Restaurando Base de Datos',
                 text: 'Este proceso puede tardar unos segundos. Por favor, no cierres la página.',
@@ -72,14 +81,15 @@ function confirmarRestore(event) {
                 }
             });
 
-            // 4. Enviamos el formulario manualmente
+            // Enviar el formulario manualmente al servidor para iniciar restauración
             event.target.submit();
         }
     });
 }
 
 /**
- * Lee el input hidden que imprime PHP para mostrar Éxito o Error tras el Restore
+ * Lee el input hidden generado por PHP para determinar si hubo éxito o error en la restauración
+ * y muestra la alerta correspondiente con SweetAlert2.
  */
 function manejarAlertasBD() {
     const inputStatus = document.getElementById('serverStatusBD');
@@ -96,7 +106,7 @@ function manejarAlertasBD() {
             confirmButtonText: 'Excelente'
         });
     } else if (status.startsWith('restore_error')) {
-        // Extraemos el mensaje de error si viene separado por "::"
+        // Extraemos el mensaje de error separado por "::"
         const partes = status.split('::');
         const msg = partes[1] || 'Ocurrió un error desconocido.';
         
@@ -109,7 +119,7 @@ function manejarAlertasBD() {
     }
 }
 
-// Función PARA LOS REPORTES
+// Función para mostrar alerta al generar reportes
 function generarReporteAlert() {
     Swal.fire({
         title: 'Generando Reporte',
@@ -119,4 +129,48 @@ function generarReporteAlert() {
         showConfirmButton: false
     });
     return true;
+}
+
+/*FUNCIÓN QUE PERMITIRA AUTOSELECCIONAR/ASIGNAR EL ACTION A CADA REPORTE*/
+function configurarFormularioReportes() {
+    //Creamos una constante la cual establecerá diferentes parametros. Servira de arreglo de opciones
+    const arregloOpcion = {
+        'Tramites': 'tramitesGenerales',
+        'Usuarios': 'usuariosGenerales',
+        'Alumnos': 'alumnosGenerales'
+    };
+    const form = document.getElementById('formReportes');
+    const select = document.getElementById('tipoReporte');
+
+    // Comprobación de que los elementos existen
+    if (!form || !select) {
+        console.error('No se encontraron los elementos del formulario de reportes (formReportes o tipoReporte).');
+        return;
+    }
+
+    // Al cambiar la selección actualizamos la acción del form (buena UX)
+    select.addEventListener('change', () => {
+        const val = select.value;
+        const act = arregloOpcion[val];
+        if (act) {
+            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
+        }
+    });
+
+    // Antes de enviar, validamos selección y forzamos la acción correcta
+    form.addEventListener('submit', (e) => {
+        const val = select.value;
+        if (!val) {
+            e.preventDefault();
+            // Usamos SweetAlert2 ya que ya lo estás utilizando
+            Swal.fire('Atención', 'Por favor selecciona el tipo de reporte que deseas generar.', 'warning');
+            select.focus();
+            return;
+        }
+        const act = mapping[val];
+        if (act) {
+            // Forzar la acción correcta justo antes de enviar
+            form.action = `/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=${act}`;
+        }
+    });
 }
