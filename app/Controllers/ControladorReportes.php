@@ -82,13 +82,15 @@
             $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
             //Realiza una validación. Si la imagen existe, la pone dentro del PDF    
             if ($logoPath && file_exists($logoPath)) {
-                $pdf->Image($logoPath, 25, 10, 45);
+                
+                $pdf->Image($logoPath, 25, 10, 35);
             }
             $pdf -> SetFont('Arial','B',16);
             $pdf -> Cell(0,10,utf8_decode('Reporte General - Servicios/Trámites'),0,1,'C');
             $pdf->SetFont('Arial','',10);
             $pdf->Cell(0,6, utf8_decode('Generado: ' . date('Y-m-d H:i:s')), 0, 1, 'C');
             $pdf->Ln(4);
+            $pdf->Ln(5);
             $pdf -> Image($filename,25,40,160,160);
             // La página NUEVA CREADA - Permitira imprimir las consultas que se obtuvieron de la BD
             $pdf->AddPage();
@@ -106,6 +108,7 @@
                 'Estatus' => 24,
                 'Tramite' => 40
             ];
+            $pdf->Ln(15);
             // Cabeceras
             $pdf->Cell($w['Folio'],7, utf8_decode('Folio'),1,0,'C');
             $pdf->Cell($w['Matricula'],7, utf8_decode('Matrícula'),1,0,'C');
@@ -121,7 +124,7 @@
             foreach($data as $r){
                 // Ingresamos/añadimos los encabezados y logos a cada HOJA (a la hoja en que se empiece a escribir)
                 if ($logoPath && file_exists($logoPath)) {
-                    $pdf->Image($logoPath, 25, 10, 45);
+                    $pdf->Image($logoPath, 25, 10, 30);
                 }
                 // Preparar datos
                 $folio = utf8_decode($r[0]);
