@@ -23,51 +23,9 @@
         exit;
     }*/
 
-    //CHAT - ABAJO
     // ---------------------------------------------------------------------------------------
     // VALIDACIÓN DE SESIÓN CON SWEETALERT
     // ---------------------------------------------------------------------------------------
-    /*session_start();
-    if (!isset($_SESSION['rol'])) {
-        // Cerramos PHP para escribir HTML limpio
-        ?>
-        <!DOCTYPE html>
-        <html lang="es">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Acceso Denegado</title>
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <style>
-                body { font-family: Arial, sans-serif; background-color: #f0f2f5; }
-            </style>
-        </head>
-        <body>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    Swal.fire({
-                        title: 'Acceso Restringido',
-                        text: 'Debes iniciar sesión para realizar esta acción.',
-                        icon: 'warning',
-                        confirmButtonText: 'Ir al Login',
-                        confirmButtonColor: '#3085d6',
-                        allowOutsideClick: false,
-                        allowEscapeKey: false
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = '/IdentiQR/app/Views/Login.php';
-                        }
-                    });
-                });
-            </script>
-        </body>
-        </html>
-        <?php
-        exit; // IMPORTANTE: Detener la ejecución aquí
-    }*/
-    // ---------------------------------------------------------------------------------------
-    
-    
     session_start();
     if (!isset($_SESSION['rol'])) {
         // Cerramos PHP para escribir HTML limpio

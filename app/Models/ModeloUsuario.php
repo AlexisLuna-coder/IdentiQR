@@ -108,13 +108,15 @@
         }
 
         
-        /*Función para la modificación de un Usuario*/
+        /* Función para la modificación de un Usuario */
         public function actualizarUsuario(Usuario $unUsuario){
-            //Statement
+            // Statement
             $sql_statement = "UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, genero = ?, email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ?";
-            //Preparar el statement
-            $stmt = $this ->conn->prepare($sql_statement);
-            //Pasamos los parámetros
+            
+            // Preparar el statement
+            $stmt = $this->conn->prepare($sql_statement);
+            
+            // Validar preparación
             if (!$stmt) {
                 die("Error al preparar actualización: " . $this->conn->error);
             }
@@ -125,13 +127,15 @@
             $apellido_materno = $unUsuario->getApellidoMaterno();
             $genero = $unUsuario->getGenero();
             $email = $unUsuario->getEmail();
-            $passw = password_hash($unUsuario->getPassw(),PASSWORD_BCRYPT);
+            
+            //$passw = md5($unUsuario->getPassw());
+            $passw = ($unUsuario->getPassw());
+            
             $rol = $unUsuario->getRol();
             $idDepto = (int)$unUsuario->getIdDepto();
             $id_usuario = (int)$unUsuario->getIdUsuario();
 
             // Enlazamos parámetros
-            //$stmt->bind_param("sssssssii"
             $stmt->bind_param("sssssssii",
                 $nombre,
                 $apellido_paterno,
@@ -143,13 +147,14 @@
                 $idDepto,
                 $id_usuario
             );
+
             // Ejecutamos la actualización
             if (!$stmt->execute()) {
                 die("Error al ejecutar actualización: " . $stmt->error);
             }
 
             $stmt->close();
-            return true; // o puedes retornar el objeto actualizado
+            return true; 
         }
 
         /*Función para la consulta del usuario */

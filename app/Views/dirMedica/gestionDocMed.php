@@ -31,10 +31,9 @@
                     <nav id="nav">
                         <ul>
                             <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
-                            <li><a href="#">TEMAS</a></li>
-                            <li><a href="#">CONTACTOS</a></li>
-                            <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
-                            <button onclick="history.back();">VOLVER</button> <!--AQUÍ SE REGRESARÁ-->
+                            <li><a href="/IdentiQR/index.html#PresentacionDepartamentos">TEMAS</a></li>
+                            <li><a href="/IdentiQR/index.html#contacto"><i class="fa-solid fa-envelope"></i>CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -97,7 +96,7 @@
                     <hr>
 
                     <input type="hidden" name="idDepto" value="<?php echo $idDepto;?>">
-                    <input type="submit" value="Registrar cita medica - alumno" name = "registrarTramite_dirMedica" onclick="alert('Datos enviados con éxito')">
+                    <input type="submit" value="Registrar cita médica - alumno" name = "registrarTramite_dirMedica" onclick="alert('Datos enviados con éxito')">
                 </fieldset>
             </form>
         </div>

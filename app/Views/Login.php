@@ -61,6 +61,30 @@
             </div>
         </main>
 
+        <!------------------------------------>
+        <footer class="FooterIndex1" id="FooterIndex1">
+            <div class="footer__container">
+                <div class="footer__info">
+                <h3>IdentiQR</h3>
+                <p>
+                    ©2025 IdentiQR. Todos los derechos reservados.<br>
+                    Diseñado por: Lizbeth B. y Alexis S.
+                </p>
+                </div>
+                <div class="footer__links">
+                <a href="mailto:IdentiQR.info@gmail.com">Contact Us</a>
+                <a href="#Terms_Index1">Términos del servicio</a>
+                </div>
+                <div class="footer__terms" id="Terms_Index1">
+                <p>
+                    Toda información resguardada será de carácter relevante. 
+                    No se podrá acceder a este sistema si no se cuenta con previo registro. 
+                    Por ningún motivo, el estudiante podrá acceder al sistema.
+                </p>
+                </div>
+            </div>
+        </footer>
+
         <br>
         <!-- INPUT OCULTO PARA COMUNICACIÓN PHP -> JS -->
         <input type="hidden" id="loginStatus" value="<?php echo $statusAlert; ?>">

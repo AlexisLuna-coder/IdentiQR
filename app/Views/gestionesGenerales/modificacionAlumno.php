@@ -68,11 +68,11 @@
                     <br>
                     <div class="form-group row">
                         <label for="Nombre(s)">Nombre(s)</label>
-                        <input type="text" id="nombre" name="nombre" value="<?php echo $row['Nombre']; ?>" required readonly>
+                        <input type="text" id="nombre" name="nombre" value="<?php echo $row['Nombre']; ?>" required>
                     </div>
                     <div class="form-group row">
                         <label for="ApePat">Apellido paterno</label>
-                        <input type="text" id="ApPat" name="ApPat" value="<?php echo $row['ApePat']; ?>" required readonly>
+                        <input type="text" id="ApPat" name="ApPat" value="<?php echo $row['ApePat']; ?>" required>
                     </div>
 
                     <div class="form-group row">
@@ -81,7 +81,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="FechaNac">Fecha de nacimiento</label>
-                        <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" value="<?php echo $row['FechaNac']; ?>" required>
+                        <input type="date" id="FeNac" name="FeNac" min = "1950-12-31"  max = "2100-12-31" value="<?php echo $row['FechaNac']; ?>" required readonly>
                     </div>
                     <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">

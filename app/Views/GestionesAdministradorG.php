@@ -85,7 +85,7 @@
                     <!--*:  Aquí se van a incluir todos los trámites que se pueden realizar (De esto todos los departamentos)-->
                     <div id = "card-Dir">
                         <legend>Dirección Académica</legend>
-                        <a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">Gestión Dirección Acádemica - Justificantes - Recursamiento </a>
+                        <a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">Gestión Dirección Académica - Justificantes - Recursamiento </a>
                     </div>
                     <hr>
                     <div id = "card-DirVinculacion">
@@ -105,7 +105,7 @@
                     <hr>
                     <div id = "card-DirMedicina">
                         <legend>Dirección de Atención Médica de Primer Contacto</legend>
-                        <a href="/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php">Gestión de citas con el médico - Médicina</a>
+                        <a href="/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php">Gestión de citas con el médico - Medicina</a>
                     </div>
                     <hr>
                     <div id = "card-DirServEsco">

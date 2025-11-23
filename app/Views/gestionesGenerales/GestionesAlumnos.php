@@ -30,8 +30,9 @@
                 <div class="container__nav">
                     <nav id="nav" class = "nav">
                         <ul class = "nav-list">
-                            <li><a href="/IdentiQR/index.html" class="select">Inicio</a></li>
-                            <li><a href="/IdentiQR/index.html#contacto">Contacto</a></li>
+                            <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
+                            <li><a href="/IdentiQR/index.html#PresentacionDepartamentos">TEMAS</a></li>
+                            <li><a href="/IdentiQR/index.html#contacto"><i class="fa-solid fa-envelope"></i>CONTACTOS</a></li>
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>

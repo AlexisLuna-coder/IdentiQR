@@ -135,7 +135,7 @@ begin
 	declare n,p,m varchar(10);
     set new.passw = MD5(new.passw);
     set new.FechaRegistro = now();
-    set new.usr = upper(concat(left(new.nombre,1),left(new.apellido_paterno,1),right(new.apellido_materno,1),year(new.FechaRegistro),"-",substring(UUID(),1,2)));
+    set new.usr = upper(concat(left(new.nombre,2),left(new.apellido_paterno,1),right(new.apellido_materno,1),year(new.FechaRegistro),"-",substring(UUID(),1,2)));
 end //
 
 delimiter //
@@ -170,9 +170,9 @@ begin
     set usR = concat_ws(" ", "Realizado por: ", user());
     
     
-    insert into HistorialInfoQR values (0,now(),accionR,mensaje,usR);
-
+    insert into HistorialInfoQR values (null,now(),accionR,mensaje,usR);
 end //
+
 delimiter //
 create trigger Act_Bita_Usuario after update on Usuario
 for each row
@@ -186,8 +186,7 @@ begin
     set usR = concat_ws(" ", "Realizado por: ", user());
     
     
-    insert into HistorialInfoQR values (0,now(),accionR,mensaje,usR);
-
+    insert into HistorialInfoQR values (null,now(),accionR,mensaje,usR);
 end //
 delimiter //
 create trigger Baja_Bita_Usuario after delete on Usuario
@@ -201,9 +200,8 @@ begin
     set accionR = "Baja";
     set usR = concat_ws(" ", "Realizado por: ", user());
     
-    insert into HistorialInfoQR values (0,now(),accionR,mensaje,usR);
+    insert into HistorialInfoQR values (null,now(),accionR,mensaje,usR);
 end //
-
 /*Inserciones dentro de la tabla de Usuario*/
 /*Usuarios generados para cada DIRECCIÓN*/
 INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R', 'identiqr.info@gmail.com', 'IdentiQR_Admin', 'Administrador',1); /*Admin - IQR2025-99*/
@@ -214,8 +212,7 @@ INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `a
 INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IQD2025-A1*/
 #select * from usuario;
 #select * from departamento;
-/* DISPARADOR PARA EL REGISTRO DE LA CONTRASEÑA INICIAL - Falta*/
-
+/* DISPARADOR PARA LA ACTUALIZACIÓN DE LA CONTRASEÑA - Unicamente si se modifica*/
 /*Disparadores para agilizar el procedimiento de ASIGNACIÓNDE HASH a los alumnos*/
 delimiter //
 create trigger actHash_QR_Alumno before update on alumno
@@ -274,6 +271,8 @@ begin
     
     select * from usuario where (usr = us or email = us) and passw = pass_md5; 
 end //
+
+
 
 /*Procedimiento para agilizar el registro de los usuarios*/
 delimiter //
@@ -470,7 +469,7 @@ begin
     close buscarRep_DirMed;
 end //
 
-#Pruebas que se borraran en PRODUCCIÓN.
-call reporteInd_DirMed (2,curdate(),curdate(),"Femenino", 6); #Opción (1 o 2). Si es 1 Fecha(f1 y F2 <Rango de fechas>) Son as fechas que puede considerar. Si es 2 Genero (g - Hombre o Mujer)
-call reporteInd_DirMed (2,curdate(),curdate(),"Masculino", 6);
 
+select * from usuario;
+
+select * from alumno;

@@ -47,7 +47,7 @@
         }
 
         public function reporteGeneral3_AlumnosAdmin_Pastel(){
-            $sql_statement = "SELECT descripcion, count(*) as Total from alumno inner join carrera on alumno.idCarrera = carrera.idCarrera;";
+            $sql_statement = "SELECT descripcion, count(*) as Total from alumno inner join carrera on alumno.idCarrera = carrera.idCarrera group by alumno.idCarrera;";
             $result = $this -> conn -> query($sql_statement);
             $data = [];
             while ($row = $result -> fetch_assoc()){

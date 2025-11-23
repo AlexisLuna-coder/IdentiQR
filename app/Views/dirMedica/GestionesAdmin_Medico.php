@@ -23,8 +23,9 @@
                     <nav id="nav">
                         <ul>
                             <li><a href="/IdentiQR/index.html" class="select">INICIO</a></li>
-                            <li><a href="#">TEMAS</a></li>
-                            <li><a href="#">CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/index.html#PresentacionDepartamentos">TEMAS</a></li>
+                            <li><a href="/IdentiQR/index.html#contacto"><i class="fa-solid fa-envelope"></i>CONTACTOS</a></li>
+                            <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
                     <div class="btn__menu" id="btn_menu">
@@ -92,18 +93,6 @@
                         <input type="date" name="fechaReporte" id="fechaReporte" required>
                         <input type="hidden" name="idDepto" value="6">
                         <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día" name = "reporteCitasDia">
-                    </form>
-                </div>
-
-                <div class="reporte-container">
-                    <h3>Reporte General por Género (Porcentual)</h3>
-                    <form action="/IdentiQR/redireccionAcciones.php?controller=dirMedica&action=reporteGenero" method="POST">
-                        <label for="fechaInicio">Fecha Inicio:</label>
-                        <input type="date" name="fechaInicio" id="fechaInicio" required>
-                        <label for="fechaFin">Fecha Fin:</label>
-                        <input type="date" name="fechaFin" id="fechaFin" required>
-                        <input type="hidden" name="idDepto" value="6">
-                        <input type="submit" class="btn-submit" value="Generar Reporte por Género">
                     </form>
                 </div>
             </section>

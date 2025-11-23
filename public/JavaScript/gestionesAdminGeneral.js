@@ -38,31 +38,44 @@ function confirmarBackup(event, url) {
  * Muestra alerta de carga infinita para el RESTORE hasta que el servidor responda
  */
 function confirmarRestore(event) {
-    // No prevenimos el default aquí con preventDefault() porque queremos que el formulario se envíe
-    // Pero si usamos AJAX sería distinto. Como es envío tradicional, mostramos la alerta y dejamos fluir.
+    event.preventDefault(); // Detenemos el envío inmediato del formulario
     
     // Validar que haya archivo seleccionado
     const input = document.getElementById('backupFile');
     if (!input || !input.files.length) {
-        event.preventDefault();
-        Swal.fire('Error', 'Por favor selecciona un archivo .sql primero', 'warning');
+        Swal.fire('Atención', 'Por favor selecciona un archivo .sql primero', 'warning');
         return;
     }
 
-    // Mostrar alerta de carga que NO se cierra sola
+    // Mostrar alerta de confirmación (Pregunta de seguridad)
     Swal.fire({
-        title: 'Restaurando Base de Datos',
-        text: 'Este proceso puede tardar unos segundos. Por favor, no cierres la página.',
+        title: '¿Confirmar Restauración?',
+        text: "Esta acción reemplazará los datos actuales con el archivo seleccionado. Se recomienda haber hecho un respaldo previo.",
         icon: 'warning',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showConfirmButton: false,
-        didOpen: () => {
-            Swal.showLoading();
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, restaurar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma, mostramos la alerta de carga
+            Swal.fire({
+                title: 'Restaurando Base de Datos',
+                text: 'Este proceso puede tardar unos segundos. Por favor, no cierres la página.',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // 4. Enviamos el formulario manualmente
+            event.target.submit();
         }
     });
-    
-    // El formulario se enviará y la página se recargará con la respuesta del servidor
 }
 
 /**
@@ -96,7 +109,7 @@ function manejarAlertasBD() {
     }
 }
 
-// Función opcional para reportes (la que pedías antes)
+// Función PARA LOS REPORTES
 function generarReporteAlert() {
     Swal.fire({
         title: 'Generando Reporte',

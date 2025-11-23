@@ -67,6 +67,13 @@
             //Generar el PDF
             $pdf = new FPDF();
             $pdf -> AddPage();
+            // --- ENCABEZADO Y LOGOS ---
+            $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+                
+            if ($logoPath && file_exists($logoPath)) {
+                $pdf->Image($logoPath, 25, 10, 45);
+            }
+
             $pdf -> SetFont('Arial','B',16);
             $pdf -> Cell(0,10,utf8_decode('Reporte General - Servicios/Trámites'),0,1,'C');
             $pdf->SetFont('Arial','',10);
@@ -117,6 +124,10 @@
             $descWidth = 158; // ancho fijo para descripción
 
             foreach($data as $r){
+                // --- ENCABEZADO Y LOGOS ---
+                if ($logoPath && file_exists($logoPath)) {
+                    $pdf->Image($logoPath, 25, 10, 45);
+                }
                 // Preparar datos
                 $folio = utf8_decode($r[0]);
                 $mat = utf8_decode($r[1]);
@@ -146,8 +157,9 @@
 
                 $pdf->Ln(7);
             }
-            $pdf -> Output();
-            //$pdf->Output('D', 'Reporte_General_Tramites_'.$fechaHora.'.pdf');
+            //$pdf -> Output();
+            $nombreRep = "ReporteAdmin_General_Tramites_-".$fechaHora.".pdf";
+            $pdf->Output('D', $nombreRep);
         }
 
         public function reporteGeneral2_Admin(){
@@ -177,6 +189,12 @@
             //GENERAR PDF
             $pdf = new FPDF();
             $pdf -> AddPage();
+            // --- ENCABEZADO Y LOGOS ---
+            $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+                
+            if ($logoPath && file_exists($logoPath)) {
+                $pdf->Image($logoPath, 25, 10, 45);
+            }
             $pdf->SetFont('Arial','B',16);
             $pdf->Cell(0,10,'Reporte de Usuarios', 0,1,'C');
             $pdf->AliasNbPages();
@@ -300,11 +318,17 @@
             if ($generatedPages === 0) {
                 $pdf->AddPage();
                 $pdf->SetFont('Arial','B',12);
+                // --- ENCABEZADO Y LOGOS ---
+                $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+                    
+                if ($logoPath && file_exists($logoPath)) {
+                    $pdf->Image($logoPath, 25, 10, 45);
+                }
                 $pdf->Cell(0,10, utf8_decode('No se encontraron registros para los parámetros indicados'), 0, 1, 'C');
             }
             
-            $pdf->Output();
-            //$pdf->Output('D', 'reporteAdmin_General_Usuarios-'.$fechaHora.'.pdf'); //Descargar directamente
+            $nombreRep_Dir = "reporteAdmin_General_Usuarios-".$fechaHora.".pdf";
+            $pdf->Output('D', $nombreRep_Dir); //Descargar directamente
             //INCLUIMOS LA VISTA
             $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
             if (file_exists($vista)) {
@@ -406,6 +430,12 @@
                 // Verificar si cabe el bloque de 2 filas (aprox 16mm)
                 if ($pdf->GetY() > 175) { 
                     $pdf->AddPage();
+                    // --- ENCABEZADO Y LOGOS ---
+                    $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+                        
+                    if ($logoPath && file_exists($logoPath)) {
+                        $pdf->Image($logoPath, 25, 10, 45);
+                    }
                     
                     // Repetir Cabecera en nueva página
                     $pdf->SetFont('Arial', 'B', 10);
@@ -470,7 +500,8 @@
             $pdf->SetFont('Arial', 'B', 12);
             $pdf->Cell(0, 10, 'Total de Alumnos: ' . number_format($cont, 0), 0, 1, 'R');
 
-            $pdf->Output();
+            $nombreRep_Dir = "reporteGeneral_Administracion3_".$fechaHora.".pdf";
+            $pdf-> Output('D', $nombreRep_Dir);
             exit();
             $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
             if (file_exists($vista)) {
@@ -514,9 +545,6 @@
 
                 //$dataPaste_Decode = utf8_decode($dataPastel);
                 $plot2 -> SetLegend(array_column($dataPastel2, 0)); //Indicar la simbología de la gráfica
-
-                date_default_timezone_set('America/Mexico_City'); // Ajusta tu zona horaria
-                $fechaHora = date('Y-m-d_H-i-s'); //Año-Mes-Dia_Hora-Minutos-Segundos
 
                 $filename2 = "public/media/graphs/graficaAlumnosTramites_".$fechaHora.".png";
 
@@ -660,7 +688,8 @@
                 $pdf->SetFont('Arial', 'B', 12);
                 $pdf->Cell(0, 10, 'Total de Alumnos: ' . number_format($cont, 0), 0, 1, 'R');
 
-                $pdf->Output();
+                $nombreRep_Dir = "reporteGeneral_DirAca_".$fechaHora.".pdf";
+                $pdf-> Output('D', $nombreRep_Dir);
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -947,7 +976,8 @@
                 $pdf->SetFont('Arial', 'B', 12);
                 $pdf->Cell(0, 10, 'Total de Tramites realizados: ' . number_format($cont, 0), 0, 1, 'R');
 
-                $pdf->Output();
+                $nombreRep_Dir = "reporteGeneral_ServEsco_".$fechaHora.".pdf";
+                $pdf-> Output('D', $nombreRep_Dir);
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -973,6 +1003,11 @@
 
                 $pdf = new FPDF();
                 $pdf -> AddPage();
+                // --- ENCABEZADO Y LOGOS ---    
+                if ($logoPath && file_exists($logoPath)) {
+                    $pdf->Image($logoPath, 25, 10, 45);
+                }
+
                 $pdf->SetFont('Arial','B',16);
                 $pdf->Cell(0,10,'Reporte de Alumnos', 0,1,'C');
                 $pdf->AliasNbPages();
@@ -1010,6 +1045,11 @@
                     
                     //Si no esta vacio - Hacemos el while/for-each
                     while($rows = $data2->fetch_assoc()){
+                        $pdf->Ln(15);
+                        if ($logoPath && file_exists($logoPath)) {
+                            $pdf->Image($logoPath, 25, 10, 45);
+                        }
+                        
                         //Creamos o añadimos la información
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
@@ -1060,7 +1100,11 @@
                 
                 
 
-                $pdf->Output();
+                //date_default_timezone_set('America/Mexico_City');
+                //$fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep_Dir = "reporteGeneral_DirDDA_".$fechaHora.".pdf";
+                $pdf-> Output('D', $nombreRep_Dir);
+                //$pdf->Output();
                 //$archivoFuera = reporte_General_DDA-'.$fechaHora.'.pdf';
                 //$pdf->Output("D",$archivoFuera,true);
                 //INCLUIMOS LA VISTA
@@ -1133,6 +1177,11 @@
                     
                     //Si no esta vacio - Hacemos el while/for-each
                     while($rows = $data2->fetch_assoc()){
+                        $pdf->Ln(15);
+
+                        if ($logoPath && file_exists($logoPath)) {
+                            $pdf->Image($logoPath, 25, 10, 45);
+                        }
                         //Creamos o añadimos la información
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
                         $pdf->SetTextColor(0,0,0);
@@ -1175,7 +1224,10 @@
                 
                 
 
-                $pdf->Output();
+                //date_default_timezone_set('America/Mexico_City');
+                //$fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep_Dir = "reporteGeneral_DirDAE_".$fechaHora.".pdf";
+                $pdf-> Output('D', $nombreRep_Dir);
 
             }
             
@@ -1365,8 +1417,8 @@
                     return;
                 }
 
-                $pdf->Output('I', 'reporte_individualizado.pdf'); //Lo abre en el navegador - Nota. Estoy usandolo para pruebas
-                //$pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
+                //$pdf->Output('I', 'reporte_individualizado.pdf'); //Lo abre en el navegador - Nota. Estoy usandolo para pruebas
+                $pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
                 //INCLUIMOS LA VISTA
                 $vista = __DIR__ . '/../Views/dirMedica/GestionesAdmin_Medico.php';
                 if (file_exists($vista)) {
@@ -1432,6 +1484,8 @@
 
             $fe = $_POST['fechaReporte'];
             $idDepto = (int)$_POST['idDepto'];
+            date_default_timezone_set('America/Mexico_City');
+            $fechaHora = date('Y-m-d_H-i-s');
 
             $cant = $this->reportModel->reporteDiario_Grafico($fe, $idDepto); // int
             $result = $this->reportModel->reportePorDia_DirMed($fe, $idDepto);
@@ -1620,7 +1674,13 @@
             // Entregar PDF al navegador
             //$pdf->Output('I', 'REPORTE_DIARIO_DirMed_'.$fe.'.pdf');
             // --- FIN: Generación PDF ---
-            $pdf->Output();
+            //Llamar al Output para descarga
+
+            date_default_timezone_set('America/Mexico_City');
+            $fechaHora = date('Y-m-d_H-i-s');
+
+            $nombreRep_Dir = "reporteGeneral_DirMedica_".$fechaHora.".pdf";
+            $pdf-> Output('D', $nombreRep_Dir);
         }
         
         //idDepto = 7; Vinculación
@@ -1799,92 +1859,13 @@
                 // Limpiar
                 if (file_exists($filename)) unlink($filename);
 
-                $pdf->Output();
+                //$pdf->Output();
+
+                //Llamar al Output para descarga
+                $nombreRep_Dir = "reporteGeneral_DirVinculacion_".$fechaHora.".pdf";
+                $pdf-> Output('D', $nombreRep_Dir);
                 exit();
             }
         }
     }
-
-        
-        /*Aquí se encontrará el reporte individualizado de PORCENTAJES */
-        /*public function reporteInd_DirMed(){
-            if(isset($_POST['reporteIndividualizado_DirMed'])){
-                $tipoReporte = $_POST['tipoReporte'];
-                // Fechas: si vienen vacías o no definidas, asignar la fecha de hoy
-                $hoy = date('Y-m-d');
-
-                $fe1 = (!empty($_POST['fe1'])) ? $_POST['fe1'] : $hoy;
-                $fe2 = (!empty($_POST['fe2'])) ? $_POST['fe2'] : $hoy;
-
-                // Género: si viene vacío o no existe, asignar "Otro"
-                $genero = (!empty($_POST['genero'])) ? $_POST['genero'] : "Otro";
-
-                // idDepto siempre viene desde tu form hidden
-                $idDepto = $_POST['idDepto'];
-                
-                //Aquí tendremos que mandar a llamar.
-                //$rows = $this->directionModel->reporteInd_DirMed($tipoReporte,$fe1,$fe2,$genero,$idDepto);
-                $allSets = $this->directionModel->reporteInd_DirMed($tipoReporte,$fe1,$fe2,$genero,$idDepto);
-                //$rows = $result->fetch_all(MYSQLI_ASSOC);
-                //INSTANCIAMOS, CREAMOS UN OBJETO DE LA CLASE FPDF(PDF)
-                $pdf = new FPDF();
-                date_default_timezone_set('America/Mexico_City');
-                $pdf->AliasNbPages();
-                $fecha = $_POST['fechaReporte'] ?? date('Y-m-d');
-                $title = utf8_decode('REPORTE INDIVIDUALIZADO - DIRECCIÓN MEDICA');
-                //$pdf->AddPage();
-
-                $pdf->SetTitle($title);
-                $page = 0;
-
-                foreach ($allSets as $setIndex => $rows) {
-                    $page++;
-                    $pdf->AddPage();
-                    $pdf->SetFont('Arial','B',12);
-                    $pdf->Cell(0,8,"Hoja $page - Consulta [".($setIndex+1)."]",0,1,'C');
-                    $pdf->Ln(4);
-                    $pdf -> SetCreator("IdentiQR", true);
-                    // Page number
-                    
-                    if (empty($rows)) {
-                        $pdf->SetFont('Arial','I',10);
-                        $pdf->Cell(0,6,"(Sin datos en el Reporte)",0,1);
-                        continue;
-                    }
-
-                    $pdf->SetFont('Arial','',11);
-                    $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
-
-                    foreach ($rows as $r) {
-                        if ($logoPath && file_exists($logoPath)) {
-                            $pdf->Image($logoPath, 10, 8, 33);
-                        }
-                        $pdf->Cell(0,30, "Matricula: " . ($r['Matri'] ?? ''), 0, 1);
-                        $pdf->Cell(0,10, "Nombre: " . (($r['Nom'] ?? '') . ' ' . ($r['Pat'] ?? '') . ' ' . ($r['Mat'] ?? '')), 0, 1);
-                        $pdf->Cell(0,10, "Fecha Hora: " . ($r['FeHor'] ?? ''), 0, 1);
-                        $pdf->MultiCell(0,5, "Descripcion: " . utf8_decode($r['DesServ'] ?? ''), 0, 1);
-
-                        $pdf->Cell(0,10, "Estatura: " . obtenerEstatura($r['DesServ'] ?? ''), 0, 1);
-                        $pdf->Cell(0,10, "Peso: " . obtenerPeso($r['DesServ'] ?? ''), 0, 1);
-                        $pdf->Cell(0,10, "Alergias: " . obtenerAlergias($r['DesServ'] ?? ''), 0, 1);
-                        $pdf->Cell(0,10, "Tipo de sangre: " . obtenerTipoSangre($r['DesServ'] ?? ''), 0, 1);
-
-                        $pdf->Ln(3);
-                        $pdf->Cell(0,0,'','T',1);
-                        $pdf->Ln(3);
-                    }
-                    $pdf->Cell(0,10,'Page '.$pdf->PageNo().'/{nb}',0,0,'C');
-                }
-
-
-                $pdf->Output();
-                
-                //INCLUIMOS LA VISTA
-                $vista = __DIR__ . '/../Views/dirMedica/GestionesAdmin_Medico.php';
-                if (file_exists($vista)) {
-                    include $vista; // o require_once $vista;
-                }
-            }
-        }
-        */
 ?>

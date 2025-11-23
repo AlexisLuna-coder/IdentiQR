@@ -61,7 +61,7 @@
                         <label for="genero" class="col-4 col-form-label">Género:</label>
                         <div class="col-8">
                             <select id="genero" name="genero" required>
-                                <option value="" disabled>Selecciona una opción</option>
+                                <option value="" disabled <?php echo empty($row['genero']) ? 'selected' : ''; ?>>Selecciona una opción</option>
                                 <option value="Masculino" <?php echo ($row['genero'] == 'Masculino') ? 'selected' : ''; ?>>Masculino</option>
                                 <option value="Femenino" <?php echo ($row['genero'] == 'Femenino') ? 'selected' : ''; ?>>Femenino</option>
                                 <option value="Otro" <?php echo ($row['genero'] == 'Otro') ? 'selected' : ''; ?>>Otro</option>
@@ -79,22 +79,20 @@
                                         <i class="fa fa-address-book-o"></i>
                                     </div>
                                 </div> 
-                                <input type="email" id="email" name="email" placeholder = "example@upemor.edu.mx" value = "<?php echo $row['email'];?>" required>
+                                <input type="email" id="email" name="email" placeholder = "example@upemor.edu.mx" value = "<?php echo $row['email'];?>" readonly>
                             </div>
                         </div>
                     </div>
                     <br><br>
 
-                    <div class="form-group row">
+                                        <div class="form-group row">
                         <label for="password" class="col-4 col-form-label">Contraseña:</label> 
                         <div class="col-8">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                        <i class="fa fa-lock"></i>
-                                    </div>
+                                    <div class="input-group-text"><i class="fa fa-lock"></i></div>
                                 </div> 
-                                <input type="password" id="passw" name="passw" placeholder = "Ingresa tu contraseña" value = "<?php echo $row['passw'];?>" required>
+                                <input type="password" id="passw" name="passw" placeholder="Ingresa nueva contraseña (o deja la actual)" value="<?php echo $row['passw'];?>"> <!--CONSIDERAR QUE SI NO SE QUIERE MODIFICAR, NO DEBERA SER readonly-->
                             </div>
                         </div>
                     </div>
@@ -103,15 +101,15 @@
                     <div class="form-group row">
                         <label for="rol" class="col-4 col-form-label">Rol o cargo:</label> 
                         <div class="col-8">
-                            <select id="rol" name="rol" selected = "<?php echo $row['rol'];?>" required>
-                                <option disabled>Selecciona una opción</option>
-                                <option value="Administrador">Administrador</option>
-                                <option value="Administrativo_Vinculacion">Vinculación</option>
-                                <option value="Administrativo_ServicioEsco">Servicios Escolares</option>
-                                <option value="Administrativo_DesaAca">Desarrollo Académico</option>
-                                <option value="Administrativo_DAE">Asuntos Estudiantiles</option>
-                                <option value="Administrativo_Direccion">Dirección Académica</option>
-                                <option value="Administrativo_Medico">Consultorio Médico</option>
+                            <select id="rol" name="rol" required>
+                                <option value="" disabled <?php echo empty($row['rol']) ? 'selected' : ''; ?>>Selecciona una opción</option>                           
+                                <option value="Administrador" <?php echo ($row['rol'] == 'Administrador') ? 'selected' : ''; ?>>Administrador</option>
+                                <option value="Administrativo_Vinculacion" <?php echo ($row['rol'] == 'Administrativo_Vinculacion') ? 'selected' : ''; ?>>Vinculación</option>
+                                <option value="Administrativo_ServicioEsco" <?php echo ($row['rol'] == 'Administrativo_ServicioEsco') ? 'selected' : ''; ?>>Servicios Escolares</option>
+                                <option value="Administrativo_DesaAca" <?php echo ($row['rol'] == 'Administrativo_DesaAca') ? 'selected' : ''; ?>>Desarrollo Académico</option>
+                                <option value="Administrativo_DAE" <?php echo ($row['rol'] == 'Administrativo_DAE') ? 'selected' : ''; ?>>Asuntos Estudiantiles</option>
+                                <option value="Administrativo_Direccion" <?php echo ($row['rol'] == 'Administrativo_Direccion') ? 'selected' : ''; ?>>Dirección Académica</option>
+                                <option value="Administrativo_Medico" <?php echo ($row['rol'] == 'Administrativo_Medico') ? 'selected' : ''; ?>>Consultorio Médico</option>
                             </select>
                         </div>
                     </div>
@@ -121,15 +119,15 @@
                     <div class="form-group row">
                         <label for="Departamento" class="col-4 col-form-label">Departamento:</label> 
                         <div class="col-8">
-                            <select id="depto" name="idDepto" selected = "<?php echo $row['idDepto'];?>" required disabled>
-                                <option value="" disabled>Selecciona una opción</option>
-                                <option value="1">Ninguna específica</option>
-                                <option value="2">Dirección Académica</option>
-                                <option value="3">Servicios Escolares</option>
-                                <option value="4">Dirección Desarrollo Académico(DDA)</option>
-                                <option value="5">Dirección Asuntos Estudiantiles(DAE)</option>
-                                <option value="6">Consultorio de atención de primer contacto</option>
-                                <option value="7">Vinculación</option>
+                            <select id="depto" name="idDepto_visible" required disabled>
+                                <option value="" disabled <?php echo empty($row['idDepto']) ? 'selected' : ''; ?>>Selecciona una opción</option>
+                                <option value="1" <?php echo ($row['idDepto'] == 1) ? 'selected' : ''; ?>>Ninguna específica</option>
+                                <option value="2" <?php echo ($row['idDepto'] == 2) ? 'selected' : ''; ?>>Dirección Académica</option>
+                                <option value="3" <?php echo ($row['idDepto'] == 3) ? 'selected' : ''; ?>>Servicios Escolares</option>
+                                <option value="4" <?php echo ($row['idDepto'] == 4) ? 'selected' : ''; ?>>Dirección Desarrollo Académico (DDA)</option>
+                                <option value="5" <?php echo ($row['idDepto'] == 5) ? 'selected' : ''; ?>>Dirección Asuntos Estudiantiles (DAE)</option>
+                                <option value="6" <?php echo ($row['idDepto'] == 6) ? 'selected' : ''; ?>>Consultorio de atención de primer contacto</option>
+                                <option value="7" <?php echo ($row['idDepto'] == 7) ? 'selected' : ''; ?>>Vinculación</option>
                             </select>
                         </div>
                     </div> 
@@ -169,7 +167,6 @@
                     }
                     selectDepto.value = initialDeptoValue;
                     document.getElementById("idDepto").value = initialDeptoValue;
-
                     selectRol.addEventListener("change", function() {
                     let rolSeleccionado = this.value;
                     let deptoValue = "";
