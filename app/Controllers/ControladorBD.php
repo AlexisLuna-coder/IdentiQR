@@ -2,6 +2,7 @@
     require_once __DIR__ . '/../../config/Connection_BD.php';
     require_once __DIR__ . '/../Models/ModeloBD.php';
 
+    /*Creamos la CLASE ControllerBD que será la encargada de tener todos los métodos para realizar los respaldos y restauraciones de la BD*/
     class ControllerBD{
         private $modelBD;
         public function __construct($conn){

@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['rol'])) {
+    header("Location: /IdentiQR/app/Views/Login.php");
+    exit();
+}
+$usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+$rolActivo = $_SESSION['rol'] ?? 'Invitado';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -5,6 +14,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
+
+        <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
         <title>Gestion_DireccionServiciosEscolares_IdentiQR</title>
     </head>
     <body>
@@ -13,6 +24,12 @@
             <div class="container__header">
                 <div class="logo">
                     <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
+                </div>
+                <div class="info-sesion">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span>Sesión activa: <strong><?php echo htmlspecialchars($usuarioActivo); ?></strong></span>
+                    <br>
+                    <small style="font-size: 0.8rem; font-weight: normal;"><?php echo $rolActivo; ?></small>
                 </div>
                 <div class="container__nav">
                     <nav id="nav">
@@ -29,13 +46,7 @@
                 </div>
             </div>
         </header>
-        <!--*A partir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
-
-        <div id="HeaderLogin">
-            <h2><center>IdentiQR</center></h2>
-
-        </div>
-        <hr>
+                <hr>
         <!-- TODO: Aquí empezaremos con la información que tiene que ver con los datos o mayoritariamente del index principal (Recursos, etc.)-->
         <div class = "contenedorCentral">
             <section>

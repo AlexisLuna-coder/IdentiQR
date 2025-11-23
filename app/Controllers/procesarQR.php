@@ -1,12 +1,11 @@
 <?php
+    /*Todo este PHP (no se encuentra dentro del controlador, unicamente permitira ESCANEAR Y RECUPERAR LA INFORMACIÓN  DEL QR)
+    -Permitira escanear HACIENDO USO de la libreria de PHP QRCodeScanner*/
     require_once __DIR__ . '/../config/Connection_BD.php';
     require_once __DIR__ . '/../Models/ModeloAlumno.php';
     require_once __DIR__ . '/../../public/PHP/repositorioQRCodeScan/vendor/autoload.php';
-
     use Zxing\QrReader;
-
     header('Content-Type: application/json');
-
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = json_decode(file_get_contents('php://input'), true);
 
@@ -30,8 +29,6 @@
                 if ($texto) {
                     // Aquí puedes procesar el texto del QR
                     // Por ejemplo, si contiene datos del alumno, puedes buscar en la BD
-                    // Para este ejemplo, simplemente devolvemos el texto
-
                     echo json_encode([
                         'success' => true,
                         'texto' => $texto

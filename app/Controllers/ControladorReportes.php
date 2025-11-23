@@ -6,6 +6,7 @@
     require_once __DIR__ . '/../Models/ModeloReportes.php';
     require_once __DIR__ . '/../../config/Connection_BD.php';
 
+    /*Creamos la Clase ReportController la cual CONTENDRÁ todos los métodos/funciones para generar los reportes necesarios en cada departamento*/
     class ReportsController{
         private $reportModel;
         private $alumnoModel;
@@ -507,7 +508,7 @@
             }
             exit();
         }
-        //Falta implementar. Reporte de Alumnos (Cuantos hombres y mujeres), Usuarios (Cuantos Hombres/Mujes y Cuantos de cada Carrera)
+
         //idDepto = 2; Dirección acádemica
         public function reporteGeneral_DirAca(){
             if(isset($_POST['reporteIndividualizado_DirAca'])){
@@ -1330,7 +1331,6 @@
                     include $vista; // o require_once $vista;
                 }
         }
-
         public function reportePorDia_DirMed(){
             date_default_timezone_set('America/Mexico_City');
             if (!isset($_POST['reporteCitasDia'])) return;

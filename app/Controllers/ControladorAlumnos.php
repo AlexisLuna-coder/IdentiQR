@@ -77,7 +77,6 @@
                     $hashQR = hash('sha256', $rutaQR->getString()); //Esta sólo permite identificar el QR (No de puede decodificar después)
                     $Alumno->setQRHash($hashQR);
                     
-
                     /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUÉS */
                     if(!$this->modelAlumno->asignarHashQR($Alumno)){
                         die("Error al asignar el código QR al alumno.");
@@ -86,8 +85,6 @@
                     include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
                     enviarCorreoAlumno($Alumno, $rutaQR->getString());
                     $resultadoExito = true;
-                    // $mensaje no es necesario aquí porque registroAlumno() tiene su propio texto, 
-                    // pero podemos dejarlo por consistencia.
                     $mensaje = "Registro Exitoso";
                 } else {
                     $mensaje = "Error al registrar al alumno en la base de datos.";
@@ -184,7 +181,7 @@
             // Si se presiona el botón "Consultar todo"
             if (isset($_POST['consultarTodo'])) {
                 $result = $this->modelAlumno->obtenerTodosAlumnos();
-                
+
                 if ($result && $result->num_rows > 0) {
                     $resultadoExito = true;
                     $mensaje = "Consulta de todos los alumnos realizada correctamente.";
@@ -207,7 +204,7 @@
                     $matricula = trim($matches[1]);
 
                     // Redirigir a la página de modificación con la matrícula
-                    echo 'redirect:/IdentiQR/app/Controllers/ControladorAlumnos.php?action=obtenerAlumno&matricula=' . urlencode($matricula);
+                    echo 'redirect:/IdentiQR/app/Controllers/ControladorAlumnos.php?action=obtenerAlumno&matricula=' . urlencode($matricula); //https://www.ibm.com/docs/es/app-connect/11.0.0?topic=functions-urlencode-function
                 } else {
                     echo 'Error: No se pudo extraer la matrícula del QR.';
                 }
@@ -294,12 +291,10 @@
                 if(!$this->modelAlumno->asignarHashQR($alumno)){
                     die("Error al asignar el código QR al alumno.");
                 }
-
                 // Mostrar mensaje de éxito
                 include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
                 enviarCorreoAlumnoQRActualizado($alumno, $rutaQR->getString());
             }
-
             //Incluye la vista del administrador.
             header("Location: /IdentiQR/app/Views/GestionesAdministradorG.php");
             exit();
@@ -309,7 +304,7 @@
     }
     
     // Realizamos la instancia del método de inserción
-    // Asegúrate que $conn exista
+    // Dentro de este mismo controlador, se manejan las RUTAS para acceder a toda la información y métodos.
     $db = new Connection_BD();
     $conn = $db->getConnection();
 

@@ -1,3 +1,17 @@
+<?php
+    session_start(); // 1. Importante: Iniciar/Reanudar la sesión
+
+    // 2. Validar seguridad: Si no hay rol, expulsar al login
+    if (!isset($_SESSION['rol'])) {
+        header("Location: /IdentiQR/app/Views/Login.php");
+        exit();
+    }
+
+    // 3. Recuperar el nombre de usuario para mostrarlo
+    // Usamos el operador '??' por si acaso la variable no está definida
+    $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+    $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -25,8 +39,16 @@
             <div class="logo">
                 <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Logo de IdentiQR" class="ImagenIndex1" id = "logoIndex" width="300" height="200">
             </div>
-            <div class = "Usuario">
+            <div class="Usuario">
                 <h1>Panel de Gestiones del Administrador</h1>
+                <!-- Agregamos este bloque para mostrar la sesión -->
+                <div class="info-sesion">
+                    <i class="fa-solid fa-user-circle"></i> <!-- Ícono de usuario -->
+                    <span>Sesión activa: <strong><?php echo htmlspecialchars($usuarioActivo); ?></strong></span>
+                    <!-- Opcional: Mostrar el rol pequeño abajo -->
+                    <br>
+                    <small style="font-size: 0.8rem; font-weight: normal;"><?php echo $rolActivo; ?></small>
+                </div>
             </div>
             <nav class = "nav">
                 <ul>

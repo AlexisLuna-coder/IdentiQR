@@ -28,51 +28,13 @@
                         $_POST['rol'],
                         (int)$_POST['idDepto']
                     );
-                    /*
-                    $nombre = $_POST['nombre'];
-                    $apellido_paterno  = $_POST['apellido_paterno'];
-                    $apellido_materno = $_POST['apellido_materno'];
-                    $email = $_POST['email'];
-                    $passw = $_POST['passw'];
-                    $rol = $_POST['rol'];
-                    $idDepto = (int)$_POST['idDepto'];
-                    */
                     
                     $usrN = $this -> modelUser -> registrarUsuario($Usuario);
 
                     if($usrN != null) {
                         echo "Se registro adecuadamente el usuario";
-                        
-                        // Aquí podríamos obtener el ID generado y la fecha de registrÓ si es necesario
-                        // Suponiendo que el método registrarUsuarioSP ahora devuelve estos valores
-                        //echo "Usuario: " . $usrN->getUsr() . "<br>";
-                        //echo "Contraseña: " . $usrN->getPassw() . "<br>";
-
-
                         /*USANDO EL REPOSITORIO DE PHPMAILER - VEAMOS SI FUNCIONA */
                         enviarCorreo($usrN);
-
-                        /* Creamos las variables para mandar el correo y mostrar  */
-                        /* 
-                            $to = $usrN->getEmail();  // Usamos el correo del objeto Usuario
-                            $subject = "Bienvenido a IdentiQR - ¡Tu registrÓ está completo! (Non-reply)";
-
-                            $message = "Hola " . $usrN->getNombre() . " " . $usrN->getApellidoPaterno().",\n\n";
-                            $message .= "¡Gracias por registrarte en IdentiQR! Nos alegra darte la bienvenida.\n"; 
-                            $message .= "Este correo es para confirmar que tu registrÓ se ha completado con éxito.\n\n";
-                            $message .= "\tTus datos de acceso son:  || Usuario: " .$usrN->getUsr()."\n";
-                            $message .= "\n La próxima vez que accedas, este será el usuario que deberás usar. \n";
-                            $message .= "------------------------------------------------------------------------------\n";
-                            $message .= "Si usted no realizó esta acción, consulte al administrador para más información.";
-                            $headers = "From: identiQR.Info@no-reply.com\r\n";
-
-                            if(mail($to, $subject, $message, $headers)){
-                                echo "Su correo fue enviado";
-                            } else {
-                                echo "ERROR enviando correo";
-                            }
-                        */
-
                         /**********************************************************/
                         //Incluimos la vista del formulario
                         header("Location: /IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario");
@@ -130,16 +92,14 @@
                         //exit();
                     } else {
                         session_start();
-                        
                         //$_SESSION['rol'] = $loginUSR; //String
                         //ARREGLO
                         $_SESSION['idUsuario'] = $loginUSR['idUsuario'];
                         $_SESSION['email']     = $loginUSR['email'];
                         $_SESSION['rol']       = $loginUSR['rol'];
                         $_SESSION['usr']       = $loginUSR['usr'];
-
                         // Redirigir al script de redirección según rol
-                        header("Location: ../Views/controlAccesoUsuario.php"); //
+                        header("Location: /IdentiQR/app/Views/controlAccesoUsuario.php"); //
                         exit();
                     }
                 } else {
@@ -149,7 +109,6 @@
                     header("Location: /IdentiQR/index.html");
                 }
             }
-
             //Método para cerrar sesion
             public function logoutUsuario(){
                 session_start();
@@ -158,9 +117,6 @@
                 header("Location: /IdentiQR/app/Views/Login.php");
                 exit();
             }
-
-            
-
             //Método para modificar datos de un usuario
             public function actualizarUsuario(){
                 if(isset($_GET['id']) && is_numeric($_GET['id'])){

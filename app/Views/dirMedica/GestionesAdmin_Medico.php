@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['rol'])) {
+    header("Location: /IdentiQR/app/Views/Login.php");
+    exit();
+}
+$usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+$rolActivo = $_SESSION['rol'] ?? 'Invitado';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -18,6 +27,12 @@
             <div class="container__header">
                 <div class="logo">
                     <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Banner-IdentiQR" weight="200" height="200">
+                </div>
+                <div class="info-sesion">
+                    <i class="fa-solid fa-user-circle"></i>
+                    <span>Sesión activa: <strong><?php echo htmlspecialchars($usuarioActivo); ?></strong></span>
+                    <br>
+                    <small style="font-size: 0.8rem; font-weight: normal;"><?php echo $rolActivo; ?></small>
                 </div>
                 <div class="container__nav">
                     <nav id="nav">

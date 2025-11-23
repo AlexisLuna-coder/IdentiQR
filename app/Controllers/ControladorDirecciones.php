@@ -5,6 +5,7 @@
     require_once __DIR__ . '/../Models/ModeloAlumno.php';
     require_once __DIR__ . '/../../public/libraries/FPDF/fpdf.php';
     
+    /*Se crea la clase DirectionsController la cual será encargada de manejar todas las OPCIONES que realice cada dirección*/
     class DirectionsController{
         private $directionModel;
         private $alumnoModel;
@@ -25,16 +26,13 @@
 
             //Validar que el botón fue enviado y tiene datos - DirAcademica
             if(isset($_POST['registrarTramite_dirDirACA'])){
-                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará
-
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará el QR y obtendrá la matricula
                 $idTramite = (int)$_POST['idTramite'];
                 
                 $fechaJustificante = $_POST['fechaJustificante'];
                 $requisitos = $_POST['Requisitos'];
-
                 /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
-
                 /*Hacemos la validación para recuperar los datos*/
                 if($resultDatos){
                     $Nombre_AUX         = $resultDatos['Nombre'];
@@ -57,10 +55,8 @@
                     $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
                     $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
                     $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
-
                     //Concatenación de datos
                     $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
-
                     //Validamos que tipo de servicio es
                     switch($idTramite){
                         case 11: 
@@ -76,8 +72,7 @@
                             $fraseDia = "para el día";
                             break;
                     }
-
-                    // Generamos la descripción
+                    // Generamos la descripción especifica para este DEPARTAMENTO/DIRECCIÓN
                     $descripcionTotal = sprintf(
                         "El Alumno [%s] con matrícula [%s] del cuatrimestre [%s] de la carrera [%s] solicitó un <%s> %s [%s]. Requisitos o notas [%s]",
                         $nombreCompleto,
