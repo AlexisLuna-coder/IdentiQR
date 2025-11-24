@@ -1,4 +1,4 @@
-/* Estilos para las páginas de gestión de direcciones (GestionesAdmin_Direccion.php, GestionesAdmin_ServEsco.php, etc.) */
+/* Estilos para las páginas de gestión de direcciones */
 /* Paleta de colores: Morado (#6e0990), Rojo (#d43e1d), Amarillo (#f6ac35) */
 
 * {
@@ -68,8 +68,12 @@ nav ul {
     gap: 20px;
     align-items: center;
     justify-content: center;
-    margin: 0;
     flex-wrap: wrap;
+}
+
+/* IMPORTANTE: Aseguramos que los LI se comporten bien */
+nav ul li {
+    display: block; 
 }
 
 nav a {
@@ -81,6 +85,7 @@ nav a {
     padding: 10px 15px;
     border-radius: 5px;
     font-family: 'Times New Roman', Times, serif;
+    display: inline-block; /* Asegura que el padding funcione bien */
 }
 
 nav a:hover {
@@ -265,21 +270,60 @@ input[type="submit"]:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive */
+/* =========================================
+   RESPONSIVE (MODIFICADO PARA TU PETICIÓN)
+   ========================================= */
 @media (max-width: 768px) {
     .container__header {
         flex-direction: column;
         padding: 10px;
+        /* Ajustamos la altura para que no quede espacio gigante al ocultar items */
+        height: auto; 
+        min-height: 150px;
     }
 
     .logo img {
         height: 150px;
         width: 300px;
+        /* Aseguramos que la imagen no se deforme */
+        object-fit: contain; 
+        margin-left: 0; /* Centramos logo quitando margen izquierdo */
+    }
+
+    .container__nav {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    nav {
+        width: 100%;
     }
 
     nav ul {
         flex-direction: column;
         gap: 10px;
+        width: 100%;
+    }
+
+    /* --- MAGIA AQUÍ --- */
+    /* 1. Ocultamos TODOS los elementos de la lista (li) */
+    nav ul li {
+        display: none;
+    }
+
+    /* 2. Mostramos ÚNICAMENTE el ÚLTIMO elemento (Cerrar Sesión) */
+    nav ul li:last-child {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    /* ------------------ */
+
+    nav a {
+        display: block; /* Hacemos que el botón ocupe espacio */
+        margin: 0 auto; /* Centrado */
+        max-width: 200px; /* Que no sea exageradamente ancho */
     }
 
     .contenedorCentral {

@@ -32,3 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
         // Swal.fire('Acción no permitida', 'Debes iniciar sesión.', 'warning');
     };
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+        // Seleccionamos los elementos
+        const btnMenu = document.getElementById('btn_menu');
+        const navList = document.querySelector('.nav-list');
+
+        // Verificamos que existan para evitar errores
+        if (btnMenu && navList) {
+            btnMenu.addEventListener('click', () => {
+                // Alternamos la clase 'active' en la lista
+                navList.classList.toggle('active');
+                
+                // Opcional: Cambiar el atributo aria-expanded para accesibilidad
+                const isExpanded = navList.classList.contains('active');
+                btnMenu.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+    });

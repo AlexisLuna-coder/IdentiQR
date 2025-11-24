@@ -1,4 +1,4 @@
-/* Estilos para las páginas de trámites de direcciones (gestionJustificantes_Dir.php, gestionDocumentosAlumnos.php, etc.) */
+/* Estilos para las páginas de trámites de direcciones */
 /* Paleta de colores: Morado (#6e0990), Rojo (#d43e1d), Amarillo (#f6ac35) */
 
 * {
@@ -68,8 +68,12 @@ nav ul {
     gap: 20px;
     align-items: center;
     justify-content: center;
-    margin: 0;
     flex-wrap: wrap;
+}
+
+/* Aseguramos comportamiento de lista */
+nav ul li {
+    display: block;
 }
 
 nav a {
@@ -81,6 +85,7 @@ nav a {
     padding: 10px 15px;
     border-radius: 5px;
     font-family: 'Times New Roman', Times, serif;
+    display: inline-block;
 }
 
 nav a:hover {
@@ -99,7 +104,8 @@ nav a:hover {
 }
 
 /* Contenedor de gestión */
-#generarJustificante, #revisarJustificante, #modificarJustificante, #eliminarJustificante {
+#generarJustificante, #revisarJustificante, #modificarJustificante, #eliminarJustificante,
+#generarTramite, #revisarTramite, #modificarTramite, #eliminarTramite {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
@@ -109,7 +115,7 @@ nav a:hover {
     margin-top: 20px;
 }
 
-#generarJustificante h2 {
+#generarJustificante h2, #generarTramite h2 {
     text-align: center;
     color: #f6ac35;
     border-bottom: 3px solid #6e0990;
@@ -376,12 +382,12 @@ footer {
 }
 
 #revisarJustificante .opcionConsulta:hover {
-    background: #f6ac351a; /* Amarillo muy suave al pasar el mouse */
+    background: #f6ac351a; 
 }
 
 #revisarJustificante .opcionConsulta input[type="radio"] {
     cursor: pointer;
-    accent-color: #6e0990; /* Color morado del tema */
+    accent-color: #6e0990;
 }
 
 #revisarJustificante .opcionConsulta label {
@@ -390,24 +396,53 @@ footer {
     color: #333;
 }
 
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .container__header {
         flex-direction: column;
         padding: 10px;
+        /* Permitir que el header ajuste su altura para ocultar espacio vacío */
+        height: auto;
+        min-height: 150px;
     }
 
     .logo img {
         height: 150px;
         width: 300px;
+        object-fit: contain;
+        margin-left: 0;
     }
 
+    /* Ajustes del Nav */
     nav ul {
         flex-direction: column;
         gap: 10px;
+        width: 100%;
     }
 
-    #generarJustificante, #revisarJustificante, #modificarJustificante, #eliminarJustificante {
+    /* --- LÓGICA DE OCULTAR --- */
+    /* 1. Ocultar todos los botones del menú */
+    nav ul li {
+        display: none;
+    }
+
+    /* 2. Mostrar SOLO el último botón (REGRESAR) */
+    nav ul li:last-child {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    /* ------------------------- */
+
+    nav a {
+        display: block;
+        margin: 0 auto;
+        max-width: 200px;
+    }
+
+    /* Ajustes generales de contenedores */
+    #generarJustificante, #revisarJustificante, #modificarJustificante, #eliminarJustificante,
+    #generarTramite, #revisarTramite, #modificarTramite, #eliminarTramite {
         padding: 10px;
     }
 

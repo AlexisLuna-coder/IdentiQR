@@ -267,26 +267,89 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    
+    /* 1. Ajustes del Contenedor Principal */
     .container {
         padding: 10px;
+        margin: 10px auto;
+        width: 95%;
     }
 
+    /* 2. Header: Todo en columna vertical y centrado */
     header {
         flex-direction: column;
-        padding: 10px;
+        padding: 15px 10px;
+        height: auto; /* Permitir que crezca */
+    }
+
+    .logo {
+        justify-content: center;
+        margin-bottom: 10px;
+        width: 100%;
     }
 
     .logo img {
-        height: 120px;
-        width: 240px;
+        height: auto;       /* Altura automática */
+        max-height: 80px;   /* Límite de altura */
+        width: auto;
+        max-width: 200px;
+        margin: 0;
+    }
+
+    .Usuario {
+        padding: 10px 0;
+        width: 100%;
+    }
+
+    .Usuario h1 {
+        font-size: 1.2em; /* Texto más pequeño */
+    }
+
+    /* 3. Menú de navegación apilado */
+    nav {
+        width: 100%;
+        margin-top: 10px;
     }
 
     nav ul {
         flex-direction: column;
-        gap: 10px;
+        gap: 5px;
+        width: 100%;
     }
 
-    section {
-        padding: 15px;
+    nav ul li {
+        width: 100%;
+    }
+
+    nav a {
+        display: block;      /* Botón completo */
+        width: 100%;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1); /* Fondo sutil */
+    }
+    
+    /* Hacemos que todos los enlaces y botones dentro de las secciones se vuelvan bloques completos */
+    section a, 
+    section button,
+    .SeguridadDatos a,
+    .SeguridadDatos button {
+        display: block;      /* Ocupar toda la línea */
+        width: 100%;         /* Ancho completo */
+        margin: 10px 0;      /* Espacio arriba y abajo */
+        text-align: center;
+        box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    }
+
+    /* Ajuste específico para el botón de Bootstrap para asegurar que no se rebele */
+    .btn-warning {
+        width: 100% !important;
+        display: block;
+        margin-top: 15px;
+        white-space: normal; /* Permitir que el texto baje si es muy largo */
+    }
+
+    /* Ajuste de inputs de archivo para que no se salgan */
+    input[type="file"] {
+        max-width: 100%;
     }
 }

@@ -1,43 +1,63 @@
 /* Estilos generales para Index.html */
-/*https://imagecolorpicker.com/es*/ /*Para la gama de colores*/
 body {
     margin: 0;
     font-family: Georgia, 'Times New Roman', Times, serif;
-}
-header{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f6ac35;
-    min-height: 110px;
-    margin: 0;
-}
-.container__header{ /*CONTENEDOR CENTRAL DEL HEADER*/
-    display: flex;
-    justify-content: space-between;
-    font-family:'Times New Roman', Times, serif;
-    align-items: center;
-    height: 100px;
-    width: 100%;
-    padding: 20px;
-}
-.logo{
-    display: flex;
-    align-items: center;
-}
-.logo img{
-    height: 200px;
-    width: 400px;
-    margin-left: 20px;
-}
-.container__nav{
-    display:flex;
-    align-items:center;
+    background-color: #fbf4f4; /* Agregado para fondo general */
 }
 
-nav {
-    margin-top: 16px;
+/* ============================
+   HEADER & NAV (Escritorio)
+   ============================ */
+header {
+    background: #f6ac35;
+    min-height: 100px;
+    margin: 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: relative; /* Importante para el menú móvil */
 }
+
+.container__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Limitar ancho en pantallas gigantes */
+    margin: 0 auto;
+    padding: 10px 20px;
+    height: auto; /* Permitir que crezca si es necesario */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+/* CORRECCIÓN DE LOGO: Hacemos que sea flexible */
+.logo img {
+    height: auto;
+    max-height: 80px; /* Altura máxima controlada */
+    width: auto;      /* Ancho automático */
+    max-width: 250px; /* Que no sea gigante */
+    transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+.container__nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Botón menú hamburguesa (Oculto en PC) */
+.btn__menu {
+    display: none;
+    font-size: 2rem;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
 nav ul {
     list-style: none;
     margin: 0;
@@ -45,25 +65,27 @@ nav ul {
     display: flex;
     gap: 20px;
     align-items: center;
-    justify-content: center;
-    margin: 0;
-    flex-wrap: wrap;
 }
+
 nav a {
     color: #fff;
     text-decoration: none;
-    margin: 0 18px;
     font-weight: 500;
-    transition: color 0.2s;
-    padding-right: 15px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    border-radius: 5px;
     font-family: 'Times New Roman', Times, serif;
 }
 
 nav a:hover {
-    color: #d43e1d;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }
 
-/*TODO: Aquí empiezan los estilos del fondo de Index1_ContenedorGeneral*/
+/* ============================
+   CONTENIDOS GENERALES
+   ============================ */
 .Index1_ContenedorGeneral {
     width: 90%;
     max-width: 1200px;
@@ -74,6 +96,7 @@ nav a:hover {
     padding: 40px;
     box-shadow: 0 8px 20px #ff1f1f1a;
 }
+
 #PresentacionDepartamentos {
     margin: 20px auto; 
     max-width: 1200px; 
@@ -94,15 +117,14 @@ nav a:hover {
     color: #666; 
     font-size: 1em; 
     margin-bottom: 1rem; 
-    justify-content: center;
 }
 
+/* Cards */
 .cards-container {
     display: flex;
     flex-wrap: wrap; 
     justify-content: center;
     gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .card {
@@ -110,75 +132,67 @@ nav a:hover {
     border: 1px solid #ddd; 
     border-radius: 8px; 
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    width: calc(30% - 20px); 
+    width: 300px; /* Ancho fijo base para mejor control */
+    flex-grow: 1; /* Permite crecer para llenar espacio */
+    max-width: 350px;
     margin-bottom: 20px; 
     padding: 15px; 
     transition: transform 0.3s ease; 
-    justify-content: center;
-}
-.card h3 {
-    color: #6e0990;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    word-wrap: break-word;
-    justify-self: center;
-    
-}
-.card p{
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 0.9em;
-    color: #555;
-    text-align: justify;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 
 .card:hover {
     transform: translateY(-5px); 
     box-shadow: 0 8px 20px rgba(75,0,130,0.25);
-    background-color: #fff;
     border-color: #6e0990;
 }
+
+.card h3 {
+    color: #6e0990;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 0.9em;
+    color: #555;
+    text-align: justify;
+}
+
 .card img {
     width: 100%;
     height: auto;
     margin-bottom: 10px;
+    object-fit: cover;
 }
 
-/*TODO: Aquí va la asignación de colores para el Footer*/
+/* Footer */
 footer {
     text-align: center;
-    padding: 18px 0;
+    padding: 2rem 0;
     background: #701875;
     color: #fff;
     margin-top: 48px;
     font-size: 1rem;
     letter-spacing: 1px;
     border-top: 1px solid #eaeaea;
-    min-width: 100px;
-    height: auto;
-    padding: 2rem 0;
 }
-.footer__container{
+
+.footer__container {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
     max-width: 1200px;
     margin: 0 auto;
-}
-.footer__container p{
-    font-family: 'Times New Roman', Times, serif;
-    
-}
-/* Columnas internas */
-.footer__info,
-.footer__links,
-.footer__terms {
-    flex: 1 1 300px;
+    padding: 0 20px;
 }
 
-/* Enlaces */
+.footer__info, .footer__links, .footer__terms {
+    flex: 1 1 300px;
+    margin-bottom: 20px;
+}
+
 .footer__links a {
     display: block;
     color: #fff;
@@ -188,168 +202,102 @@ footer {
 
 .footer__links a:hover {
     text-decoration: underline;
-    border-color:#6e0990
+    color: #f6ac35;
 }
-/*
-.abrirMenu,.cerrarMenu{
-    display: none;
-}
-@media screen and (max-width: 600px) {
-    .abrirMenu,.cerrarMenu{
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    /* 1. Ajuste del Header */
+    .container__header {
+        padding: 10px 15px;
+        /* Permitimos que los elementos se acomoden sin aplastarse */
+        flex-wrap: wrap; 
+    }
+
+    /* 2. CORRECCIÓN LOGO: Lo aumentamos de tamaño */
+    .logo img {
+        /* Antes tenías 50px, lo subimos a 80px para que se vea bien */
+        max-height: 80px; 
+        width: auto;
+        /* Aseguramos que no se salga si la pantalla es muy muy pequeña */
+        max-width: 200px; 
+    }
+
+    /* 3. Mostrar botón hamburguesa */
+    .btn__menu {
         display: block;
+        /* Ajustamos un poco la posición para que quede alineado al centro del logo */
+        font-size: 1.8rem; 
     }
+
+    /* 4. Menú desplegable */
     nav {
-        opacity: 0; 
-        visibility: hidden;
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        width: 100%;
+        background: #f6ac35;
+        height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        border-top: 1px solid rgba(255,255,255,0.1);
     }
-    .container__header { 
-        padding: 0.5rem;
-        background-color: #f6ac35;
+
+    nav.active {
+        height: auto; 
+        padding-bottom: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     }
-    .container__header.nav { 
-        top: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #f6ac35;
-        padding: 2rem;
-        width: 250px; 
-        z-index: 1000; 
-    }
-    .nav.visible{
-        opacity: 1;
-        visibility: visible;
-    }
-    .nav-list {
+
+    nav ul {
         flex-direction: column;
-        align-items: flex-start; 
+        width: 100%;
+        gap: 0;
     }
-    .nav-list li a {
-        color: #fff; 
-        margin: 10px 0; 
+
+    nav ul li {
+        width: 100%;
+        text-align: center;
     }
-}
-*/
-/*
-header {
-    background: #f6ac35;
-    color: #fff;
-    opacity: 0.95;
-    padding: 24px 0;
-    text-align: center;
-    box-shadow: 0 2px 8px #00000012;
-}
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    letter-spacing: 2px;
-}
-
-.ImagenIndex1 {
-    display: block;
-    margin: 16px auto 0;
-    max-width: 100%;
-    height: auto;
-
-}
-
-nav {
-    margin-top: 16px;
-}
-
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 28px;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    flex-wrap: wrap;
-}
-nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 18px;
-    font-weight: 500;
-    transition: color 0.2s;
-}
-
-nav a:hover {
-    color: #e53420;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Times New Roman', Times, serif;
-    background: #fbf4f4;
-    color: #222;
-}
-body .Index1_ContenedorGeneral{
-    padding: 20px;
-}
-
-
-
-
-
-.main-content {
-    max-width: 900px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 24px rgba(44,62,80,0.08);
-    padding: 40px 32px;
-}
-
-.main-content h2 {
-    font-size: 2rem;
-    margin-bottom: 18px;
-    color: #087fff;
-}
-
-.main-content p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    margin-bottom: 24px;
-}
-
-.button-group {
-    margin-top: 32px;
-    display: flex;
-    gap: 18px;
-}
-
-.button-group a {
-    display: inline-block;
-    padding: 12px 32px;
-    background: #2d3e50;
-    color: #fff;
-    border-radius: 6px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: background 0.2s;
-}
-
-.button-group a:hover {
-    background: #ffd700;
-    color: #2d3e50;
-}
-
-
-@media (max-width: 600px) {
-    .main-content {
-        padding: 20px 8px;
+    nav a {
+        display: block;
+        padding: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
     }
-    header h1 {
-        font-size: 1.5rem;
+
+    nav a:hover {
+        background-color: #d88e15;
     }
-    .button-group {
+
+    /* Ajustes generales móvil */
+    .Index1_ContenedorGeneral {
+        padding: 20px;
+        width: 95%;
+        margin: 20px auto; /* Reducimos margen externo */
+    }
+
+    /* 5. CORRECCIÓN FOOTER: Evitar que se estire */
+    footer {
+        padding: 1rem 0; /* Reducimos el padding vertical (antes 2rem) */
+    }
+
+    .footer__container {
         flex-direction: column;
-        gap: 12px;
+        gap: 10px; /* Usamos gap para separar suavemente */
+    }
+
+    .footer__info, .footer__links, .footer__terms {
+        /* Importante: flex auto para que ocupe solo lo necesario, no 300px forzados */
+        flex: 1 1 auto; 
+        margin-bottom: 15px; /* Reducimos el margen inferior */
+        width: 100%; /* Aseguramos que centre bien el texto */
+    }
+    
+    /* Quitamos el margen del último elemento para ahorrar espacio */
+    .footer__terms {
+        margin-bottom: 0;
     }
 }
-
-*/

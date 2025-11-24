@@ -213,6 +213,7 @@ INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `a
 #select * from usuario;
 #select * from departamento;
 /* DISPARADOR PARA LA ACTUALIZACIÓN DE LA CONTRASEÑA - Unicamente si se modifica*/
+
 /*Disparadores para agilizar el procedimiento de ASIGNACIÓNDE HASH a los alumnos*/
 delimiter //
 create trigger actHash_QR_Alumno before update on alumno

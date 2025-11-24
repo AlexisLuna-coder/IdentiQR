@@ -357,9 +357,98 @@ footer {
 }
 
 /* RESPONSIVE */
-@media (max-width: 480px) {
+@media (max-width: 880px) {
+    .site-header .header-inner {
+        align-items: center;
+        position: relative; /* Necesario para que el menú flote respecto a esto */
+    }
+
+    /* Ocultamos el menú por defecto */
+    .nav-list { 
+        display: none; 
+        width: 100%;
+        position: absolute; /* Flota sobre el contenido */
+        top: 100%;          /* Justo debajo del header */
+        left: 0;
+        background: #f6ac35; /* Mismo color del header */
+        flex-direction: column;
+        padding: 20px 0;
+        z-index: 1000;      /* Encima de todo */
+        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        border-radius: 0 0 10px 10px;
+    }
+
+    /* ESTA CLASE LA ACTIVA EL JAVASCRIPT */
+    .nav-list.active {
+        display: flex;
+    }
+
+    /* Estilo de los enlaces en móvil */
+    .nav-list li {
+        width: 100%;
+        text-align: center;
+        margin: 0;
+    }
+
+    .nav-list a {
+        display: block;
+        padding: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        width: 100%;
+    }
+
+    .nav-list a:hover {
+        background-color: #d88e15;
+    }
+
+    .btn__menu { 
+        display: inline-flex;
+        font-size: 1.8rem; /* Icono más grande para tocar fácil */
+    }
+
+    /* --- CORRECCIÓN DEL LOGO --- */
+    .ImagenIndex1 { 
+        height: auto;
+        max-height: 80px; /* Aumentado de 44px a 80px */
+        width: auto;
+        max-width: 200px;
+        margin: 0; /* Quitamos márgenes extraños */
+    }
+
+    .brand h1 { font-size: 1rem; }
+    .brand .tagline { display: none; }
+}
+
+/* 2. Breakpoint para el Footer y Contenido (Menor a 768px) */
+@media (max-width: 768px) {
+    header {
+        padding: 8px 0;
+    }
+
+    /* --- CORRECCIÓN DEL FOOTER ALARGADO --- */
+    footer {
+        padding: 1rem 0; /* Menos relleno vertical */
+    }
+
+    .footer__container {
+        flex-direction: column;
+        gap: 15px; /* Espacio moderado entre elementos */
+        padding: 0 1rem;
+    }
+
+    .footer__info,
+    .footer__links,
+    .footer__terms {
+        /* Importante: 'auto' permite que ocupen solo lo que mide el texto */
+        flex: 1 1 auto; 
+        width: 100%;
+        margin: 0; /* Quitamos márgenes por defecto */
+    }
+    
+    /* Ajustes del Login Box en móvil */
     .Login_ContenedorGeneral {
         padding: 2rem 1.2rem;
-        max-width: 95%;
+        max-width: 90%;
+        margin: 20px auto;
     }
 }
