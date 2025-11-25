@@ -39,6 +39,20 @@
                 $idDepto
             );
 
+            // TRY-CATCH PARA QUE NO MANDE ERROR
+            try {
+                $stmt->execute();
+            } catch (mysqli_sql_exception $e) {
+                // El código 1062 significa "Duplicate Entry" (Entrada duplicada)
+                if ($e->getCode() == 1062) {
+                    return "DUPLICADO"; // Retornamos una señal específica
+                } else {
+                    // Si es otro error, lo guardamos en el log y retornamos null
+                    error_log("Error SQL: " . $e->getMessage());
+                    return null;
+                }
+            }
+
             // Ejecutar el procedimiento
             if (!$stmt->execute()) {
                 die("Error al ejecutar registrarUsuarioSP: " . $stmt->error);

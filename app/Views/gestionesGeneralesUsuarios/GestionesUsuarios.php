@@ -1,4 +1,12 @@
-
+<?php
+    session_start();
+    if (!isset($_SESSION['rol'])) {
+        header("Location: /IdentiQR/app/Views/Login.php");
+        exit();
+    }
+    $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+    $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -10,6 +18,7 @@
         <!--TODO: Aquí sera la libreria para mostrar las alertas-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesUsuarios.css"> <!--CSS-->
         <!-- <link rel="stylesheet" href="/IdentiQR/public/CSS/usuariosStyles.css"> -->
 
@@ -30,9 +39,6 @@
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
                 </div>
             </div>
         </header>
@@ -88,9 +94,9 @@
                         <option value="Administrativo_Medico">Consultorio Médico</option>
                     </select>
                     <br><br>
-                    <!--TODO: Considerar que si selecciono alguna opción que tenga que ver con su DEPARTAMENTO, este se le asignara por predeterminado la opción
-                    del departamento a escoger || NOTA. 2025-09-25-->
                     
+                    <!--ESTE BOTÓN PERMITIRA SELECCIONAR UN DEPARTAMENTO Y POR MEDIO DE ESTE, SE EJECUTARÁ EL SCRIPT PARA AUTOSELECCIONAR
+                    EL ROL SELECCIONADO-->
                     <label for = "Departamento">Departamento</label>
                     <select id="depto" name="idDepto" required disabled>
                         <option value="" disabled selected>Selecciona una opción</option>

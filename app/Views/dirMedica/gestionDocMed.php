@@ -18,6 +18,7 @@
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         <title>GestionDireccionMedica_IdentiQR</title>
     </head>
     <body>
@@ -36,9 +37,11 @@
                             <li><a href="/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
+                    <!--
                     <div class="btn__menu" id="btn_menu">
                         <i class="fas fa-bars"></i>
                     </div>
+                    -->
                 </div>
             </div>
         </header>

@@ -49,7 +49,22 @@
                 $genero,
                 $idCarrera
             ); //Recibe argumentos
-            return $stmt -> execute();
+
+            // TRY-CATCH PARA QUE NO MANDE ERROR
+            // --- AQUÍ ESTÁ LA SOLUCIÓN ---
+            try {
+                $stmt->execute();
+                $stmt->close();
+                return true; // Éxito total
+            } catch (mysqli_sql_exception $e) {
+                // Código 1062 = Entrada duplicada (Matrícula o Correo repetido)
+                if ($e->getCode() == 1062) {
+                    return "DUPLICADO"; 
+                } else {
+                    error_log("Error SQL Alumno: " . $e->getMessage());
+                    return false;
+                }
+            }
             /*
             if (!$stmt->execute()) {
                 echo("Connection_BD->registrarAlumno execute error: " . $stmt->error);

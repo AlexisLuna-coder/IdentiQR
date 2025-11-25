@@ -84,12 +84,7 @@
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=registroU#seccionRegistrarUsuario">Registrar Nuevo Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=modificarU#seccionModificarUsuario">Modificar un Usuario</a>
                     <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=eliminarU#seccionEliminarUsuario">Eliminar un Usuario</a>
-                    <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=consultarUsuario#seccionConsultarUsuario">Buscar un Usuario</a>
-
-                    <!--BOTON QUE SE USARÁ ÚNICAMENTE PARA LA REDIRECCIÓN Y ENVIO DE LOS NUEVOS CODIGOS QR-->
-                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalConfirmacionQR">
-                        Actualización MASIVA de QR
-                    </button>
+                    <a href = "/IdentiQR/app/Views/gestionesGeneralesUsuarios/GestionesUsuarios.php?action=consultarUsuario#seccionConsultarUsuario">Buscar un Usuario</a>  
                 </section>
 
                 <hr>
@@ -99,6 +94,10 @@
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=modificarA#ConsultaModificacionAlumnos">Modificar un Alumno</a>
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=eliminarA#EliminacionAlumnos">Eliminar un Alumno</a>
                     <a href = "/IdentiQR/app/Views/gestionesGenerales/GestionesAlumnos.php?action=consultarA#ConsultaModificacionAlumnos">Buscar un Alumno</a>
+                    <!--BOTON QUE SE USARÁ ÚNICAMENTE PARA LA REDIRECCIÓN Y ENVIO DE LOS NUEVOS CODIGOS QR-->
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalConfirmacionQR">
+                        Actualización MASIVA de QR
+                    </button>
                 </section>
 
                 <hr>

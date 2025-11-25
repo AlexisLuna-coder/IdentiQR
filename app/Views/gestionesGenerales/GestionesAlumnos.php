@@ -1,4 +1,11 @@
-<?php 
+<?php
+    session_start();
+    if (!isset($_SESSION['rol'])) {
+        header("Location: /IdentiQR/app/Views/Login.php");
+        exit();
+    }
+    $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+    $rolActivo = $_SESSION['rol'] ?? 'Invitado';
     $fechaMaximaPermitida = date('Y-m-d', strtotime('-16 years'));
 ?>
 <!DOCTYPE html>
@@ -13,6 +20,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesAlumnos.css"> <!--CSS-->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
 
 
         <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
@@ -74,22 +82,22 @@
                                     <i class="fa fa-address-card"></i>
                                 </div>
                             </div>
-                            <input type="text" id="matricula" name="matricula" required>
+                            <input type="text" id="matricula" name="matricula" placeholder = "ABCO23####" required>
                         </div>
                     </div>
                     <br>
                     <div class="form-group row">
                         <label for="Nombre(s)">Nombre(s)</label>
-                        <input type="text" id="nombre" name="nombre" required>
+                        <input type="text" id="nombre" name="nombre" placeholder = "Ingresa tu nombre" required>
                     </div>
                     <div class="form-group row">
                         <label for="ApePat">Apellido paterno</label>
-                        <input type="text" id="ApPat" name="ApPat" required>
+                        <input type="text" id="ApPat" name="ApPat" placeholder = "Ingresa tu Apellido Paterno" required>
                     </div>
 
                     <div class="form-group row">
                         <label for="ApeMat">Apellido materno</label>
-                        <input type="text" id="ApMat" name="ApMat" required>
+                        <input type="text" id="ApMat" name="ApMat" placeholder = "Ingresa tu Apellido Materno"required>
                     </div>
                     <div class="form-group row">
                         <label for="FechaNac">Fecha de nacimiento</label>
@@ -106,7 +114,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="direccion">Dirección</label>
-                        <input type="text" id="direccion" name="direccion" required>
+                        <input type="text" id="direccion" name="direccion" placeholder = "Dirección" required>
                     </div>
                     <div class="form-group row">
                         <label for="telefono">Teléfono</label>
@@ -124,7 +132,7 @@
                                 <i class="fa fa-map"></i>
                             </div>
                         </div>
-                        <input type="text" id="ciudad" name="ciudad" required>
+                        <input type="text" id="ciudad" name="ciudad" placeholder = "Ciudad" required>
                     </div>
                     <div class="form-group row">
                         <label for="estado">Estado</label>
@@ -133,7 +141,7 @@
                                 <i class="fa fa-map-marker"></i>
                             </div>
                         </div>
-                        <input type="text" id="estado" name="estado" required>
+                        <input type="text" id="estado" name="estado" placeholder = "Estado" required>
                     </div>
                     <div class="form-group row">
                         <label for="genero">Género</label>
@@ -146,7 +154,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="anioIngreso">Año de Ingreso</label>
-                        <input type="number" id="FeIngreso" name="FeIngreso" min="2004" placeholder = "2006" required>
+                        <input type="number" id="FeIngreso" name="FeIngreso" min="2023" placeholder = "2006" required>
                         <script> //Nota.- 2025-05-10 SCRIPT Para la fecha
                             // poner el año actual como valor por defecto y como máximo
                             const input = document.getElementById("FeIngreso");

@@ -286,34 +286,110 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    
+    /* 1. HEADER: Ajuste vertical */
+    header {
+        height: auto; /* Dejar que crezca según el contenido */
+        padding-bottom: 15px;
+    }
+
     .container__header {
-        flex-direction: column;
+        flex-direction: column; /* Elementos uno debajo del otro */
         padding: 10px;
+        height: auto;
+    }
+
+    /* 2. LOGO: Tamaño controlado y centrado */
+    .logo {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 15px;
     }
 
     .logo img {
-        height: 150px;
-        width: 300px;
+        height: auto;
+        max-height: 80px; /* Tamaño ideal para celular */
+        width: auto;
+        max-width: 200px;
+        margin: 0;
+    }
+
+    /* 3. MENÚ: Botones grandes y apilados */
+    .container__nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    nav {
+        width: 100%;
+        margin-top: 5px;
     }
 
     nav ul {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        width: 100%;
     }
 
+    nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+    nav a {
+        display: block; /* Ocupa todo el ancho */
+        width: 100%;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.15); /* Fondo ligero para identificar el botón */
+        border-radius: 5px;
+    }
+
+    nav a:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* 4. CONTENEDORES Y FORMULARIOS */
     .contenedor-secciones {
         padding: 10px;
+        margin-top: 15px;
+        width: 95%; /* Evita que pegue a los bordes */
     }
 
     .Registro_ContenedorGeneral {
         padding: 15px;
+        width: 100%;
     }
 
+    /* Inputs ocupando todo el ancho */
+    input, select {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    /* 5. TABLA con scroll horizontal */
     table {
-        font-size: 0.9em;
+        font-size: 0.85em;
+        display: block;
+        overflow-x: auto; /* Barra de desplazamiento si la tabla es muy ancha */
+        white-space: nowrap;
     }
 
     th, td {
         padding: 8px;
+    }
+
+    /* 6. FOOTER Compacto */
+    footer {
+        padding: 1rem 0;
+    }
+    
+    .footer__container {
+        flex-direction: column;
+    }
+
+    .footer__info, .footer__links {
+        width: 100%;
+        flex: 1 1 auto;
+        margin: 10px 0;
     }
 }

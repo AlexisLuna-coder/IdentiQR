@@ -17,6 +17,8 @@
 
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
+        
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
         <title>DireccionServiciosEscolares_IdentiQR</title>
     </head>
@@ -36,9 +38,11 @@
                             <li><a href="/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
+                    <!--
                     <div class="btn__menu" id="btn_menu">
                         <i class="fas fa-bars"></i>
                     </div>
+                    -->
                 </div>
             </div>
         </header>

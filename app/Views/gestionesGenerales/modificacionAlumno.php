@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesAlumnos.css"> <!--CSS-->
         <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js" defer></script> <!-- JS -->
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         <!--*: Da formato frente para el registro - MODIFICAR-->
 
         <title>Modificación de Alumno - IdentiQR</title>

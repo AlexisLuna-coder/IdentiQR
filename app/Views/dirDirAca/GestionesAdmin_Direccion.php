@@ -14,6 +14,7 @@ $rolActivo = $_SESSION['rol'] ?? 'Invitado';
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         <title>DireccionACADEMICA_IdentiQR</title>
     </head>
     <body>
@@ -38,9 +39,11 @@ $rolActivo = $_SESSION['rol'] ?? 'Invitado';
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
+                    <!--
                     <div class="btn__menu" id="btn_menu">
                         <i class="fas fa-bars"></i>
                     </div>
+                    -->
                 </div>
             </div>
         </header>

@@ -15,13 +15,23 @@
             }
 
             public function registrarUsuario(){
-                
-
                 if(isset($_POST['enviarRegistro_Usuario'])) {
+                    //Definimos el mapa de caracteres para detectar CARACTERES 
+                    $mapaAcentos = array(
+                        'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+                        'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+                        'ü' => 'u', 'Ü' => 'U', 'ö' => 'o', 'Ö' => 'O'
+                    );
+                    
+                    //Creamos variables SIN ACENTOS
+                    $nombreLimpio = strtr($_POST['nombre'], $mapaAcentos);
+                    $apPatLimpio  = strtr($_POST['apellido_paterno'], $mapaAcentos);
+                    $apMatLimpio  = strtr($_POST['apellido_materno'], $mapaAcentos);
+
                     $Usuario =  new Usuario(
-                        $_POST['nombre'],
-                        $_POST['apellido_paterno'],
-                        $_POST['apellido_materno'],
+                        $nombreLimpio,  // Usamos la variable sin acentos ni tíldes
+                        $apPatLimpio,   // Usamos la variable sin acentos ni tíldes
+                        $apMatLimpio,   // Usamos la variable sin acentos ni tíldes
                         $_POST['genero'],
                         $_POST['email'],
                         $_POST['passw'],
@@ -30,6 +40,17 @@
                     );
                     
                     $usrN = $this -> modelUser -> registrarUsuario($Usuario);
+
+                    // VERIFICACIÓN DE ERRORES
+                    if ($usrN === "DUPLICADO") {
+                        //Ya existe correo o matrícula
+                        $resultadoExito = false;
+                        $mensaje = "Error: El correo electrónico o la matrícula ya están registrados en el sistema.";
+                        
+                        // Cargamos la vista de nuevo para mostrar el error
+                        include_once __DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php';
+                        return; // Detenemos la ejecución
+                    }
 
                     if($usrN != null) {
                         echo "Se registro adecuadamente el usuario";
@@ -146,15 +167,22 @@
                     $usuario->setIdUsuario((int)$_POST['id_usuario']);
                     $resultado = $this->modelUser->actualizarUsuario($usuario);
                     if ($resultado) {
-                        echo "<script>alert('Usuario actualizado correctamente.'); window.location.href='/IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&consultarTodo=1';</script>";
+                        //echo "<script>alert('Usuario actualizado correctamente.'); window.location.href='/IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&consultarTodo=1';</script>";
+                        $resultadoExito = true;
+                        $mensaje = "Usuario actualizado correctamente.";
                     } else {
-                        echo "<script>alert('Error al actualizar el usuario.');</script>";
+                        //echo "<script>alert('Error al actualizar el usuario.');</script>";
+                        $resultadoExito = false;
+                        $mensaje = "Error al actualizar el usuario.";
                     }
-
-                    /*UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, genero = ?, email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ? */
+                    $viewPath = __DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php'; 
+                    //
+                    if (file_exists($viewPath)) {
+                        include_once $viewPath;
+                    } else {
+                        echo "Error: No se encuentra la vista en $viewPath";
+                    }
                 }
-
-
                 return;
             }
 

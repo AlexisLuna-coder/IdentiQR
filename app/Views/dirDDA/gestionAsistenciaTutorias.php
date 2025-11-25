@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
+        <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
         
 
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
@@ -36,9 +37,11 @@
                             <li><a href="/IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
+                    <!--
                     <div class="btn__menu" id="btn_menu">
                         <i class="fas fa-bars"></i>
                     </div>
+                    -->
                 </div>
             </div>
         </header>

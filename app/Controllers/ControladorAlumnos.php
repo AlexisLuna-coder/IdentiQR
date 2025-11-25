@@ -15,7 +15,13 @@
         public function insertarAlumno(){
             /* Este IF verifica que el método que fue mandado es un POST */
             if(isset($_POST['Enviar_Alumno'])) { //isset() Determina si una variable está definida y no es null
-                //Validamos que el ALUMNO no sea menor de edad. Nota (Considerar ponerlo en un trigger)
+                // Esto mapea la letra con acento a la letra sin acento
+                $mapaAcentos = array(
+                'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u',
+                'Á' => 'A', 'É' => 'E', 'Í' => 'I', 'Ó' => 'O', 'Ú' => 'U',
+                'ü' => 'u', 'Ü' => 'U'
+                    // Nota: No incluí la 'ñ' -> 'n' porque suele ser necesaria en nombres,
+                );
                 try {
                     $fechaNacimiento = new DateTime($_POST['FeNac']);
                     $hoy = new DateTime();
@@ -37,6 +43,13 @@
                     return;
                 }
 
+                $nombreLimpio = strtr($_POST['nombre'], $mapaAcentos);
+                $apPatLimpio  = strtr($_POST['ApPat'], $mapaAcentos);
+                $apMatLimpio  = strtr($_POST['ApMat'], $mapaAcentos);
+                $direccionLimpia = strtr($_POST['direccion'], $mapaAcentos);
+                $ciudadLimpia = strtr($_POST['ciudad'], $mapaAcentos);
+                $estadoLimpio = strtr($_POST['estado'], $mapaAcentos);
+                
                 // Crear objeto Alumno que almacena los datos del formulario
                 $feIngreso = sprintf('%04d-09-01', $_POST['FeIngreso']); //https://www.php.net/manual/es/function.sprintf.php
                 $Alumno = new Alumno(
@@ -57,37 +70,43 @@
                 );
                 // Se construye el objeto de tipo ALUMNO y se procesan los datos, posteriormente se mandan al modelo para la inserción
                 $insert =  $this->modelAlumno->insertarAlumno($Alumno);
-                if ($insert) {
-                    /*  Cuando se registra el alumno se va a instanciar la clase informaciónMedica
-                    para poder crear el objeto y unirlo al alumno, una vez que fue registrado. */
-                    $informacionMedica = new InformacionMedica(
-                        $Alumno->getMatricula(),
-                        $_POST['tipoSangre'],
-                        $_POST['alergias'],
-                        $_POST['contactoEmergencia']
-                    );
-                    $insertInfoMed = $this->modelAlumno->insertarInfoMedica($informacionMedica);
-                    if(!$insertInfoMed){
-                        echo "<h2 style='color: red;'>Error al registrar la información médica</h2>";
+
+                if ($insert === "DUPLICADO") {
+                    $resultadoExito = false;
+                    $mensaje = "Error: La Matrícula o el Correo electrónico ya están registrados.";
+                }else {
+                    if ($insert) {
+                        /*  Cuando se registra el alumno se va a instanciar la clase informaciónMedica
+                        para poder crear el objeto y unirlo al alumno, una vez que fue registrado. */
+                        $informacionMedica = new InformacionMedica(
+                            $Alumno->getMatricula(),
+                            $_POST['tipoSangre'],
+                            $_POST['alergias'],
+                            $_POST['contactoEmergencia']
+                        );
+                        $insertInfoMed = $this->modelAlumno->insertarInfoMedica($informacionMedica);
+                        if(!$insertInfoMed){
+                            echo "<h2 style='color: red;'>Error al registrar la información médica</h2>";
+                        }
+                        /*AQUÍ SE DEBE GENERAR EL CÓDIGO QR */
+                        $codigosQR = new codigosQR();
+                        $rutaQR = $codigosQR->generarQR_Alumno($Alumno);
+                        /*CODIFICACIÓN DEL QR - GENERANDO ÚNICAMENTE SU HASH */
+                        $hashQR = hash('sha256', $rutaQR->getString()); //Esta sólo permite identificar el QR (No de puede decodificar después)
+                        $Alumno->setQRHash($hashQR);
+                        
+                        /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUÉS */
+                        if(!$this->modelAlumno->asignarHashQR($Alumno)){
+                            die("Error al asignar el código QR al alumno.");
+                        }
+                        /*USANDO EL MÉTODO DEL ARCHIVO enviarCorreo.php 2025-10-15 */
+                        include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
+                        enviarCorreoAlumno($Alumno, $rutaQR->getString());
+                        $resultadoExito = true;
+                        $mensaje = "Registro Exitoso";
+                        } else {
+                            $mensaje = "Error al registrar al alumno en la base de datos.";
                     }
-                    /*AQUÍ SE DEBE GENERAR EL CÓDIGO QR */
-                    $codigosQR = new codigosQR();
-                    $rutaQR = $codigosQR->generarQR_Alumno($Alumno);
-                    /*CODIFICACIÓN DEL QR - GENERANDO ÚNICAMENTE SU HASH */
-                    $hashQR = hash('sha256', $rutaQR->getString()); //Esta sólo permite identificar el QR (No de puede decodificar después)
-                    $Alumno->setQRHash($hashQR);
-                    
-                    /*CODIFICACIÓN DEL QR - DECODIFICACIÓN DESPUÉS */
-                    if(!$this->modelAlumno->asignarHashQR($Alumno)){
-                        die("Error al asignar el código QR al alumno.");
-                    }
-                    /*USANDO EL MÉTODO DEL ARCHIVO enviarCorreo.php 2025-10-15 */
-                    include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
-                    enviarCorreoAlumno($Alumno, $rutaQR->getString());
-                    $resultadoExito = true;
-                    $mensaje = "Registro Exitoso";
-                } else {
-                    $mensaje = "Error al registrar al alumno en la base de datos.";
                 }
             }
             //include_once '/../../Views/RegistroAlumno.html';
@@ -136,12 +155,18 @@
                     );
                     $updateInfoMed = $this->modelAlumno->actualizarInfoMedica($informacionMedica);
                     if(!$updateInfoMed){
-                        echo "<h2 style='color: red;'>Error al actualizar la información médica</h2>";
+                        // Error parcial (Alumno sí, médica no)
+                        $resultadoExito = false; // Ojo: Podrías poner true pero con advertencia
+                        $mensaje = "Alumno actualizado, pero hubo un error al actualizar la información médica.";
                     } else {
-                        echo "<h2 style='color: green;'>Alumno actualizado exitosamente.</h2>";
+                        // ÉXITO TOTAL
+                        $resultadoExito = true;
+                        $mensaje = "Alumno actualizado exitosamente.";
                     }
                 } else {
-                    echo "<h2 style='color: red;'>Error al actualizar el alumno</h2>";
+                    // Error al actualizar alumno
+                    $resultadoExito = false;
+                    $mensaje = "Error al actualizar los datos del alumno.";
                 }
             }
 

@@ -116,6 +116,7 @@ nav a:hover {
     margin-bottom: 2rem;
     text-align: center;
     font-style: italic;
+    padding: 0 10px;
 }
 
 /* Secciones */
@@ -176,6 +177,7 @@ label {
     margin-bottom: 5px;
     color: #333;
     font-weight: 600;
+    text-align: left; /* Alineación para mejor lectura */
 }
 
 input, select {
@@ -221,6 +223,7 @@ table {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* Propiedades clave para el scroll horizontal */
     overflow-x: auto;
     display: block;
     white-space: nowrap;
@@ -364,36 +367,118 @@ footer {
     align-content: center;
 }
 
-/* Responsive */
+/*RESPONSIVE*/
 @media (max-width: 768px) {
+    
+    /* 1. Ajustes del Header */
+    header {
+        height: auto;
+        padding-bottom: 15px;
+    }
+
     .container__header {
         flex-direction: column;
         padding: 10px;
+        height: auto;
+    }
+
+    /* Logo ajustado a tamaño correcto en móvil */
+    .logo {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 10px;
     }
 
     .logo img {
-        height: 150px;
-        width: 300px;
+        height: auto;
+        max-height: 80px; /* Tamaño controlado */
+        width: auto;
+        max-width: 200px;
+        margin: 0;
+    }
+
+    .container__nav {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Menú en lista vertical */
+    nav {
+        width: 100%;
+        margin-top: 5px;
     }
 
     nav ul {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        width: 100%;
     }
 
+    nav ul li {
+        width: 100%;
+    }
+
+    nav a {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 12px;
+    }
+
+    /* 2. Contenido Principal */
     .contenedor-secciones {
-        padding: 10px;
+        padding: 15px 10px;
+        margin-top: 10px;
+        width: 95%;
     }
 
     section {
         padding: 15px;
+        overflow-x: hidden; /* Evita desborde lateral */
     }
 
+    section h3 {
+        font-size: 1.5em;
+    }
+
+    /* 3. Formularios */
+    fieldset {
+        padding: 15px 10px;
+        width: 100%;
+    }
+
+    /* Asegurar que los inputs no rompan el ancho */
+    input, select {
+        max-width: 100%;
+        font-size: 16px; /* Evita zoom automático en iPhone */
+    }
+
+    /* 4. Tablas */
+    /* La tabla ya tiene 'overflow-x: auto' en el CSS principal, 
+       aquí solo ajustamos fuente si es necesario */
     table {
-        font-size: 0.9em;
+        font-size: 0.85em;
     }
 
     th, td {
         padding: 8px;
+    }
+
+    /* 5. Footer Compacto */
+    footer {
+        padding: 1rem 0;
+    }
+
+    .footer__container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .footer__info, .footer__links, .footer__terms {
+        flex: 1 1 auto;
+        width: 100%;
+        margin: 10px 0;
+        padding: 0 10px;
     }
 }

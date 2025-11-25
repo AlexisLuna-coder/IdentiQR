@@ -5,25 +5,23 @@ body {
     background-color: #fbf4f4; /* Agregado para fondo general */
 }
 
-/* ============================
-   HEADER & NAV (Escritorio)
-   ============================ */
+
 header {
     background: #f6ac35;
     min-height: 100px;
     margin: 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    position: relative; /* Importante para el menú móvil */
+    position: relative;
 }
 
 .container__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px; /* Limitar ancho en pantallas gigantes */
+    max-width: 1200px; 
     margin: 0 auto;
     padding: 10px 20px;
-    height: auto; /* Permitir que crezca si es necesario */
+    height: auto;
 }
 
 .logo {
@@ -31,10 +29,10 @@ header {
     align-items: center;
 }
 
-/* CORRECCIÓN DE LOGO: Hacemos que sea flexible */
+/* Se volvera responsive-flex*/
 .logo img {
     height: auto;
-    max-height: 80px; /* Altura máxima controlada */
+    max-height: 80px; /* Altura máxima */
     width: auto;      /* Ancho automático */
     max-width: 250px; /* Que no sea gigante */
     transition: transform 0.3s ease;
