@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    //Iniciar sesión SOLO si no existe una activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (!isset($_SESSION['rol'])) {
         header("Location: /IdentiQR/app/Views/Login.php");
         exit();

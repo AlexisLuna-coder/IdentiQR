@@ -17,7 +17,9 @@
     // ---------------------------------------------------------------------------------------
     // VALIDACIÓN DE SESIÓN CON SWEETALERT
     // ---------------------------------------------------------------------------------------
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (!isset($_SESSION['rol'])) {
         // Cerramos PHP para escribir HTML limpio
         ?>

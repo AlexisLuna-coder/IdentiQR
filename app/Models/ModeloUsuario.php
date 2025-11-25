@@ -54,9 +54,9 @@
             }
 
             // Ejecutar el procedimiento
-            if (!$stmt->execute()) {
-                die("Error al ejecutar registrarUsuarioSP: " . $stmt->error);
-            }
+            //if (!$stmt->execute()) {
+            //    die("Error al ejecutar registrarUsuarioSP: " . $stmt->error);
+            //}
 
             // Obtener el ID del usuario recién insertado
             // Obtener el id insertado usando la conexión (disponible aquí)

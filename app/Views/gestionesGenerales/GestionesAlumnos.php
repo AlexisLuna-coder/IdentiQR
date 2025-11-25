@@ -1,5 +1,8 @@
 <?php
-    session_start();
+    //Iniciar sesión SOLO si no existe una activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     if (!isset($_SESSION['rol'])) {
         header("Location: /IdentiQR/app/Views/Login.php");
         exit();
@@ -231,7 +234,7 @@
             <form action="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=consultarAlumnos" id="formConsultaUsuario" method="POST" onsubmit="return consultarConCarga(event)">
                 <fieldset>
                     <legend>Consulta todos los alumnos</legend>
-                    <label for="idUsuario">Matrícula a buscar:</label>
+                    <!--<label for="idUsuario">Matrícula a buscar:</label>-->
                     <input type="hidden" name="consultarTodo" value="1">
                         <button type="submit" class="btn btn-primary" name = "consultarTodo">Consultar Todos los Alumnos</button>
                     <!-- Campo hidden para saber qué botón fue presionado -->

@@ -1,16 +1,18 @@
 <?php
-    session_start(); // 1. Importante: Iniciar/Reanudar la sesión
-
-    // 2. Validar seguridad: Si no hay rol, expulsar al login
+    //Iniciar sesión SOLO si no existe una activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    // Validar seguridad: Si no hay rol, expulsar al login
     if (!isset($_SESSION['rol'])) {
         header("Location: /IdentiQR/app/Views/Login.php");
         exit();
     }
-
-    // 3. Recuperar el nombre de usuario para mostrarlo
+    // Recuperar el nombre de usuario para mostrarlo
     // Usamos el operador '??' por si acaso la variable no está definida
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+    
 ?>
 <!DOCTYPE html>
 <html lang="es">

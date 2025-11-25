@@ -1,11 +1,14 @@
 <?php
-session_start();
-if (!isset($_SESSION['rol'])) {
-    header("Location: /IdentiQR/app/Views/Login.php");
-    exit();
-}
-$usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
-$rolActivo = $_SESSION['rol'] ?? 'Invitado';
+    //Iniciar sesión SOLO si no existe una activa
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['rol'])) {
+        header("Location: /IdentiQR/app/Views/Login.php");
+        exit();
+    }
+    $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
+    $rolActivo = $_SESSION['rol'] ?? 'Invitado';
 ?>
 <!DOCTYPE html>
 <html lang="es">
