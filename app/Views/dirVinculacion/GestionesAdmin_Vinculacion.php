@@ -41,11 +41,6 @@ $rolActivo = $_SESSION['rol'] ?? 'Invitado';
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -56,6 +51,26 @@ $rolActivo = $_SESSION['rol'] ?? 'Invitado';
                 <a href = "/IdentiQR/app/Views/dirVinculacion/gestionDocumentosAlumnos.php#modificarDoc">Modificar un Documento Vinculación</a>
                 <a href = "/IdentiQR/app/Views/dirVinculacion/gestionDocumentosAlumnos.php#eliminarDoc">Eliminar un Documento Vinculación</a>
                 <a href = "/IdentiQR/app/Views/dirVinculacion/gestionDocumentosAlumnos.php#consultarDoc">Buscar un Documento Vinculación</a>
+            </section>
+
+            <section>
+                <h2>Reportes PDF - Consultar generales</h2>
+                <div class="reporte-container">
+                    <h3>Reporte Entre Fechas</h3>
+                    <form id="formRepInd" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=repGen_Vinc" method="POST" novalidate>
+                        <div id="camposFechas">
+                            <label for="fe1">Fecha mínima (Fecha 1):</label>
+                            <input type="date" name="fe1" id="fe1">
+                            <label for="fe2">Fecha máxima(Fecha 2):</label>
+                            <input type="date" name="fe2" id="fe2">
+                            <div id="err-fechas" style="color:#b00; display:none;"></div>
+                        </div>
+                        <input type="hidden" id = "idDepto" name="idDepto" value="7">
+                        <div style="margin-top:10px;">
+                            <input type="submit" class="btn-submit" value="Generar Reporte de Citas del Día" name = "reporteIndividualizado_Vinc">
+                        </div>
+                    </form>
+                </div>
             </section>
         </div>
         <footer class="FooterIndex1" id="FooterIndex1">
