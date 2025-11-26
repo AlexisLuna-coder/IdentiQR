@@ -97,6 +97,21 @@
             }
             return $data; // Retornamos el arreglo
         }
+        public function reporteGeneral2_DirAca_Barras(){
+            //Asignamos directamente LA DIRECCIÓN para que no reciba parametros
+            $statement_query = "SELECT serviciotramite.Descripcion, COUNT(*) AS Total FROM registroservicio 
+                                INNER JOIN serviciotramite ON registroservicio.idTramite = serviciotramite.idTramite
+                                WHERE serviciotramite.idDepto = 2 GROUP BY serviciotramite.Descripcion;";
+            $result = $this->conn->query($statement_query);
+            //Declaramos los tados
+            $data = [];
+
+            while($row = $result->fetch_assoc()){
+                //Arreglos dentro de arreglos
+                $data[] = [$row['Descripcion'], $row['Total']];
+            }
+            return $data;
+        }
         //idDepto = 3; Servicios escolares
         public function reporteGeneral_ServEsco_Pastel(){
             $sql_statement = "SELECT st.descripcion AS DescripcionT, COUNT(*) AS Total
@@ -215,34 +230,43 @@
 
         /*ESTA FUNCIÓN PERMITE REALIZAR UN CONTEO DE LA CANTIDAD DIARIA DE CITAS*/
         public function reporteDiario_Grafico($fe, $idDepto){
-            $sql = "SELECT count(registroservicio.FechaHora) as Cantidad from registroservicio left join serviciotramite on 
-					registroservicio.idTramite = serviciotramite.idTramite
-                    where date(FechaHora) = ? and idDepto = ?;";
+            $sql = "SELECT alumno.Genero, count(registroservicio.FechaHora) as Cantidad 
+                    FROM registroservicio 
+                    LEFT JOIN serviciotramite ON registroservicio.idTramite = serviciotramite.idTramite 
+                    INNER JOIN alumno ON registroservicio.Matricula = alumno.Matricula
+                    WHERE date(FechaHora) = ? AND idDepto = ? GROUP BY alumno.Genero;";
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
                 error_log("Connection_BD->reportePorDia_DirMed prepare error: " . $this->conn->error);
-                return false;
+                return []; // Retornar array vacío en error
             }
 
             // Forzar tipos
             $idD = (int)$idDepto;
             // Bind seguro
-            if (!$stmt->bind_param("si", $fe, $idD)) {
-                error_log("Connection_BD->reportePorDia_DirMed bind_param error: " . $stmt->error);
-                $stmt->close();
-                return false;
-            }
+
             $stmt->bind_param("si", $fe, $idD);
             if (!$stmt->execute()) {
                 // Manejo de error si falla la ejecución
                 throw new Exception("Error en execute(): " . $statement->error);
             }
-            //return $stmt->execute();
             $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
 
-            $count = isset($row['Cantidad']) ? (int)$row['Cantidad'] : 0;
-            return $count; //Regresa el resultado de la consulta
+            // Preparamos el array para PHPlot: Estructura array('Etiqueta', Valor)
+            $data = [];
+            $totalCitas = 0;
+
+            while ($row = $result->fetch_assoc()) {
+                $genero = empty($row['Genero']) ? 'Sin Definir' : $row['Genero'];
+                $cantidad = (int)$row['Cantidad'];
+                
+                // Formato para PHPlot (text-data)
+                $data[] = array($genero, $cantidad);
+                $totalCitas += $cantidad;
+            }
+
+            // Retornamos tanto los datos para la gráfica como el total
+            return ['datosGrafica' => $data, 'total' => $totalCitas];
         }
 
         public function reportePorDia_DirMed($fe, $idDepto){

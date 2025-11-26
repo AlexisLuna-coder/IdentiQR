@@ -31,11 +31,6 @@
                             <li><a href="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php">REGRESAR</a></li>
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>

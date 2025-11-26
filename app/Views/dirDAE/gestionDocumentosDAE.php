@@ -34,11 +34,6 @@
                             <li><a href="/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -94,7 +89,6 @@
 
         <div id = "revisarTramite">
                 <!--Aquí se incluirá la tabla del trámite hecho.-->
-                <!--<form action="/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult" method = "POST"> -->
                 <form action="/IdentiQR/redireccionAcciones.php?controller=dirDAE&action=consult" method="POST" onsubmit="consultarConCarga(event)">    
                     <!-- Selección de tipo de búsqueda -->
                     <fieldset>

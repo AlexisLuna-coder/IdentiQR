@@ -14,7 +14,6 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesTramitesDireccionesGenerales.css">
         
-
         <script type="text/javascript" src="https://rawcdn.githack.com/schmich/instascan-builds/master/instascan.min.js"></script>
         <!--<script type="text/javascript" src="/IdentiQR/public/JavaScript/instascan.min.js"></script>-->
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
@@ -37,11 +36,6 @@
                             <li><a href="/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -63,7 +57,7 @@
                     <!--*A partir de acá se solicitará la información de la matrícula del estudiante escaneado-->
                     <label for = "codigoQR_Estudiante">Escanear_QR</label> <!--*: Aquí debería abrir la cámara para escanear-->
                     <button type="button" id="btnEscanear">Escanear QR</button>
-                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado" disabled> <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
+                    <input type="text" name="matriculaEscaneado" id="matriculaEscaneado"  placeholder = "Matricula escaneada" disabled> <!--Se encontrará deshabilitado porque NO SE MODIFICARÁ (solo se presentará-->
                     <input type="hidden" name="matriculaEscaneadoBD" id = "matriculaEscaneadoBD">
 
                     <!--A PARTIR DE ABAJO COMENZAREMOS CON LOS DATOS GENERALES-->
@@ -77,11 +71,11 @@
                     <hr>
                     <!-- Datos médicos adicionales -->
                     <label for="temperatura">Temperatura (°C): </label>
-                        <input type="number" step="0.1" id="temperatura" name="temperatura" requiered>
+                        <input type="number" step="0.1" id="temperatura" name="temperatura"  placeholder = "Grados °c"requiered>
                     <br><br>
 
                     <label for="altura">Altura (cm): </label>
-                        <input type="number" step="0.1" id="altura" name="altura" requiered>
+                        <input type="number" step="0.1" id="altura" name="altura" placeholder = "Registro de altura (cm)"requiered>
                     <br><br>
 
                     <label for="fechaCita">Fecha de cita: </label>
@@ -89,7 +83,7 @@
                     <br><br>
 
                     <label for="peso">Peso (kg): </label>
-                    <input type="number" step="0.1" id="peso" name="peso" requiered>
+                    <input type="number" step="0.1" id="peso" name="peso" placeholder = "Peso en Kg" requiered>
                     <br><br>
 
                     <label for="descripcion">Descripción adicional: </label><br>

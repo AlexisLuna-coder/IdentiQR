@@ -132,7 +132,7 @@
                     <hr>
                     <div id = "card-DirServEsco">
                         <legend>Dirección de Servicios Escolares</legend>
-                        <a href="/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php">Gestión de documentos Estudiantiles - DAE</a>
+                        <a href="/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php">Gestión de documentos Estudiantiles - Servicios Escolares</a>
                     </div>
                     <hr>
                 </section>

@@ -146,15 +146,6 @@ begin
 		set new.passw = MD5(new.passw);
 		set new.FechaRegistro = now();
     end if;
-    /*--DIFERENTES TIPOS DE ENCRIPTACIÓN
-    select Password("abc");
-	select MD5("abc");
-	select sha("AAA");
-	select aes_encrypt("AAA","clave") into @x;
-	select convert(aes_decrypt(@x,"clave") using utf8);
-    
-    https://youtu.be/JQnrO1eDR-0?si=4VP6ykF-bHJVpSEc
-    */
 end //
 /*		Disparadores para anotar en las bitacoras		*/ 
 delimiter //
@@ -212,8 +203,6 @@ INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `a
 INSERT INTO `identiqr`.`usuario` (`id_usuario`, `nombre`, `apellido_paterno`, `apellido_materno`, `email`, `passw`, `rol`,`idDepto`) VALUES ('0', 'Identi', 'Q', 'R_Med', 'identiQR.info_Med@identiqr.com', 'IdentiQR_Med', 'Administrativo_Medico',6);/*Med - IDQD2025-7A*/
 #select * from usuario;
 #select * from departamento;
-/* DISPARADOR PARA LA ACTUALIZACIÓN DE LA CONTRASEÑA - Unicamente si se modifica*/
-
 /*Disparadores para agilizar el procedimiento de ASIGNACIÓNDE HASH a los alumnos*/
 delimiter //
 create trigger actHash_QR_Alumno before update on alumno
@@ -449,7 +438,7 @@ begin
 		OR
             (opc = 2 AND a.Genero = g)
 		AND
-			(idD = idDe)
+			(idD = 6)
         ORDER BY rs.FechaHora DESC;
 	declare continue handler for not found set @x = true;
     open buscarRep_DirMed;
@@ -469,8 +458,3 @@ begin
 	end loop;
     close buscarRep_DirMed;
 end //
-
-
-select * from usuario;
-
-select * from alumno;

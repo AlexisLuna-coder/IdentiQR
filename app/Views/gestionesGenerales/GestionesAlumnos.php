@@ -92,7 +92,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="ApeMat">Apellido materno</label>
-                        <input type="text" id="ApMat" name="ApMat" placeholder = "Ingresa tu Apellido Materno"required>
+                        <input type="text" id="ApMat" name="ApMat" placeholder = "Ingresa tu Apellido Materno / En caso de no tener '-'" >
                     </div>
                     <div class="form-group row">
                         <label for="FechaNac">Fecha de nacimiento</label>
@@ -148,7 +148,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="anioIngreso">Año de Ingreso</label>
-                        <input type="number" id="FeIngreso" name="FeIngreso" min="2023" placeholder = "2006" required>
+                        <input type="number" id="FeIngreso" name="FeIngreso" min="2023" placeholder = "2023" required>
                         <script> 
                             // poner el año actual como valor por defecto y como máximo
                             const input = document.getElementById("FeIngreso");

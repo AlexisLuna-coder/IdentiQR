@@ -45,11 +45,6 @@
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -85,6 +80,12 @@
                         <input type="hidden" name="idDepto" value="2">
                         <div style="margin-top:10px;">
                             <input type="submit" class="btn-submit" value="Generar Reporte de Alumnos" name = "reporteIndividualizado_DirAca">
+                        </div>
+                    </form>
+                    <form id="formRepInd" action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=alumnosGenerales_Tramites3" method="POST" novalidate>
+                        <input type="hidden" name="idDepto" value="2">
+                        <div style="margin-top:10px;">
+                            <input type="submit" class="btn-submit" value="Generar Reporte de Tramites en la Dirección" name = "reporteIndividualizado_DirAca">
                         </div>
                     </form>
                 </div>

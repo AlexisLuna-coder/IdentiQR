@@ -50,11 +50,6 @@
                             <li><a href="/IdentiQR/app/Controllers/ControladorUsuario.php?action=logoutUsuario">Cerrar Sesión</a></li>
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -111,7 +106,7 @@
                 </div>
 
                 <div class="reporte-container">
-                    <h3>Reporte de Citas por Día (Porcentual)</h3>
+                    <h3>Reporte de género asistido por Día (Porcentual)</h3>
                     <form action="/IdentiQR/redireccionAcciones.php?controller=reportsGeneral&action=reporteCitasDia" method="POST">
                         <label for="fechaReporte">Selecciona la fecha:</label>
                         <input type="date" name="fechaReporte" id="fechaReporte" required>

@@ -40,11 +40,6 @@
                             <li><a href="/IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -72,7 +67,7 @@
                     <br><br>
                     <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
-                            <option no value=""></option>
+                            <option no value="" disabled>Selecciona un tramite</option>
                             <option value="0005">Estancia I</option>
                             <option value="0006">Estancia II</option>
                             <option value="0007">Estadía</option>

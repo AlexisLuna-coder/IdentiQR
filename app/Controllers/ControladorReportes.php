@@ -121,7 +121,7 @@
             foreach($data as $r){
                 // Ingresamos/añadimos los encabezados y logos a cada HOJA (a la hoja en que se empiece a escribir)
                 if ($logoPath && file_exists($logoPath)) {
-                    $pdf->Image($logoPath, 25, 10, 30);
+                    $pdf->Image($logoPath, 185, 10, 30);
                 }
                 // Preparar datos
                 $folio = utf8_decode($r[0]);
@@ -148,7 +148,9 @@
             }
             //Impresión/generar o mandar a Descargas el PDF generado
             $nombreRep = "ReporteAdmin_General_Tramites_-".$fechaHora.".pdf";
-            $pdf->Output('D', $nombreRep);
+            //$pdf->Output('D', $nombreRep);
+            $pdf->Output();
+            
         }
         public function reporteGeneral2_Admin(){
             $dataPastel = $this->reportModel->reporteGeneral2_Admin_Pastel();
@@ -437,11 +439,8 @@
                 // Concatenar y disminuir la cant. de caracteres
                 $nombreFull = $D[1] . " " . $D[2] . " " . $D[3];
                 $nombre     = utf8_decode(substr($nombreFull, 0, 55));
-                
                 $carrera    = utf8_decode($D[16] ?? ''); 
-                
                 $correo     = utf8_decode(substr($D[6], 0, 55));
-                
                 $fechaIni   = utf8_decode($D[14]);
                 $fechaFin   = utf8_decode($D[15]);
 
@@ -450,8 +449,6 @@
                 } else {
                     $pdf->SetFillColor(255, 255, 255); 
                 }
-
-
                 // Esto hace que se vea abierto por abajo, conectando con la fila siguiente
                 $pdf->SetFont('Arial', 'B', 10); // Negrita para resaltar
                 $pdf->Cell($w1, 8, $matricula, 'LTR', 0, 'C', true);
@@ -653,7 +650,8 @@
                 $pdf->Cell(0, 10, 'Total de Alumnos: ' . number_format($cont, 0), 0, 1, 'R');
 
                 $nombreRep_Dir = "reporteGeneral_DirAca_".$fechaHora.".pdf";
-                $pdf-> Output('D', $nombreRep_Dir);
+                //$pdf-> Output('D', $nombreRep_Dir);
+                $pdf->Output();
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -662,18 +660,78 @@
                 exit();
             }
         }
+        public function reporteGeneral2_DirAca(){
+            date_default_timezone_set('America/Mexico_City');
+            $fechaHora = date('Y-m-d_H-i-s');
+            //Este reporte solo generará un GRÁFICO
+            $data = $this->reportModel->reporteGeneral2_DirAca_Barras();
+            //Validamos
+            if (empty($data)) {
+                // Generar PDF con mensaje de error/sin datos
+                $pdf = new FPDF();
+                $pdf->AddPage();
+                $pdf->SetFont('Arial', 'B', 16);
+                $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
+                $pdf->Ln(20);
+                $pdf->SetFont('Arial', '', 12);
+                $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
+                
+                date_default_timezone_set('America/Mexico_City');
+                $fechaHora = date('Y-m-d_H-i-s');
+                $nombreRep = "ReporteAdmin_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
+                $pdf->Output('D', $nombreRep);
+                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+            }
+            //Creamos la gráfica
+            $plot = new PHPLot(800,600);//plot: Referencia a PHPLot
+            $plot -> SetImageBorderType('plain'); //Tipo de borde
+            $plot ->SetPlotType('bars'); //Indica el tipo de gráfica
+            $plot -> SetDataType('text-data'); //El tipo de datos en la gráfica
+            $plot -> SetDataValues($data); //Añadir los valores de la gráfica
+            
+            //ESTILO DE LA GRÁFICA
+            $plot -> SetTitle('Tramite-Descripción');
+            $plot -> SetXTitle(utf8_decode('Descripción del trámite'));
+            $plot -> SetYTitle('Total de registros');
+            $plot -> SetShading(5); //Añadir una sombra para efecto 3D
+            $plot -> SetDataColors(['#800080']);
+            //Generar gráfica
+            $filename = "public/media/graphs/grafica_Tramites_DirAcademica_".$fechaHora.".png"; //Ruta de imagen
+            $plot -> SetOutputFile($filename); //Guardar imagen de la gráfica
+            $plot -> SetIsInline(true); //Guardar gráfica en el sistema
+            $plot -> DrawGraph(); // Genera la gráfica
+            //Generar el PDF
+            $pdf = new FPDF();
+            $pdf -> AddPage();
+            $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png');
+            $logoPathDir = realpath(__DIR__ . '/../../public/Media/img/DireccionAca_Index1.png');
+            if ($logoPath && file_exists($logoPath)) {
+                $pdf->Image($logoPath, 15, 5, 45);
+            }
+            if ($logoPathDir && file_exists($logoPathDir)) {
+                $pdf->Image($logoPathDir, $pdf->GetPageWidth() - 55, 5, 45);
+            }
+            $pdf -> SetFont('Arial','B',16);
+            $pdf -> Cell(0,10,'Reporte de Tramites realizados',0,1,'C');
+            $pdf -> SetFont('Arial','B',10);
+            $pdf -> Cell(0,10,'fecha: ' . $fechaHora,0,1,'C');
+            $pdf -> Image($filename,30,40,150,100);
+            $nombreRep_Dir = "reporteGeneral_DirAcademica_TramitesRealizados_".$fechaHora.".pdf";
+            $pdf-> Output('D', $nombreRep_Dir);
+            exit();
+        }
         
         //idDepto = 3; Servicios escolares
         public function reporteGeneral_ServEsco(){
             if(isset($_POST['reporteIndividualizado_ServEsco'])){
                 $dataPastel = $this->reportModel->reporteGeneral_ServEsco_Pastel();   
                 //Validamos que la gráfica NO se encuentre vacia
-                if (empty($data)) {
+                if (empty($dataPastel)) {
                     // Generar PDF con mensaje de error/sin datos
                     $pdf = new FPDF();
                     $pdf->AddPage();
                     $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
-                    $pdf->SetFont('ShadowsIntoLight', '', 16);
+                    $pdf->SetFont('ShadowsIntoLight-Regular', '', 16);
                     $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
                     $pdf->Ln(20);
                     $pdf->SetFont('Arial', '', 12);
@@ -683,6 +741,7 @@
                     $fechaHora = date('Y-m-d_H-i-s');
                     $nombreRep = "Reporte_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
                     $pdf->Output('D', $nombreRep);
+                    //$pdf->Output();
                     exit(); // Detener la ejecución para no intentar dibujar la gráfica
                 }             
                 
@@ -826,6 +885,7 @@
 
                 $nombreRep_Dir = "reporteGeneral_ServEsco_".$fechaHora.".pdf";
                 $pdf-> Output('D', $nombreRep_Dir);
+                $pdf->Output();
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -851,13 +911,9 @@
 
                 $pdf = new FPDF();
                 $pdf -> AddPage();
-                // ENCABEZADO Y LOGOS 
-                if ($logoPath && file_exists($logoPath)) {
-                    $pdf->Image($logoPath, 25, 10, 45);
-                }
 
                 $pdf->SetFont('Arial','B',16);
-                $pdf->Cell(0,10,'Reporte de Alumnos', 0,1,'C');
+                $pdf->Cell(0,10,'Reporte de Alumnos y tutorias', 0,1,'C');
                 $pdf->AliasNbPages();
                 //pdf -> Image(ruta, X, Y, ancho, alto);
                 //$pdf -> Image($filename,50,50,200,120);
@@ -891,11 +947,6 @@
 
                     //Si no esta vacio - Hacemos el while/for-each
                     while($rows = $data2->fetch_assoc()){
-                        $pdf->Ln(15);
-                        if ($logoPath && file_exists($logoPath)) {
-                            $pdf->Image($logoPath, 25, 10, 45);
-                        }
-                        
                         //Creamos o añadimos la información
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
@@ -995,24 +1046,20 @@
                         $rightX = $pdf->GetPageWidth() - 12 - 28; // (margen derecho = 12, ancho logo = 28)
                         $pdf->Image($logoPathDir, $rightX, 8, 28);
                     }    
-                    $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
-                    $pdf -> Cell(30,20,utf8_decode("Matrícula"),1,0,'C',false);    
-                    $pdf -> Cell(60,20,utf8_decode("FolioRegistro"),1,0,'C',false);    
-                    $pdf -> Cell(60,20,utf8_decode("FolioRastreo"),1,0,'C',false);    
-                    $pdf -> Cell(30,20,utf8_decode("Estatus"),1,0,'C',false);
-                    $pdf->Ln();
-                    
+
                     //Si no esta vacio - Hacemos el while/for-each
                     while($rows = $data2->fetch_assoc()){
+                        
+                        $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
+                        $pdf -> Cell(30,20,utf8_decode("Matrícula"),1,0,'C',false);    
+                        $pdf -> Cell(60,20,utf8_decode("FolioRegistro"),1,0,'C',false);    
+                        $pdf -> Cell(60,20,utf8_decode("FolioRastreo"),1,0,'C',false);    
+                        $pdf -> Cell(30,20,utf8_decode("Estatus"),1,0,'C',false);
                         $pdf->Ln(15);
-
-                        if ($logoPath && file_exists($logoPath)) {
-                            $pdf->Image($logoPath, 25, 10, 45);
-                        }
                         //Creamos o añadimos la información
                         $pdf-> SetFont('Alegreya-VariableFont_wght','',12);
                         $pdf->SetTextColor(0,0,0);
-                        $pdf->SetFillColor(255,255,0); //Agregar un color a la celda - ESTO MODIFICA LAS CELDAS
+                        $pdf->SetFillColor(175, 238, 238); //Agregar un color a la celda - ESTO MODIFICA LAS CELDAS
                         $pdf->Cell(30,8,utf8_decode($rows['Matricula'] ?? ''),1,0,'C',true);
                         $pdf->Cell(60,8,utf8_decode($rows['FolioRegistro'] ?? ''),1,0,'C',true);
                         $pdf->Cell(60,8,utf8_decode($rows['FolioSeguimiento'] ?? ''),1,0,'C',true);
@@ -1021,7 +1068,7 @@
 
                         $pdf -> Cell(180,10,utf8_decode("Descripción"),1,0,'C',false); 
                         $pdf->Ln();
-                        $pdf->SetFillColor(255,255,0); //Agregar un color a la celda
+                        $pdf->SetFillColor(175, 238, 238); //Agregar un color a la celda
                         $pdf -> Multicell(180,10,utf8_decode($rows['descripcion'] ?? ''),1,0,'C',false); 
                         $pdf->Ln(2);
                         //Datos extras
@@ -1037,15 +1084,12 @@
                 $margin = 50;
                 $pdf->SetFont('ShadowsIntoLight-Regular','',9);
                 $pdf->SetTextColor(80);
-
-                
                 $leftText = utf8_decode("Generado por: IdentiQR - Fecha del reporte: $hoy");
 
                 $pdf->SetX($margin);
                 $pdf->Cell(200 - 2*$margin - 40, 6, $leftText, 0, 0, 'L');
                 $nombreRep_Dir = "reporteGeneral_DirDAE_".$fechaHora.".pdf";
                 $pdf-> Output('D', $nombreRep_Dir);
-
             }
             
         }
@@ -1177,7 +1221,7 @@
                         $pdf->Ln(6);
 
                         // Caja de descripcion 
-                        pdf->SetDrawColor(200,200,200);
+                        $pdf->SetDrawColor(200,200,200);
                         $pdf->SetFillColor(245,245,245);
                         $pdf->SetFont('ShadowsIntoLight-Regular','',11);
                         $pdf->Cell(0,7, utf8_decode('Descripción / Notas'), 1, 1, 'L', true);
@@ -1214,7 +1258,8 @@
                     echo "No se pudo generar el PDF: ya se envió salida previamente.";
                     return;
                 }
-                $pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
+                //$pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
+                $pdf->Output();
                 //INCLUIMOS LA VISTA
                 $vista = __DIR__ . '/../Views/dirMedica/GestionesAdmin_Medico.php';
                 if (file_exists($vista)) {
@@ -1223,36 +1268,40 @@
         }
         public function reportePorDia_DirMed(){
             date_default_timezone_set('America/Mexico_City');
+            
             if (!isset($_POST['reporteCitasDia'])) return;
-
             $fe = $_POST['fechaReporte'];
             $idDepto = (int)$_POST['idDepto'];
-            date_default_timezone_set('America/Mexico_City');
             $fechaHora = date('Y-m-d_H-i-s');
 
-            $cant = $this->reportModel->reporteDiario_Grafico($fe, $idDepto); // int
+            // Obtener datos del Modelo
+            $dataInfo = $this->reportModel->reporteDiario_Grafico($fe, $idDepto);
+            $datosGrafica = $dataInfo['datosGrafica']; 
+            $cant = $dataInfo['total'];
+            // Obtener el detalle de las filas (Citas individuales)
             $result = $this->reportModel->reportePorDia_DirMed($fe, $idDepto);
 
-            //Validamos que la gráfica NO se encuentre vacia
-            if (empty($cant)) {
-                // Generar PDF con mensaje de error/sin datos
+            // Si no hay datos, generar PDF de error
+            if ($cant == 0 || empty($datosGrafica)) {
                 $pdf = new FPDF();
                 $pdf->AddPage();
-                $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
-                $pdf->SetFont('ShadowsIntoLight', '', 16);
+                // Intenta cargar la fuente, si falla usa Arial
+                try {
+                    $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
+                    $pdf->SetFont('ShadowsIntoLight-Regular', '', 16);
+                } catch (Exception $e) {
+                    $pdf->SetFont('Arial', '', 16);
+                }
                 $pdf->Cell(0, 10, utf8_decode('Reporte General - Servicios/Trámites'), 0, 1, 'C');
                 $pdf->Ln(20);
                 $pdf->SetFont('Arial', '', 12);
                 $pdf->Cell(0, 10, utf8_decode('No se encontraron trámites registrados para este reporte.'), 0, 1, 'C');
-                    
-                date_default_timezone_set('America/Mexico_City');
-                $fechaHora = date('Y-m-d_H-i-s');
                 $nombreRep = "Reporte_General_Tramites_SIN_DATOS_".$fechaHora.".pdf";
                 $pdf->Output('D', $nombreRep);
-                exit(); // Detener la ejecución para no intentar dibujar la gráfica
+                exit(); 
             }    
 
-            // Normalizar filas
+            // Normalizar filas de la base de datos a Array
             $rows = [];
             if ($result instanceof mysqli_result) {
                 $rows = $result->fetch_all(MYSQLI_ASSOC);
@@ -1261,124 +1310,125 @@
                 $rows = $result;
             }
 
-            // Iniciar FPDF
+            // GENERACIÓN DE GRÁFICA CON PHPLOT (TEMP)
+            // Crear ruta temporal única
+            $tempImg = sys_get_temp_dir() . '/grafica_' . md5(uniqid()) . '.png';
+
+            // Configurar PHPlot
+            $plot = new PHPlot(600, 300); // 600x300 pixeles
+            $plot->SetImageBorderType('none');
+            $plot->SetDataType('text-data');   
+            $plot->SetDataValues($datosGrafica); // Array [['Masculino', 10], ['Femenino', 5]]
+            $plot->SetPlotType('bars');
+            
+            // Estilos visuales
+            $plot->SetTitle("Distribucion por Genero");
+            $plot->SetBackgroundColor('white');
+            $plot->SetDataColors(array('#1E90FF', '#DC143C', '#DAA520', '#2E8B57')); // Azul, Rojo, Amarillo, Verde
+            $plot->SetXTickLabelPos('none');
+            $plot->SetXTickPos('none');
+            
+            // Guardar en archivo en lugar de imprimir
+            $plot->SetIsInline(true);
+            $plot->SetOutputFile($tempImg); 
+            $plot->DrawGraph();
+
+            //Inicializamos FPDF
             $pdf = new FPDF('P','mm','Letter');
             $pdf->AliasNbPages();
             $pdf->SetAutoPageBreak(true, 18);
-
-            // Márgenes y datos de layout
+            // Márgenes
             $left = 18; $top = 20; $right = 18; $bottom = 10;
             $pdf->SetMargins($left, $top, $right);
-
-            $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png'); // tu logo
-            $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php'); // si no tienes fuente extra puedes borrar esta línea
-
+            $logoPath = realpath(__DIR__ . '/../../public/Media/img/Logo.png'); 
+            $pdf->AddFont('ShadowsIntoLight-Regular','','ShadowsIntoLight-Regular.php');
             $pdf->AddPage();
-
-            // Genera un pequeño marco
+            // Marco Decorativo
             $pdf->SetDrawColor(120,120,120);
             $pdf->SetLineWidth(0.6);
             $pdf->Rect($left-2, $top-8, $pdf->GetPageWidth() - ($left+$right) + 4, $pdf->GetPageHeight() - ($top+$bottom) + 6);
-
+            // Logo
             if ($logoPath && file_exists($logoPath)) {
                 $imgW = 60;
                 $xImg = ($pdf->GetPageWidth() - $imgW) / 2;
                 $pdf->Image($logoPath, $xImg, $top - 20, $imgW);
             }
-
+            // Títulos
             $pdf->SetY($top + 30);
             $pdf->SetFont('ShadowsIntoLight-Regular','',16);
             $pdf->Cell(0, 8, utf8_decode('REPORTE DIARIO - DIRECCIÓN MÉDICA'), 0, 1, 'C');
-
             $pdf->SetFont('ShadowsIntoLight-Regular','',11);
             $pdf->Cell(0,6, utf8_decode("Fecha del reporte: $fe"), 0, 1, 'C');
             $pdf->Cell(0,6, utf8_decode("Dirección (id): $idDepto"), 0, 1, 'C');
             $pdf->Ln(6);
-
-            // Cantidad destacada
+            // Cantidad Total
             $pdf->SetFont('ShadowsIntoLight-Regular','',12);
-            $pdf->Cell(0,6, utf8_decode("Cantidad de citas:"), 0,1,'L');
+            $pdf->Cell(0,6, utf8_decode("Cantidad total de citas:"), 0,1,'L');
             $pdf->SetFont('ShadowsIntoLight-Regular','',22);
             $pdf->SetTextColor(0,80,160);
             $pdf->Cell(0,12, "  [ $cant ]", 0,1,'L');
             $pdf->SetTextColor(0,0,0);
-            $pdf->Ln(4);
-
-            // Dibujar gráfico de barra simple
-            $chartX = $left;
+            $pdf->Ln(2);
+            // ! INCLUIMOS LA GRÁFICA EN EL REPORTE
+            $chartX = $left + 15; // Un poco centrado
             $chartY = $pdf->GetY();
-            $chartW = $pdf->GetPageWidth() - $left - $right - 70;
-            $chartH = 14;
-            $pdf->SetLineWidth(0.4);
-            $pdf->SetDrawColor(150,150,150);
-            $pdf->Rect($chartX, $chartY, $chartW, $chartH);
-            $maxVal = max(10, (int)$cant);
-            $barW = ($cant / $maxVal) * ($chartW - 4);
-            if ($barW > 0) {
-                $pdf->SetFillColor(30,120,180);
-                $pdf->Rect($chartX + 2, $chartY + 2, $barW, $chartH - 4, 'F');
+            
+            // Insertamos la imagen (120mm de ancho, 60mm de alto)
+            if (file_exists($tempImg)) {
+                $pdf->Image($tempImg, $chartX, $chartY, 150, 75);
+                // Borrar imagen temporal
+                unlink($tempImg);
             }
+            // Movemos el cursor abajo de la gráfica
+            $pdf->SetY($chartY + 75);
             $pdf->SetFont('ShadowsIntoLight-Regular','',10);
-            $pdf->SetXY($chartX + $chartW + 6, $chartY);
-            $pdf->MultiCell(60,5, utf8_decode("Gráfico: cantidad total de citas en la fecha.\nValor: $cant"), 0, 'L');
-            $pdf->Ln(18);
+            $pdf->MultiCell(0,5, utf8_decode("Gráfico generado dinámicamente basado en la distribución por género de las citas del día."), 0, 'C');
+            $pdf->Ln(5);
 
-            // Si no hay filas mostrar mensaje y salir
-            if (count($rows) === 0) {
-                $pdf->SetFont('ShadowsIntoLight-Regular','',11);
-                $pdf->Cell(0,6, utf8_decode('No hay citas registradas para la fecha/dirección seleccionada.'), 0,1,'C');
-                // Footer manual
-                $pdf->SetY(-16);
-                $pdf->SetFont('ShadowsIntoLight-Regular','',9);
-                $pdf->SetTextColor(100,100,100);
-                $pdf->Cell(0,6, utf8_decode('Generado por IdentiQR - '.date('Y-m-d H:i:s')), 0, 0, 'L');
-                $pdf->Cell(0,6, utf8_decode('Página '.$pdf->PageNo().'/{nb}'), 0, 0, 'R');
-
-                $pdf->Output('I', 'REPORTE_DIARIO_DirMed_'.$fe.'.pdf');
-                exit;
-            }
-
-            $pdf->SetFont('ShadowsIntoLight-Regular','',12);
-            $pdf->Cell(0,6, utf8_decode("Detalle de Citas - Fecha: $fe | Dirección: $idDepto"), 0,1,'L');
+            // DETALLE DE CITAS (TARJETAS)
+            $pdf->Ln(80);
+            $pdf->SetFont('ShadowsIntoLight-Regular','',14);
+            $pdf->Cell(0,6, utf8_decode("Detalle de Citas - Listado Completo"), 0,1,'C');
             $pdf->Ln(4);
-
             $pdf->SetFont('ShadowsIntoLight-Regular','',10);
             $cardW = $pdf->GetPageWidth() - $left - $right - 4;
-            $cardH = 48; // altura tarjeta
+            $cardH = 48; 
             $gap = 6;
             $y = $pdf->GetY();
             $pageH = $pdf->GetPageHeight();
-
             for ($i = 0; $i < count($rows); $i++) {
                 $r = $rows[$i];
-
-                // Si no hay espacio suficiente, crear nueva página y redibujar header (title) manualmente
+                // Verificamos salto de página
                 if ($y + $cardH + $gap > $pageH - $bottom) {
-                    $pdf->SetY(-16);
+                    // Footer manual antes de saltar
+                    $pdf->SetY(5);
                     $pdf->SetFont('ShadowsIntoLight-Regular','',9);
                     $pdf->SetTextColor(100,100,100);
                     $pdf->Cell(0,6, utf8_decode('Generado por IdentiQR - '.date('Y-m-d H:i:s')), 0, 0, 'L');
                     $pdf->Cell(0,6, utf8_decode('Página '.$pdf->PageNo().'/{nb}'), 0, 0, 'R');
-
+                    $pdf->SetTextColor(0,0,0); // Reset color
                     $pdf->AddPage();
-                    // re-dibujar marco 
+                    // Redibujar marco en nueva página
                     $pdf->SetDrawColor(120,120,120);
                     $pdf->SetLineWidth(0.6);
                     $pdf->Rect($left-2, $top-8, $pdf->GetPageWidth() - ($left+$right) + 4, $pdf->GetPageHeight() - ($top+$bottom) + 6);
 
                     $pdf->SetY($top + 6);
                     $pdf->SetFont('ShadowsIntoLight-Regular','',12);
-                    $pdf->Cell(0,6, utf8_decode("Detalle de Citas - Fecha: $fe | Dirección: $idDepto"), 0,1,'L');
+                    $pdf->Cell(0,6, utf8_decode("Continuación de Detalle de Citas..."), 0,1,'L');
                     $pdf->Ln(4);
 
                     $y = $pdf->GetY();
                     $pdf->SetFont('ShadowsIntoLight-Regular','',10);
                 }
 
+                // Dibujar Tarjeta
                 $x = $left;
                 $pdf->SetDrawColor(180,180,180);
                 $pdf->SetFillColor(248,248,250);
                 $pdf->Rect($x, $y, $cardW, $cardH, 'DF');
+                
+                // Datos
                 $pdf->SetXY($x + 6, $y + 4);
                 $pdf->SetFont('ShadowsIntoLight-Regular','',11);
                 $folio = $r['IdRegistro'] ?? '';
@@ -1388,7 +1438,7 @@
                 $pdf->SetFont('ShadowsIntoLight-Regular','',10);
                 $nombre = strtoupper(trim(($r['Nombre'] ?? '') . ' ' . ($r['ApePat'] ?? '') . ' ' . ($r['ApeMat'] ?? '')));
                 $matricula = $r['Matricula'] ?? '';
-                $fechaHora = $r['FechaHoraServ'] ?? '';
+                $fechaHoraServ = $r['FechaHoraServ'] ?? '';
                 $estatus = $r['EstatusServ'] ?? '';
                 $carrera = $r['idCarrera'] ?? '';
 
@@ -1396,10 +1446,11 @@
                 $pdf->Cell($cardW*0.4 - 12, 5, utf8_decode("Matrícula: ".$matricula), 0, 1);
 
                 $pdf->SetXY($x + 6, $y + 16);
-                $pdf->Cell(90, 5, utf8_decode("Fecha/Hora: ".$fechaHora), 0, 0);
+                $pdf->Cell(90, 5, utf8_decode("Fecha/Hora: ".$fechaHoraServ), 0, 0);
                 $pdf->Cell(60, 5, utf8_decode("Estatus: ".$estatus), 0, 0);
                 $pdf->Cell(0, 5, utf8_decode("Carrera: ".$carrera), 0, 1);
 
+                // Descripción
                 $pdf->SetXY($x + 6, $y + 22);
                 $pdf->SetFont('ShadowsIntoLight-Regular','',9);
                 $desc = trim($r['DescripcionServ'] ?? '');
@@ -1408,22 +1459,21 @@
                 $descPrint = (mb_strlen($desc) > $descMax) ? mb_substr($desc, 0, $descMax) . '...' : $desc;
                 $pdf->MultiCell($cardW - 12, 4, utf8_decode("Descripción: ".$descPrint), 0, 'L');
 
-                // Mueve el cursor (handle)
                 $y += $cardH + $gap;
                 $pdf->SetY($y);
             }
 
-            $pdf->SetY(255);
+            // Footer final y Salida
+            $pdf->SetY(-10);
             $pdf->SetFont('ShadowsIntoLight-Regular','',9);
             $pdf->SetTextColor(100,100,100);
             $pdf->Cell(0,6, utf8_decode('Generado por IdentiQR - '.date('Y-m-d H:i:s')), 0, 0, 'L');
             $pdf->Cell(0,6, utf8_decode('Página '.$pdf->PageNo().'/{nb}'), 0, 0, 'R');
 
-            date_default_timezone_set('America/Mexico_City');
-            $fechaHora = date('Y-m-d_H-i-s');
-
-            $nombreRep_Dir = "reporteGeneral_DirMedica_".$fechaHora.".pdf";
-            $pdf-> Output('D', $nombreRep_Dir);
+            $nombreRep_Dir = "Reporte_Diario_Grafico_".$fechaHora.".pdf";
+            $pdf->Output('D', $nombreRep_Dir);
+            //$pdf->Output();
+            exit();
         }
         
         //idDepto = 7; Vinculación
@@ -1505,7 +1555,7 @@
                 // Imagen de la gráfica
                 if (file_exists($filename)) {
                     $xImg = ($pdf->GetPageWidth() - 110) / 2; 
-                    $pdf->Image($filename, $xImg, $pdf->GetY(), 145, 100);
+                    $pdf->Image($filename, $xImg, $pdf->GetY(), 145, 180);
                     $pdf->Ln(90); 
                 }
                 $pdf->AddPage();
@@ -1598,6 +1648,7 @@
                 //Llamar al Output para descarga
                 $nombreRep_Dir = "reporteGeneral_DirVinculacion_".$fechaHora.".pdf";
                 $pdf-> Output('D', $nombreRep_Dir);
+                //$pdf->Output();
                 exit();
             }
         }

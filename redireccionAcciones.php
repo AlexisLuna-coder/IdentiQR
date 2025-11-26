@@ -191,6 +191,9 @@
         case 'alumnosGenerales2':
             $controllerInstance -> reporteGeneral_DirAca();
             break;
+        case 'alumnosGenerales_Tramites3':
+            $controllerInstance -> reporteGeneral2_DirAca();
+            break;
         //idDepto = 3; Servicios escolares
         case 'repGen_ServEsco':
             $controllerInstance -> reporteGeneral_ServEsco();

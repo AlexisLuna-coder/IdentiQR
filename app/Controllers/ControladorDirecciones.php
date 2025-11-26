@@ -322,7 +322,7 @@
             if(isset($_POST['registrarTramite_dirServEsco'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
                 $idTramite = (int)$_POST['idTramite'];
-                $metodoPago = $_POST['metodoPago'];
+                $metodoPago = $_POST['metodoPago'] !== '' ? $_POST['metodoPago'] : "Credito";
                 $descripcionAdicional = trim($_POST['descripcion']) !== '' ? $_POST['descripcion'] : "N/A";
                 $montoPagado = (double)$_POST['montoPagado'];
                 $fechaSolicitud = $_POST['fechaSolicitud'];

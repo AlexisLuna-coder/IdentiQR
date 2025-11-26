@@ -54,7 +54,7 @@
                 $feIngreso = sprintf('%04d-09-01', $_POST['FeIngreso']); //https://www.php.net/manual/es/function.sprintf.php
                 // Se genera la instancia del objeto Alumno con todos los datos recolectados del formulario
                 $Alumno = new Alumno(
-                    $_POST['matricula'],
+                    strtoupper($_POST['matricula']),
                     $_POST['nombre'],
                     $_POST['ApPat'],
                     $_POST['ApMat'],

@@ -38,11 +38,6 @@
                             <li><a href="/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php">REGRESAR</a></li> <!--AQUÍ SE REGRESARÁ-->
                         </ul>
                     </nav>
-                    <!--
-                    <div class="btn__menu" id="btn_menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    -->
                 </div>
             </div>
         </header>
@@ -70,7 +65,7 @@
                     <br><br>
                     <label for="idTramite">Trámite a realizar: </label>
                         <select name="idTramite" id="idTramite" required>
-                            <option no value=""></option>
+                            <option no value="" disabled>Selecciona un tramite</option>
                             <option value="0003">Reinscripción</option>
                             <option value="0004">Inscripción</option>
                             <option value="0010">Reposicion Credencial</option>
