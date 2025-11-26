@@ -10,7 +10,7 @@
     //Load Composer's autoloader (created by composer, not included with PHPMailer)
     require 'vendor/autoload.php';
 
-    function enviarCorreo(Usuario $user){
+    function enviarCorreo(Usuario $user, $passw){
         $mail = new PHPMailer(true);
         try {
             //Server settings
@@ -29,6 +29,7 @@
             $nombre = $user -> getNombre();
             $apellidoP = $user -> getApellidoPaterno();
             $apellidoM = $user -> getApellidoMaterno();
+            //$passw = $user -> getPassw();
 
             //--------------------------------------------------------------------
             //Recipients
@@ -36,36 +37,11 @@
             $mail->addAddress($destino, $usr);     //Add a recipient
             $mail->addReplyTo('indentiqr.info@gmail.com', 'IdentiQR-Information');
 
-            //Attachments
-            //$mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-            //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-
             //Content
             $mail->CharSet = 'UTF-8';
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = 'Bienvenido a IdentiQR - ¡Tu registro está completo! (Non-reply)';
             
-            /*
-            $message = "Hola " . $nombre . " " . $apellidoP. " " .$apellidoM . "\n\n";
-                $message .= "¡Gracias por registrarte en IdentiQR! Nos alegra darte la bienvenida.\n"; 
-                $message .= "Este correo es para confirmar que tu registro se ha completado con éxito.\n\n";
-                $message .= "\tTus datos de acceso son:  || Usuario: <b>" .$usr."</b>\n";
-                $message .= "\n La próxima vez que accedas, este será el usuario que deberás usar. \n";
-                $message .= "------------------------------------------------------------------------------\n";
-                $message .= "Si usted no realizó esta acción, consulte al administrador para más información.";
-
-            $mensaje = "Hola $nombre $apellidoP $apellidoM,\n\n";
-                $mensaje .= "¡Gracias por registrarte en IdentiQR! Nos alegra darte la bienvenida.\n";
-                $mensaje .= "Este correo es para confirmar que tu registro se ha completado con éxito.\n\n";
-                $mensaje .= "-------------------------------------------\n";
-                $mensaje .= "Tus datos de acceso:\n";
-                $mensaje .= "Usuario: $usr\n";
-                $mensaje .= "-------------------------------------------\n\n";
-                $mensaje .= "La próxima vez que accedas, este será el usuario que deberás usar.\n";
-                $mensaje .= "Si usted no realizó esta acción, consulte al administrador para más información.\n\n";
-                $mensaje .= "Saludos cordiales,\n";
-                $mensaje .= "Equipo IdentiQR.";
-            */
             // Construir mensaje HTML (estilos inline para compatibilidad)
             $htmlBody = '
             <!doctype html>
@@ -76,7 +52,7 @@
             <body style="font-family:Arial,Helvetica,sans-serif;background:#f6f8fa;padding:20px;margin:0;">
             <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;margin:0 auto;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,0.06);">
                 <tr>
-                <td style="background:#0b5ed7;padding:20px;color:#ffffff;text-align:center;">
+                <td style="background:#970ddb;padding:20px;color:#ffffff;text-align:center;">
                     <h1 style="margin:0;font-size:20px;">IdentiQR</h1>
                     <div style="font-size:13px;opacity:0.9;">Confirmación de registro</div>
                 </td>
@@ -90,10 +66,14 @@
 
                     <p style="margin:14px 0 8px;"><strong>Tus datos de acceso</strong></p>
                     <table cellpadding="6" cellspacing="0" style="border-collapse:collapse;margin-bottom:12px;">
-                    <tr>
-                        <td style="background:#f1f5f9;border-radius:4px;padding:10px 12px;font-family:monospace;">Usuario:</td>
-                        <td style="padding-left:12px;font-family:monospace;"><strong>' . $usr . '</strong></td>
-                    </tr>
+                        <tr>
+                            <td style="background:#f1f5f9;border-radius:4px;padding:10px 12px;font-family:monospace;">Usuario:</td>
+                            <td style="padding-left:12px;font-family:monospace;"><strong>' . $usr . '</strong></td>
+                        </tr>
+                        <tr>
+                            <td style="background:#f1f5f9;border-radius:4px;padding:10px 12px;font-family:monospace;">Contraseña:</td>
+                            <td style="padding-left:12px;font-family:monospace;"><strong>' . $passw . '</strong></td>
+                        </tr>
                     </table>
 
                     <p style="font-size:13px;color:#555;margin:0 0 16px;">

@@ -434,11 +434,12 @@ begin
         LEFT JOIN registroservicio rs ON a.Matricula = rs.Matricula
         LEFT JOIN serviciotramite st ON st.idTramite = rs.idTramite
         WHERE
-            (opc = 1 AND rs.FechaHora BETWEEN f1 AND f2)
-		OR
-            (opc = 2 AND a.Genero = g)
-		AND
-			(idD = 6)
+            (
+                (opc = 1 AND rs.FechaHora BETWEEN f1 AND f2)
+                OR
+                (opc = 2 AND a.Genero = g)
+            )
+		AND st.idDepto = idD
         ORDER BY rs.FechaHora DESC;
 	declare continue handler for not found set @x = true;
     open buscarRep_DirMed;

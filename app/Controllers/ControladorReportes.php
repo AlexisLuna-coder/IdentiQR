@@ -148,8 +148,8 @@
             }
             //Impresión/generar o mandar a Descargas el PDF generado
             $nombreRep = "ReporteAdmin_General_Tramites_-".$fechaHora.".pdf";
-            //$pdf->Output('D', $nombreRep);
-            $pdf->Output();
+            $pdf->Output('D', $nombreRep);
+            //$pdf->Output();
             
         }
         public function reporteGeneral2_Admin(){
@@ -650,8 +650,8 @@
                 $pdf->Cell(0, 10, 'Total de Alumnos: ' . number_format($cont, 0), 0, 1, 'R');
 
                 $nombreRep_Dir = "reporteGeneral_DirAca_".$fechaHora.".pdf";
-                //$pdf-> Output('D', $nombreRep_Dir);
-                $pdf->Output();
+                $pdf-> Output('D', $nombreRep_Dir);
+                //$pdf->Output();
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -885,7 +885,7 @@
 
                 $nombreRep_Dir = "reporteGeneral_ServEsco_".$fechaHora.".pdf";
                 $pdf-> Output('D', $nombreRep_Dir);
-                $pdf->Output();
+                //$pdf->Output();
                 exit();
                 $vista = __DIR__ . '/../Views/GestionesAdministradorG.php';
                 if (file_exists($vista)) {
@@ -1258,8 +1258,8 @@
                     echo "No se pudo generar el PDF: ya se envió salida previamente.";
                     return;
                 }
-                //$pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
-                $pdf->Output();
+                $pdf->Output('D', 'reporte_individualizado_DirMedica-'.$fechaHora.'.pdf'); //Descargar directamente
+                //$pdf->Output();
                 //INCLUIMOS LA VISTA
                 $vista = __DIR__ . '/../Views/dirMedica/GestionesAdmin_Medico.php';
                 if (file_exists($vista)) {

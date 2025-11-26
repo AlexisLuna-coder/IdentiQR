@@ -28,6 +28,7 @@
                     $nombreLimpio = strtr($_POST['nombre'], $mapaAcentos);
                     $apPatLimpio  = strtr($_POST['apellido_paterno'], $mapaAcentos);
                     $apMatLimpio  = strtr($_POST['apellido_materno'], $mapaAcentos);
+                    $passw = trim($_POST['passw']);
 
                     $Usuario =  new Usuario(
                         $nombreLimpio,  // Usamos la variable sin acentos ni tíldes
@@ -35,7 +36,7 @@
                         $apMatLimpio,   // Usamos la variable sin acentos ni tíldes
                         $_POST['genero'],
                         $_POST['email'],
-                        $_POST['passw'],
+                        $passw,
                         $_POST['rol'],
                         (int)$_POST['idDepto']
                     );
@@ -46,20 +47,20 @@
                         //Ya existe correo o matrícula
                         $resultadoExito = false;
                         $mensaje = "Error: El correo electrónico o la matrícula ya están registrados en el sistema.";
-                        
                         // Cargamos la vista de nuevo para mostrar el error
                         include_once __DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php';
                         return; // Detenemos la ejecución
                     }
                     if($usrN != null) {
-                        echo "Se registro adecuadamente el usuario";
+                        //echo "Se registro adecuadamente el usuario";
                         /*USANDO EL REPOSITORIO DE PHPMAILER PARA MANDAR EL CORREO*/
-                        enviarCorreo($usrN);
+                        enviarCorreo($usrN,$passw);
                         /**********************************************************/
                         //Incluimos la vista del formulario
-                        header("Location: /IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario");
+                        header("Location: /IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&alertRegistro=registroExitoso");
                         exit();
                     }
+                    return;
                 }
             }
             

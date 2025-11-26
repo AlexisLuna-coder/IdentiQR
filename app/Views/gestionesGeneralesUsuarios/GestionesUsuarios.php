@@ -9,6 +9,9 @@
     }
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+
+    //Para alerta de registro
+    $alertaURL = $_GET['alertRegistro'] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -154,7 +157,7 @@
                         });
                     </script>
                     <br><br>
-                    <button type="submit" name = "enviarRegistro_Usuario" onclick = "mostrarRegistro()">Registrar usuario</button>
+                    <button type="submit" name = "enviarRegistro_Usuario">Registrar usuario</button>
                 </fieldset>
             </form>
         </div>
@@ -311,6 +314,16 @@
             <script>
                 // Llamar a tu función JS que muestra la alerta de error
                 mostrarAlerta('error', '<?php echo addslashes($mensaje); ?>');
+            </script>
+        <?php elseif (isset($alertaURL) && $alertaURL === 'registroExitoso'): ?>
+            <script>
+                // Llama a la función SweetAlert2 personalizada
+                mostrarRegistro();
+                // Limpiar la URL para que la alerta no se repita al recargar
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.delete('alertRegistro');
+                const nuevaUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                window.history.replaceState({}, document.title, nuevaUrl);
             </script>
         <?php endif; ?>
     </body>
