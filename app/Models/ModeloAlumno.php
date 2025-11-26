@@ -1,17 +1,19 @@
 <?php
     //Creación de la clase del modelo de Alumnos
     class AlumnoModel{
+
         private $conn;
         //Construcción del contructor del modelo
         public function __construct($conn){
             $this->conn = $conn;
         }
+
         /*Función que á el ingreso/insersión de los Alumnos dentro de la tabla */
         public function insertarAlumno(Alumno $unAlumno){
             //Lógica para las acciones dentro de la base de datos
             //Código para hacer el registro de alumnos
             $sql_statement = "INSERT INTO Alumno (Matricula, Nombre, ApePat, ApeMat, FechaNac, FeIngreso, Correo, Direccion, Telefono, Ciudad, Estado, Genero, idCarrera)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; // Aquí iría la llamada al procedimiento almacenado para registrar alumno
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 
             $stmt = $this->conn->prepare($sql_statement);
             if (!$stmt) {
@@ -33,7 +35,7 @@
             $genero = $unAlumno->getGenero();
             $idCarrera = (int)($unAlumno->getIdCarrera());
 
-            // Ahora sí, bind_param con las variables locales:
+            // Vinculación de parámetros, bind_param con las variables locales:
             $stmt->bind_param("ssssssssssssi",
                 $matricula,
                 $nombre,
@@ -48,10 +50,9 @@
                 $estado,
                 $genero,
                 $idCarrera
-            ); //Recibe argumentos
+            ); 
 
-            // TRY-CATCH PARA QUE NO MANDE ERROR
-            // --- AQUÍ ESTÁ LA SOLUCIÓN ---
+            // TRY-CATCH PARA QUE NO MANDE ERROR - manejo de llaves foráneas duplicadas
             try {
                 $stmt->execute();
                 $stmt->close();
@@ -65,15 +66,6 @@
                     return false;
                 }
             }
-            /*
-            if (!$stmt->execute()) {
-                echo("Connection_BD->registrarAlumno execute error: " . $stmt->error);
-                return false;
-            }
-            $stmt->close();
-
-            return true;
-            */
         }
 
         /*Función que permitirá el ingreso/inserción de la Información médica de los Alumnos dentro de sus respectivas tablas */
@@ -92,6 +84,8 @@
             if (!$statement) {
                 die("Connection_BD->insertarInfoMedica prepare error: " . $this->conn->error);
             }
+
+            // Vinculación y ejecución
             $statement -> bind_param('ssss', $matriculaID, $tipoSangre, $alergias, $numContacto);
             /*Retornamos el statement*/
             return $statement -> execute();
@@ -105,6 +99,7 @@
             $sql_statement = "update Alumno set qrHash = ? where Matricula = ?";
             $statement = $this->conn->prepare($sql_statement);
 
+            // Vinculación de parametros
             $statement -> bind_param('ss',$hash, $matricula);
             if (!$statement) {
                 die("Connection_BD->asignarHashQR prepare error: " . $this->conn->error);
@@ -148,7 +143,7 @@
             $genero = $unAlumno->getGenero();
             $idCarrera = (int)($unAlumno->getIdCarrera());
 
-            // Bind parameters (sin matrícula y feIngreso)
+            // Bind parameters (sin matrícula y feIngreso) - Vinculación de variables
             $stmt->bind_param("ssssssssssis",
                 $nombre,
                 $ApePat,
@@ -166,6 +161,7 @@
 
             return $stmt->execute();
         }
+
         /*Función que permitirá realizar la actualización/modificación de la Información médica de los alumnos */
         public function actualizarInfoMedica(InformacionMedica $unaInforMed): bool {
             /* Código para actualizar la información médica */
@@ -186,6 +182,7 @@
             if (!$statement) {
                 die("Connection_BD->actualizarInfoMedica prepare error: " . $this->conn->error);
             }
+            // Vinculación de parametros
             $statement->bind_param('ssss', $tipoSangre, $alergias, $numContacto, $matriculaID);
 
             /* Retornamos el resultado */
@@ -194,6 +191,8 @@
 
         /*Función que permitirá realizar la recuperación de un Alumno (Sus datos) por medio de la matrícula. */
         public function obtenerAlumnoPorMatricula(string $matricula): ?array {
+
+            //Consulta SQL
             $sql_statement = "SELECT Alumno.*, InformacionMedica.* FROM Alumno
                 LEFT JOIN InformacionMedica ON Alumno.Matricula = InformacionMedica.Matricula
                 WHERE Alumno.Matricula = ?";
@@ -203,6 +202,7 @@
                 die("Connection_BD->obtenerAlumnoPorMatricula prepare error: " . $this->conn->error);
             }
 
+            // Vinculación de parametros
             $stmt->bind_param("s", $matricula);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -227,25 +227,34 @@
                 WHERE a.Matricula = ?;
             ";
 
+            // Prepara la consulta para evitar inyecciones SQL
             $statement = $this->conn->prepare($sql_statement);
+
+            // Si falla la preparación, detiene el script y muestra mensaje del error
             if (!$statement) {
                 die("Connection_BD->recuperarDatosAlumnoPorMatricula prepare error: " . $this->conn->error);
             }
 
+            //vinculación de parametros
             $statement->bind_param("s", $matricula);
             $statement->execute();
             $result = $statement->get_result();
 
+            // Verifica si se encontró al menos un registro
             if ($result && $result->num_rows > 0) {
-                return $result->fetch_assoc();
+                return $result->fetch_assoc(); //devuelve los datos del registro 
             }
+
             //Si no encuentra registros, retorna NULL
             return null;
         }
+
         /*Función que permitirá realizar la recuperación de todos los Alumnos (Sus datos) registrados en el sistema. */
         public function obtenerTodosAlumnos(){
+
             $sql_statement = "SELECT a.Matricula, a.Nombre, a.ApePat, a.ApeMat,a.FeIngreso,a.idCarrera, calcCuatrimestre(a.FeIngreso) as Cuatrimestre, a.FechaNac, a.Correo, im.TipoSangre FROM Alumno a LEFT JOIN InformacionMedica im ON a.Matricula = im.Matricula";
             
+            // Prepara la consulta en el servidor de base de datos    
             $result = $this->conn->query($sql_statement);
             return $result;
         }
@@ -253,20 +262,29 @@
         /*Función que permitirá eliminar un alumno específico dentro del sistema. Mediante su matrícula*/
         public function eliminarAlumno($matricula){
             //Código para hacer la baja del Alumno
+            
+            // llamada al procedimiento 
             $sql_statement = "call darBajaAlumno(?, @eliminado)";
+
+            //prepara la llamada
             $stmt = $this->conn->prepare($sql_statement);
+
+            // Verifica errores de preparación
             if (!$stmt) {
                 echo("Connection_BD->darBajaAlumno prepare error: " . $this->conn->errno);
                 return false;
             }
 
+            //vinculación de variables
             $stmt->bind_param("s", $matricula);
             if (!$stmt->execute()) {
                 echo("Connection_BD->darBajaAlumno execute error: " . $stmt->error);
                 return false;
             }
+            // Cierra esta sentencia preparada para liberar memoria
             $stmt->close();
 
+            // Consulta el valor de la variable '@eliminado'
             $res = $this->conn->query("SELECT @eliminado AS eliminado");
             if ($res && $row = $res->fetch_assoc()) {
                 return (int)$row['eliminado'];

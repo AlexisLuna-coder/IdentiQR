@@ -1,99 +1,3 @@
-/*
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-header#HeaderIndex1 {
-    background-color: #007bff;
-    padding: 20px 0;
-}
-.container__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.logo img {
-    height: 80px;
-}
-.container__nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    gap: 15px;
-}
-.container__nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 16px;
-    transition: color 0.3s;
-}
-.container__nav a:hover {
-    color: #e0e0e0;
-}
-#HeaderLogin {
-    text-align: center;
-    margin: 20px 0;
-}
-.Registro_ContenedorGeneral {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    margin: 20px auto;
-}
-.Registro_ContenedorGeneral h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-.Registro_ContenedorGeneral label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-.Registro_ContenedorGeneral input[type="text"],
-.Registro_ContenedorGeneral input[type="password"],
-.Registro_ContenedorGeneral select {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.Registro_ContenedorGeneral button {
-    width: 100%;
-    padding: 0.7rem;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.Registro_ContenedorGeneral button:hover {
-    background-color: #0056b3;
-}
-fieldset {
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 1rem;
-}
-legend {
-    padding: 0 10px;
-    font-weight: bold;
-}
-*/
-/* Variables de Color UPEMOR */
-
-
 /* 1. LAYOUT PRINCIPAL (Reemplaza el body centrado del login) */
 body {
     font-family: Arial, sans-serif;
@@ -110,7 +14,7 @@ body {
     display: none;
 }
 
-/* Contenedor principal de la aplicación (El área fuera del sidebar) */
+/* Contenedor principal de la aplicación*/
 .main-container {
     display: flex;
     width: 100%;
@@ -155,7 +59,7 @@ body {
     background-color: var(--color-principal-morado); /* Morado claro al pasar el mouse */
 }
 
-/* Elemento del menú activo (Gestión de usuarios) */
+/* Elemento del menú activo */
 .sidebar ul li .active-menu {
     background-color: var(--color-secundario-amarillo);
     color: var(--color-texto-oscuro);
@@ -336,7 +240,6 @@ body {
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
-    /* Para el layout del boceto, usaremos Grid o Flex para los 3 módulos en la parte inferior */
 }
 
 /* Estructura de layout adaptada al boceto (3 columnas abajo) */
@@ -468,4 +371,3 @@ body {
     width: 100%;
     border-collapse: collapse;
 }
-/* ... otros estilos para la tabla de consulta si es necesario */

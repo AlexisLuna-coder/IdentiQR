@@ -7,6 +7,7 @@
         require_once __DIR__ . '/../Models/ModeloUsuario.php';     
         Include_once __DIR__ . '/../../public/PHP/repositorioPHPMailer/enviarCorreo.php';
 
+        /*Creamos la clase UserController para manejar todas las funciones REQUERIDAS en los usuarios*/
         class UserController {
             private $modelUser;
             public function __construct($conn){
@@ -40,7 +41,6 @@
                     );
                     
                     $usrN = $this -> modelUser -> registrarUsuario($Usuario);
-
                     // VERIFICACIÓN DE ERRORES
                     if ($usrN === "DUPLICADO") {
                         //Ya existe correo o matrícula
@@ -51,10 +51,9 @@
                         include_once __DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php';
                         return; // Detenemos la ejecución
                     }
-
                     if($usrN != null) {
                         echo "Se registro adecuadamente el usuario";
-                        /*USANDO EL REPOSITORIO DE PHPMAILER - VEAMOS SI FUNCIONA */
+                        /*USANDO EL REPOSITORIO DE PHPMAILER PARA MANDAR EL CORREO*/
                         enviarCorreo($usrN);
                         /**********************************************************/
                         //Incluimos la vista del formulario
@@ -64,12 +63,16 @@
                 }
             }
             
+            /*
+            ! Función consultarUsuario
+            * Maneja la búsqueda y listado de usuarios.
+            * Puede mostrar un usuario específico (por búsqueda) o todos los usuarios.
+            */
             public function consultarUsuario(){
-                //$result = [];
                 $result = null;
                 $mostrarMensajeBusqueda = false;
                 $mensajeBusqueda = '';
-                $accion = $_POST['accion'] ?? '';
+                $accion = $_POST['accion'] ?? ''; // Capturamos la acción solicitada (por si viene de un input hidden o botón)
                 //Si se envia el formulario
                 if(isset($_POST['BusquedaUSUARIO_ConsultarUsuario']) or $accion === "buscar") {
                     $credencialBuscar = trim($_POST['idUsuario_ConsultarUSUARIO']);
@@ -97,61 +100,57 @@
                 include_once(__DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php');
             }
             
-            //Método para iniciar sesion
+            //Método para iniciar sesion (Valida las credenciales de acceso e inicia la sesión del usuario.)
             public function loginUsuario(){
-                $statusAlert = null; // Variable para controlar la alerta //Nuevo: 2025-11-20 12:00am
+                $statusAlert = null; // Variable para controlar la alerta (SweetAlert)
                 if (isset($_POST['enviarLogin'])) {
                     $usuario = trim($_POST['usuario']) ?? '';
                     $password = trim($_POST['password']) ?? '';
-
+                    // Llamada al modelo para verificar credenciales (Procedimiento)
                     $loginUSR = $this -> modelUser -> loginUsuarioSP($usuario, $password);
                     if (!$loginUSR) {
-                        // En lugar de hacer solo echo, redirigimos al formulario con un flag de error
-                        //header("Location: ../Views/Login.php?error=1");
-                        $statusAlert = 'error_credenciales';  //Nuevo: 2025-11-20 12:00am
-                        include_once __DIR__ . '/../Views/Login.php'; //Nuevo: 2025-11-20 12:00am
+                        //Credenciales incorrectas
+                        $statusAlert = 'error_credenciales'; 
+                        include_once __DIR__ . '/../Views/Login.php';
                         //exit();
                     } else {
                         session_start();
-                        //$_SESSION['rol'] = $loginUSR; //String
                         //ARREGLO
                         $_SESSION['idUsuario'] = $loginUSR['idUsuario'];
                         $_SESSION['email']     = $loginUSR['email'];
                         $_SESSION['rol']       = $loginUSR['rol'];
                         $_SESSION['usr']       = $loginUSR['usr'];
-                        // Redirigir al script de redirección según rol
+                        // Redirigir al panel de redirección según rol
                         header("Location: /IdentiQR/app/Views/controlAccesoUsuario.php"); //
                         exit();
                     }
                 } else {
-                    //Incluimos la clase de la vista
-                    //header("Location: /IdentiQR/index.html");
-                    // Si intentan entrar directo sin POST
+                    // Si intentan entrar directo sin POST, mandar al inicio
                     header("Location: /IdentiQR/index.html");
                 }
             }
             //Método para cerrar sesion
             public function logoutUsuario(){
                 session_start();
-                session_unset();
-                session_destroy();
+                session_unset();  // Libera todas las variables de sesión
+                session_destroy(); // Destruye la sesión
                 header("Location: /IdentiQR/app/Views/Login.php");
                 exit();
             }
+
             //Método para modificar datos de un usuario
             public function actualizarUsuario(){
                 if(isset($_GET['id']) && is_numeric($_GET['id'])){
                     $id_browser = (int) $_GET['id'];
                     //Llamar al método el modelo para hacer la consulta
                     $row = $this -> modelUser -> consultarUsuarioPorID($id_browser);
-                    //echo "<script>alert('Consulta realizada correctamente.');</script>";
-
+                    // Cargar vista de modificación con la variable $row llena
                     include_once("../Views/gestionesGeneralesUsuarios/modificacionUsuario.php");
                     return;
                 }
                 /*EVALUAMOS SI ESTÁ VACÍO LA ACTUALIZACIÓN*/
                 if(isset($_POST['actualizarDatosUSER'])){
-                    /*Creamos un constructor del USUARIO y mandamos la info nuevamente*/
+                    /* Reconstruimos el objeto Usuario con los nuevos datos */
                     $usuario = new Usuario(
                         $_POST['nombre'],
                         $_POST['apellido_paterno'],
@@ -164,17 +163,18 @@
                     );
 
                     // Agregamos los campos faltantes
-                    $usuario->setIdUsuario((int)$_POST['id_usuario']);
+                    $usuario->setIdUsuario((int)$_POST['id_usuario']); // Asignamos el ID que viene oculto en el form (necesario para el WHERE del update)
+                    // Ejecutar update en BD
                     $resultado = $this->modelUser->actualizarUsuario($usuario);
+                    // Definir mensajes de éxito/error para la vista
                     if ($resultado) {
-                        //echo "<script>alert('Usuario actualizado correctamente.'); window.location.href='/IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&consultarTodo=1';</script>";
                         $resultadoExito = true;
                         $mensaje = "Usuario actualizado correctamente.";
                     } else {
-                        //echo "<script>alert('Error al actualizar el usuario.');</script>";
                         $resultadoExito = false;
                         $mensaje = "Error al actualizar el usuario.";
                     }
+                    // Volver a cargar la vista de gestión general para mostrar el resultado
                     $viewPath = __DIR__ . '/../Views/gestionesGeneralesUsuarios/GestionesUsuarios.php'; 
                     //
                     if (file_exists($viewPath)) {
@@ -190,6 +190,7 @@
             public function buscarUsuario(){
                 if(isset($_POST['buscarUsuarioBtn'])){
                     $credencial = trim($_POST['idUsuario_Buscar']);
+                    // Validación básica
                     if(empty($credencial)){
                         echo "<script>alert('Por favor ingresa un usuario o correo para buscar.'); window.history.back();</script>";
                         exit;
@@ -208,6 +209,7 @@
                         echo "<script>alert('Se encontraron varios usuarios. Por favor, usa un filtro más específico.'); window.history.back();</script>";
                         exit();
                     } else {
+                        // No encontrado
                         echo "<script>alert('No se encontró usuario con esas credenciales.'); window.history.back();</script>";
                         exit();
                     }
@@ -262,6 +264,7 @@
             die("Error: La conexión a la base de datos no está definida.");
         }
 
+        //Inclusión según parámetro 'action' en la URL del mismo CONTROLADOR
         $controladorUsuario = new UserController($conn);
         if(isset($_GET['action'])){
             $action = $_GET['action'];
@@ -291,11 +294,13 @@
                     $controladorUsuario -> eliminarUsuario();
                     break;
                 default:
+                    // Acción no reconocida, mandar a inicio
                     header("Location: /IdentiQR/index.html");
                     exit();
                     break;
             }
         } else {
+            // Si no hay acción definida, intentar login por defecto (o mandar a inicio)
             $controladorUsuario -> loginUsuario(); 
         }
     ?>

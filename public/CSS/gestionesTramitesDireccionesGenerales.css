@@ -35,6 +35,7 @@ header {
     font-family: 'Times New Roman', Times, serif;
 }
 
+/*Esta será la parte del LOGGO dentro del header*/
 .logo {
     display: flex;
     align-items: center;
@@ -44,13 +45,14 @@ header {
     height: 200px;
     width: 400px;
     margin-left: 20px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease; /* Animación cuando se pasa el mouse por encima del logo*/
 }
 
 .logo img:hover {
     transform: scale(1.05);
 }
 
+/*Menú de navegación*/
 .container__nav {
     display: flex;
     align-items: center;
@@ -65,7 +67,7 @@ nav ul {
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 20px;
+    gap: 20px; /* Espacio entre elementos del menú */
     align-items: center;
     justify-content: center;
     margin: 0;
@@ -89,7 +91,7 @@ nav a:hover {
     transform: translateY(-2px);
 }
 
-/* Título principal */
+/* Título principal de la página (IdentiQR) */
 #HeaderLogin h2 {
     text-align: center;
     color: #6e0990;
@@ -98,7 +100,7 @@ nav a:hover {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Contenedor de gestión */
+/* Contenedor de gestión (Tarjetas contenedoras para las acciones CRUD (Crear, Leer, Actualizar, Eliminar)) */
 #generarTramite, #revisarTramite, #modificarTramite, #eliminarTramite {
     max-width: 1200px;
     margin: 0 auto;
@@ -108,7 +110,7 @@ nav a:hover {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
 }
-
+/* Títulos dentro de las tarjetas */
 #generarTramite h2 {
     text-align: center;
     color: #f6ac35;
@@ -122,7 +124,7 @@ nav a:hover {
 form {
     margin-bottom: 30px;
 }
-
+/* Agrupación de campos */
 fieldset {
     border: 2px solid #f6ac35;
     border-radius: 10px;
@@ -155,18 +157,18 @@ input, select, textarea {
     transition: border-color 0.3s ease;
     margin-bottom: 15px;
 }
-
+/* Efecto al hacer clic en un campo */
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #6e0990;
     box-shadow: 0 0 5px rgba(110, 9, 144, 0.5);
 }
-
+/* Campos deshabilitados (solo lectura) */
 input[type="text"]:disabled {
     background-color: #f8f9fa;
     cursor: not-allowed;
 }
-
+/*botones*/
 .btn {
     background: linear-gradient(90deg, #f6ac35 0%, #ffb74d 100%);
     color: #fff;
@@ -182,11 +184,12 @@ input[type="text"]:disabled {
 }
 
 .btn:hover {
+    /* Cambio a degradado rojo al pasar el mouse */
     background: linear-gradient(90deg, #d43e1d 0%, #f6ac35 100%);
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
-
+/* Botón Secundario (Morado) */
 .btn-secondary {
     background: linear-gradient(90deg, #6e0990 0%, #8e24aa 100%);
 }
@@ -294,9 +297,9 @@ footer {
     text-decoration: underline;
 }
 
-/* Modal */
+/* VENTANAS MODALES (QR SCANNER) - Modal */
 .modal {
-    display: none;
+    display: none; /* Oculto por defecto */
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -323,7 +326,7 @@ footer {
     width: 95%;
     max-width: 1400px;
     max-height: 90vh;
-    overflow-y: auto;
+    overflow-y: auto; /* Scroll interno si es muy alto */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -349,7 +352,7 @@ footer {
 #video {
     width: 100%;
     height: 400px;
-    border: 10px solid #6e0990;
+    border: 10px solid #6e0990; /* Marco morado */
     border-radius: 5px;
     align-items: center;
     align-content: center;
@@ -396,7 +399,7 @@ footer {
         flex-direction: row;
         padding: 5px;
     }
-
+    /* Ajuste de logo en móviles */
     .logo img {
         height: 120px;
         width: 240px;
@@ -411,7 +414,7 @@ footer {
         padding: 5px 10px;
         font-size: 0.9em;
     }
-
+    /* Ajuste de padding en contenedores */
     #generarTramite, #revisarTramite, #modificarTramite, #eliminarTramite {
         padding: 10px;
     }
@@ -426,7 +429,7 @@ footer {
         display: block;
         margin: 8px 0;
     }
-
+    /* Ajuste de campos de consulta */
     #campoTodosConsulta,
     #campoMatriculaConsulta,
     #campoFolioConsulta,

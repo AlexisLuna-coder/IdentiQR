@@ -5,18 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
 
-        <!--*: Da formato frente para el registro - MODIFICAR-->
+        <!--*: Da formato para el registro -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesAlumnos.css"> <!--CSS-->
         <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js" defer></script> <!-- JS -->
         <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
-        <!--*: Da formato frente para el registro - MODIFICAR-->
-
         <title>Modificación de Alumno - IdentiQR</title>
     </head>
     <body>
-        <!-- !Aquí se encontrará el emcabezado, este podrá cambiar: nota-->
+        <!-- !Aquí se encontrará el encabezado-->
         <header id="HeaderIndex1">
             <div class="container__header">
                 <div class="logo">
@@ -24,7 +22,6 @@
                         <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Logo de IdentiQR" class="ImagenIndex1" id = "logoIndex" width="300" height="200">
                     </a>
                 </div>
-                <!-- <button class = "abrirMenu">abrir</button>-->
                 <div class="container__nav">
                     <nav id="nav" class = "nav">
                         <ul class = "nav-list">
@@ -37,11 +34,9 @@
             </div>
         </header>
         <!--*Apartir de acá se inicializará la parte de la página general, será nuestro tema central e identificación de lo que contendrá-->
-
         <div id="Index1">
             <h1><center>Modificación de Alumno</center></h1>
         </div>
-
         <hr>
         <p class = "Textos_GeneralIndex1">
             Modifica los datos del alumno seleccionado.
@@ -49,7 +44,6 @@
             <i>Escanea el código QR del alumno para cargar sus datos automáticamente.</i>
         </p>
         <hr>
-
         <section id="seccionModificarAlumno" class = "seccionModificarAlumno">
             <form action = "/IdentiQR/app/Controllers/ControladorAlumnos.php?action=updateAlumno" method = "POST">
                 <input type="hidden" name="matricula_original" value="<?php echo $row['Matricula']; ?>">

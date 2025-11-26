@@ -8,8 +8,7 @@
         header("Location: /IdentiQR/app/Views/Login.php");
         exit();
     }
-    // Recuperar el nombre de usuario para mostrarlo
-    // Usamos el operador '??' por si acaso la variable no está definida
+    // Recuperar el USR de usuario para mostrarlo
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
     

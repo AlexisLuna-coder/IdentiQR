@@ -1,15 +1,17 @@
 <?php
-    //Iniciar sesión SOLO si no existe una activa
+    //Iniciar sesión SOLO si no existe una sesión activa
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+    //Valida si existe una sesión activa (según el ROL). Si no, redirige forzosamente al Login (Evita acceso por URL directa)
     if (!isset($_SESSION['rol'])) {
         header("Location: /IdentiQR/app/Views/Login.php");
         exit();
     }
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
-    $fechaMaximaPermitida = date('Y-m-d', strtotime('-16 years'));
+    //Calcula la fecha de hace 16 años para restringir el registro de menores en el HTML
+    $fechaMaximaPermitida = date('Y-m-d', strtotime('-16 years')); //Convierte una cadena de texto con una fecha y hora en inglés a una marca de tiempo Unix. https://www.php.net/manual/es/function.strtotime.php
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -17,18 +19,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="icon" type="image/jpg" href="/IdentiQR/public/Media/img/Favicon.ico"/> <!--FAVICON-->
-
-        <!--*: Da formato frente para el registro - MODIFICAR-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--*: Da formato para el registro -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> <!--BOOTSTRAP-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!--BOOTSTRAP-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesAlumnos.css"> <!--CSS-->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!--PARA LAS ALERTAS BONITAS-->
         <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
-
-
-        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> <!--PARA HACER USO DE LA CAMARA WEB-->
         <script src="/IdentiQR/public/JavaScript/gestionesAlumnos.js"></script> <!-- JS -->
-        <!--*: Da formato frente para el registro - MODIFICAR-->
         <title>GestionAlumnos_IdentiQR</title>
     </head>
     <body>
@@ -40,7 +38,6 @@
                         <img src="/IdentiQR/public/Media/img/IdentiQR-Eslogan-SinFonde.png" alt="Logo de IdentiQR" class="ImagenIndex1" id = "logoIndex" width="300" height="200">
                     </a>
                 </div>
-                <!-- <button class = "abrirMenu">abrir</button>-->
                 <div class="container__nav">
                     <nav id="nav" class = "nav">
                         <ul class = "nav-list">
@@ -54,24 +51,20 @@
             </div>
         </header>
         <!--*A partir de acá se inicializara la parte de la página general, áa nuestro tema central e identificación de lo que contendrá-->
-
         <div id="Index1">
             <h1><center>IdentiQR</center></h1>
         </div>
-
         <hr>
         <p class = "Textos_GeneralIndex1">
             Genera tu código QR único para la identificación y mejora de la recopilación de tus datos, al realizar los trámites.
             <br>
             <i>Escanea cualquier código QR</i> para acceder a fácilmente a los datos y mucho más con un solo toque.
         </p>
-        <hr> <!-- TODO: Aquí empezaremos con la parte de ingreso o registro de los Alumnos-->
+        <hr> 
+        <!-- TODO: Aquí empezaremos con la parte de ingreso o registro de los Alumnos-->
         <!-- *Formulario para el registro de los alumnos-->
-        <!-- !Este formulario debe estar conectado a la base de datos-->
-
         <div class="contenedor-secciones">
             <section id="seccionRegistrarAlumno" class = "seccionRegistrarAlumno">
-                <!-- <form action = "../Controllers/ControladorAlumnos.php" method="POST" > -->
                 <form action = "/IdentiQR/app/Controllers/ControladorAlumnos.php?action=registroAlumno" method = "POST" onsubmit = "return validarEdadAlumno(event)">
                     <fieldset>
                     <legend><h3>Formulario de Registro - Alta de alumno</h3></legend>
@@ -97,7 +90,6 @@
                         <label for="ApePat">Apellido paterno</label>
                         <input type="text" id="ApPat" name="ApPat" placeholder = "Ingresa tu Apellido Paterno" required>
                     </div>
-
                     <div class="form-group row">
                         <label for="ApeMat">Apellido materno</label>
                         <input type="text" id="ApMat" name="ApMat" placeholder = "Ingresa tu Apellido Materno"required>
@@ -110,7 +102,6 @@
                             required>
                         <small class="form-text text-muted">Solo se permiten alumnos mayores de 16 años.</small>
                     </div>
-                    <!--TODO: Esto debe dejar o intentar que mediante un script se pueda Ingresar o registrar un correo cuando se ingresa la matrícula-->
                     <div class="form-group row">
                         <label for="correo">Correo</label>
                         <input type="email" id="correo" name="correo" placeholder="matricula@upemor.edu.mx" required>
@@ -158,7 +149,7 @@
                     <div class="form-group row">
                         <label for="anioIngreso">Año de Ingreso</label>
                         <input type="number" id="FeIngreso" name="FeIngreso" min="2023" placeholder = "2006" required>
-                        <script> //Nota.- 2025-05-10 SCRIPT Para la fecha
+                        <script> 
                             // poner el año actual como valor por defecto y como máximo
                             const input = document.getElementById("FeIngreso");
                             const year = new Date().getFullYear();
@@ -220,8 +211,6 @@
                     <div class="form-group row">
                         <button id="btnEscanear" type="button" class="btn btn-primary">Escanear QR</button>
                     </div>
-                    <!-- !: Aquí se deberá escanear el QR-->
-                    <!--*: Implementar módulo para escanear el QR aquí y verificar-->
                 </fieldset>
             </form>
 
@@ -234,7 +223,6 @@
             <form action="/IdentiQR/app/Controllers/ControladorAlumnos.php?action=consultarAlumnos" id="formConsultaUsuario" method="POST" onsubmit="return consultarConCarga(event)">
                 <fieldset>
                     <legend>Consulta todos los alumnos</legend>
-                    <!--<label for="idUsuario">Matrícula a buscar:</label>-->
                     <input type="hidden" name="consultarTodo" value="1">
                         <button type="submit" class="btn btn-primary" name = "consultarTodo">Consultar Todos los Alumnos</button>
                     <!-- Campo hidden para saber qué botón fue presionado -->
@@ -312,7 +300,6 @@
                     <p>Por favor, rellena este formulario para eliminar un alumno.</p>
                     <hr>
                     <!-- !: Aquí se deberá escanear el QR-->
-                    <!--*: Implementar modulo para escanear el QR aquí y verificar-->
                     <label for="Matricula">Matrícula: </label>
                         <input type="text" id="idAlumno_BajaUSUARIO" name="idAlumno_BajaUSUARIO" placeholder="MATO250###" required>
                     <input type="hidden" name="accionEliminar" value="eliminarAlumno">
@@ -365,7 +352,7 @@
         <?php endif; ?>
 
 
-        <!-- Modal -->
+        <!-- Modal usado para el escaneo de la camara-->
         <div id="modalEscanear" class="modal" style="display: none;">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">

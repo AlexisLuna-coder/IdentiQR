@@ -1,67 +1,3 @@
-/*
-document.getElementById('BajaUsuario_EliminarUsuario').addEventListener('click', function(e) {
-    e.preventDefault(); // evitamos submit inmediato
-    const form = document.getElementById('formBajaUsuario');
-
-    Swal.fire({
-        title: "¿Estás seguro de eliminar este usuario?",
-        text: "¡No podrás revertir esta acción!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminar"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Enviar el formulario al servidor
-            form.submit();
-            // Opcional: mostrar una alerta inmediata (la respuesta del servidor puede mostrar otra)
-            // Swal.fire("Eliminando...", "", "info");
-        }
-    });
-});
-*/
-
-// confirmacionBotones.js
-/*
-document.addEventListener('DOMContentLoaded', function () {
-    const btnEliminar = document.getElementById('BajaUsuario_EliminarUsuario');
-    const form = document.getElementById('formBajaUsuario');
-    const inputCred = document.getElementById('idUsuario_BajaUSUARIO');
-
-    btnEliminar.addEventListener('click', function(e) {
-        e.preventDefault();
-
-        // VALIDACIÓN: si el campo está vacío, mostrar error y no abrir confirm
-        const valor = (inputCred.value || '').trim();
-        if (!valor) {
-            Swal.fire({
-                title: "Campo vacío",
-                text: "Por favor escribe el usuario, correo o id a eliminar.",
-                icon: "warning"
-            });
-            return;
-        }
-
-        // Mostrar confirmación
-        Swal.fire({
-            title: "¿Estás seguro de eliminar este usuario?",
-            text: "¡No podrás revertir esta acción!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Sí, eliminar"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // enviar formulario (comportamiento normal)
-                form.submit();
-            }
-        });
-    });
-});
-*/
-
 //Función para crear el Dialog o alert de confirmación de borrado
 function confirmacionEliminacionUsr(event){
     event.preventDefault();  // Prevenir envío inmediato del form
@@ -95,6 +31,7 @@ function confirmacionEliminacionUsr(event){
     // Retornamos false para prevenir el submit normal
     return false;
 }
+
 //Función para mostrar el usuario/alumno que fue borrado del sistema.
 function mostrarAlerta(tipo, mensaje) {
     Swal.fire({
@@ -157,6 +94,7 @@ function consultarTodo(event) {
         timer: 2000,
         showConfirmButton: false
     });
+    
     // Espera los 2 segundos del SweetAlert antes de redirigir
     setTimeout(() => {
         window.location.href = "/IdentiQR/app/Controllers/ControladorUsuario.php?action=consultarUsuario&consultarTodo=1";

@@ -208,8 +208,7 @@ footer {
     /* 1. Ajuste del Header */
     .container__header {
         padding: 10px 15px;
-        /* Permitimos que los elementos se acomoden sin aplastarse */
-        flex-wrap: wrap; 
+       flex-wrap: wrap; 
     }
 
     /* 2. CORRECCIÓN LOGO: Lo aumentamos de tamaño */

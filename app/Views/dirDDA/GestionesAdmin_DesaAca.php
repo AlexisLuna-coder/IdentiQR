@@ -9,6 +9,7 @@
     }
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+    $statusAlert = $_GET['status'] ?? $statusAlert ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,6 +19,8 @@
         <link rel="shortcut icon" href="/IdentiQR/public/Media/img/Favicon.ico" type="image/x-icon"> <!--FAVICON-->
         <link rel="stylesheet" href="/IdentiQR/public/CSS/gestionesDirecciones.css">
         <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <title>DireccionDesarrolloAcademico_IdentiQR</title>
     </head>
     <body>

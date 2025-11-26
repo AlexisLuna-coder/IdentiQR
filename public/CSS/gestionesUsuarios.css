@@ -287,7 +287,7 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
     
-    /* 1. HEADER: Ajuste vertical */
+    /*Header vertical*/
     header {
         height: auto; /* Dejar que crezca según el contenido */
         padding-bottom: 15px;
@@ -299,7 +299,7 @@ footer {
         height: auto;
     }
 
-    /* 2. LOGO: Tamaño controlado y centrado */
+    /* Ajustamos el tamaño del LOGO mas pequeño para que quepa*/
     .logo {
         justify-content: center;
         width: 100%;
@@ -308,13 +308,13 @@ footer {
 
     .logo img {
         height: auto;
-        max-height: 80px; /* Tamaño ideal para celular */
+        max-height: 80px;
         width: auto;
         max-width: 200px;
         margin: 0;
     }
 
-    /* 3. MENÚ: Botones grandes y apilados */
+    /* Botones grandes */
     .container__nav {
         width: 100%;
         justify-content: center;
@@ -348,7 +348,6 @@ footer {
         background: rgba(255, 255, 255, 0.3);
     }
 
-    /* 4. CONTENEDORES Y FORMULARIOS */
     .contenedor-secciones {
         padding: 10px;
         margin-top: 15px;
@@ -366,7 +365,7 @@ footer {
         width: 100%;
     }
 
-    /* 5. TABLA con scroll horizontal */
+    /* TABLA con scroll horizontal */
     table {
         font-size: 0.85em;
         display: block;
@@ -378,7 +377,7 @@ footer {
         padding: 8px;
     }
 
-    /* 6. FOOTER Compacto */
+    /*FOOTER*/
     footer {
         padding: 1rem 0;
     }

@@ -25,7 +25,7 @@ body {
     border: 2px solid #f6ac35;
 }
 
-/* Header */
+/* Header - encabezado */
 header {
     display: flex;
     justify-content: space-between;

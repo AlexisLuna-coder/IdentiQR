@@ -10,6 +10,7 @@
     }
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+    $statusAlert = $_GET['status'] ?? $statusAlert ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">

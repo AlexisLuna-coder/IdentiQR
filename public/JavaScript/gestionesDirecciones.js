@@ -603,10 +603,14 @@ function manejarAlertasServidor() {
             icon: 'error',
             confirmButtonText: 'OK'
         });
-    }
-
-    //EERROR AL BUSCAR FOLIO PARA ACTUALIZAR
-    else if (status === 'error_folio') {
+    } else if (status === 'success_update') {
+        Swal.fire({
+            title: '¡Actualizado!',
+            text: 'La información del trámite se ha modificado exitosamente.',
+            icon: 'success',
+            confirmButtonText: 'Excelente'
+        });
+    } else if (status === 'error_folio') {//ERROR AL BUSCAR FOLIO PARA ACTUALIZAR
         Swal.fire({ 
             title: 'No encontrado', 
             text: 'El Folio ingresado no existe o no se encuentra registrado.', 
@@ -649,84 +653,3 @@ function consultarConCarga(event) {
         form.submit();
     });
 }
-/*
-        <script>
-            // Evitar regresar con el botón "Atrás"
-            window.history.pushState(null, "", window.location.href);
-            window.onpopstate = function () {
-                window.history.pushState(null, "", window.location.href);
-                alert("No puedes regresar a la página anterior.");
-            };
-
-            // Evitar recargar (F5 o Ctrl+R)
-            document.addEventListener("keydown", function (e) {
-                if ((e.key === "F5") || 
-                    (e.ctrlKey && e.key === "r") || 
-                    (e.metaKey && e.key === "r")) {
-                    e.preventDefault();
-                    alert("La recarga de la página está deshabilitada.");
-                }
-            });
-
-            // También evita recargar con clic derecho → “Recargar”
-            window.onbeforeunload = function () {
-                return "¿Estás seguro de que deseas salir de esta página?";
-            };
-        </script>
-        -->
-        <script>
-            (function() {
-            // Añade varios estados para "llenar" el historial localmente
-            function pushStates(n = 2) {
-                try {
-                for (let i = 0; i < n; i++) {
-                    history.pushState({preventBack: true, i}, "", window.location.href);
-                }
-                } catch (err) { }
-            }
-
-            // En carga, agrega estados
-            window.addEventListener("load", function() {
-                pushStates(2);
-            });
-
-            // Maneja cuando el usuario intenta retroceder
-            window.addEventListener("popstate", function (e) {
-                // Si viene de nuestros estados, lo 'empujamos' de regreso
-                if (e.state && e.state.preventBack) {
-                // Opcional: mostrar mensaje breve al usuario
-                // (evita alert() intrusivos si no quieres interrumpir)
-                // alert("No puedes regresar a la página anterior.");
-
-                // Reponer estado inmediatamente para impedir retroceso
-                try { history.pushState(null, "", window.location.href); } catch (err) {}
-
-                // Intento extra por si el navegador lo permite
-                try { history.forward(); } catch (err) {}
-
-                // Alternativa: redirigir a una página segura (descomenta si prefieres esto)
-                // window.location.replace("/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php");
-                } else {
-                // Si no es nuestro estado, volvemos a empujar uno
-                try { history.pushState(null, "", window.location.href); } catch (err) {}
-                }
-            }, false);
-
-            // Bloquear atajos de recarga
-            document.addEventListener("keydown", function (e) {
-                if (e.key === "F5" || (e.ctrlKey && (e.key === "r" || e.key === "R")) || (e.metaKey && (e.key === "r" || e.key === "R"))) {
-                e.preventDefault();
-                // Puedes mostrar un pequeño toast en lugar de alert
-                // alert("Recarga deshabilitada.");
-                }
-            });
-
-            // Aviso al intentar cerrar/recargar (los navegadores modernos muestran su propio mensaje)
-            window.addEventListener("beforeunload", function (e) {
-                // Si quieres que no siempre pregunte, comenta la siguiente línea
-                e.preventDefault();
-                e.returnValue = ""; // necesario en muchos navegadores
-                return ""; // compatibilidad
-            });
-            })();
-*/

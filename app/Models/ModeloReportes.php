@@ -1,12 +1,15 @@
 <?php
-
+    /*
+     * Esta clase se encarga de todas las interacciones con la base de datos
+     * necesarias para la generación de reportes y gráficas estadísticas.
+     * Centraliza las consultas SQL complejas, JOINS y llamadas a Procedimientos Almacenados.
+     * --------------------------------------------------------------------------
+    */
     class ReportModel{
         private $conn;
-
         public function __construct($conn){
             $this->conn = $conn;
         }
-
         /*Apatir de acá se encontrarán las funciones para Generar los reportes para cada dirección.*/
         //idDepto = 1; Administrador general - Sin dirección asociada
         public function reporteGeneral_Admin(){
@@ -30,6 +33,7 @@
             INNER JOIN departamento ON usuario.idDepto = departamento.idDepto group by usuario.idDepto;";
             $result = $this -> conn -> query($sql_statement);
             $data = []; //Variable de tipo arreglo vacio para los datos que se encuentran en la consulta
+            //Hacemos el ciclo que recuperará la información y generar un arreglo asociativo dentro de un arreglo. Arreglos dentro de arreglos
             while ($row = $result -> fetch_assoc()){ //Realizamos el ciclo y lo vamos almacenando dentro de nuestra variable. 
                 //Arreglos dentro de arreglos
                 $data[] = [$row['Nombre'], (int) $row['Total']];
@@ -40,10 +44,13 @@
         public function reporteGeneral2_Datos(){
             $sql_statement = "SELECT usuario.*, departamento.Nombre as NombreDepto FROM USUARIO INNER JOIN departamento ON usuario.idDepto = departamento.idDepto;";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
+            $data = []; //Variable de tipo arreglo vacio para los datos que se encuentran en la consulta
+            //Hacemos el ciclo que recuperará la información y generar un arreglo asociativo dentro de un arreglo. Arreglos dentro de arreglos
             while ($row = $result -> fetch_assoc()){
+                //Arreglos dentro de arreglos
                 $data[] = [$row['id_usuario'], $row['nombre'], $row['apellido_paterno'], $row['apellido_materno'], $row['genero'],$row['usr'],$row['email'],$row['passw'],$row['rol'],(int)$row['idDepto'],$row['FechaRegistro'],$row['NombreDepto']];
             }
+            //Retornamos el arreglo
             return $data;
         
         }
@@ -51,24 +58,32 @@
         public function reporteGeneral3_AlumnosAdmin_Pastel(){
             $sql_statement = "SELECT descripcion, count(*) as Total from alumno inner join carrera on alumno.idCarrera = carrera.idCarrera group by alumno.idCarrera;";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
+            $data = []; //Variable de tipo arreglo vacio para los datos que se encuentran en la consulta
+            //Hacemos el ciclo que recuperará la información y generar un arreglo asociativo dentro de un arreglo. Arreglos dentro de arreglos
             while ($row = $result -> fetch_assoc()){
+                //Arreglos dentro de arreglos
                 $data[] = [$row['descripcion'], (int) $row['Total']];
             }
+            //Retornamos el arreglo
             return $data;
             
         }
         public function reporteGeneral3_Datos(){
             $sql_statement = "SELECT alumno.*, carrera.descripcion as DesCarr,carrera.planEstudios as PlanEst  from alumno inner join carrera on alumno.idCarrera = carrera.idCarrera;";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
+            $data = []; //Variable de tipo arreglo vacio para los datos que se encuentran en la consulta
+            //Hacemos el ciclo que recuperará la información y generar un arreglo asociativo dentro de un arreglo. Arreglos dentro de arreglos
             while ($row = $result -> fetch_assoc()){
                 $data[] = [$row['Matricula'], $row['Nombre'],$row['ApePat'],$row['ApeMat'],$row['FechaNac'],$row['FeIngreso'],$row['Correo'],$row['Direccion'],$row['Telefono'],$row['Ciudad'],$row['Estado'],$row['Genero'],$row['idCarrera'],$row['qrHash'],$row['fechaGenerarQR_1'],$row['fechaExpiracionQR_2'],$row['DesCarr'],$row['PlanEst']];
             }
+            //Retornamos el arreglo
             return $data;
         }
+
         //idDepto = 2; Dirección acádemica
+        // *Agrupa y cuenta los trámites realizados específicamente en este departamento.
         public function reporteGeneral_DirAca_Pastel(){
+            //Realiza el sql statement
             $sql_statement = "SELECT st.descripcion AS DescripcionT, COUNT(*) AS Total
                 FROM registroservicio rs
                 INNER JOIN serviciotramite st ON rs.idTramite = st.idTramite
@@ -76,11 +91,11 @@
                 GROUP BY st.descripcion
             ";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
+            $data = []; //Declaramos el arreglo vacio para los datos que se encuentran en la consulta
             while ($row = $result -> fetch_assoc()){
                 $data[] = [$row['DescripcionT'], (int) $row['Total']];
             }
-            return $data;
+            return $data; // Retornamos el arreglo
         }
         //idDepto = 3; Servicios escolares
         public function reporteGeneral_ServEsco_Pastel(){
@@ -91,7 +106,7 @@
                 GROUP BY st.descripcion
             ";
             $result = $this -> conn -> query($sql_statement);
-            $data = [];
+            $data = []; //Declaramos el arreglo vacio para los datos que se encuentran en la consulta
             while ($row = $result -> fetch_assoc()){
                 $data[] = [$row['DescripcionT'], (int) $row['Total']];
             }
@@ -100,7 +115,6 @@
 
         public function reporteGeneral_ServEsco_Datos(){
             $statement_query = "SELECT registroservicio.*,serviciotramite.Descripcion as Descripcion, serviciotramite.idDepto as idDepto, departamento.Nombre as NombreDepto FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite inner join departamento on servicioTramite.idDepto = departamento.idDepto where serviciotramite.idDepto = 3;";    
-            //$sql_query = "SELECT *, count(idDepto) as Cantidad FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite group by serviciotramite.idDepto;"
 
             $result = $this->conn->query($statement_query);
             
@@ -123,8 +137,7 @@
                 error_log("Connection_BD->reportePorDia_DirMed prepare error: " . $this->conn->error);
                 return false;
             }
-
-            // Forzar tipos
+            // Forzar la cinversión (parsing)
             $idD = (int)$idDepto;
             // Bind seguro
             if (!$stmt->bind_param("ssi", $fe1,$fe2, $idD)) {
@@ -146,7 +159,7 @@
                 return false;
             }
 
-            // NO consumir filas aquí; devolver el objeto mysqli_result para iterar fuera
+            // Retornamos el result
             return $result;
         }
         //idDepto = 6; Consultorio de atención de primer contacto
@@ -158,7 +171,6 @@
                 error_log("Connection_BD->reporteInd_DirMed prepare error: " . $this->conn->error);
                 return false;
             }
-
             // Forzar tipos
             $opc = (int)$consultaReporte;
             $idD = (int)$idDepto;
@@ -177,10 +189,7 @@
 
             $allSets = [];
 
-            // ---- IMPORTANTE: usar las funciones del propio stmt para moverse entre result sets ----
-            // Repetimos mientras haya result sets producidos por el SP
             do {
-                // Intentamos obtener el result set actual con get_result() (requiere mysqlnd)
                 $rows = [];
 
                 if (method_exists($stmt, 'get_result')) {
@@ -190,28 +199,17 @@
                         $rows = $res->fetch_all(MYSQLI_ASSOC);
                         $res->free();
                     } else {
-                        // get_result devolvió false/null: posible SELECT sin filas o problema
                         // dejamos $rows = [] para mantener consistencia de sets
                         $rows = [];
                     }
                 } else {
-                    // Si get_result no existe: intentar store_result y bind_result dinámico es complejo.
-                    // Para no romper la conexión devolvemos array vacío para este set.
-                    // (Si necesitas compatibilidad total sin mysqlnd usa la versión multi_query fallback.)
                     $rows = [];
                 }
 
                 $allSets[] = $rows;
-
-                // Avanzar al siguiente result set **usando el stmt** (no la conexión)
-                // next_result() mueve al siguiente result set y devuelve TRUE si existía.
-                // more_results() consulta si hay más.
-                // NOTA: usar aquí $stmt en vez de $this->conn evita "commands out of sync".
             } while ($stmt->more_results() && $stmt->next_result());
-
             // Cerrar stmt
             $stmt->close();
-
             return $allSets;    
         }
 
@@ -301,7 +299,6 @@
                 // Manejo de error si falla la ejecución
                 throw new Exception("Error en execute(): " . $statement->error);
             }
-            //return $stmt->execute();
             $result = $stmt->get_result();
             return $result; //Regresa el resultado de la consulta
         }
@@ -335,15 +332,10 @@
                 $stmt->close();
                 return false;
             }
-
-            // NO consumir filas aquí; devolver el objeto mysqli_result para iterar fuera
             return $result;
         }
 
         public function reporteGeneral_Vinc_Datos(){
-            //$statement_query = "SELECT registroservicio.*,serviciotramite.Descripcion as Descripcion, serviciotramite.idDepto as idDepto, departamento.Nombre as NombreDepto FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite inner join departamento on servicioTramite.idDepto = departamento.idDepto where serviciotramite.idDepto = 7;";    
-            //$sql_query = "SELECT *, count(idDepto) as Cantidad FROM registroservicio inner join serviciotramite on registroservicio.idTramite = serviciotramite.idTramite group by serviciotramite.idDepto;"
-
             $sql_statement = "SELECT st.descripcion AS DescripcionT, COUNT(*) AS Total
                 FROM registroservicio rs
                 INNER JOIN serviciotramite st ON rs.idTramite = st.idTramite

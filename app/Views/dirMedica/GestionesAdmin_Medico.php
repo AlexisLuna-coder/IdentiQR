@@ -9,6 +9,7 @@
     }
     $usuarioActivo = $_SESSION['usr'] ?? 'Usuario';
     $rolActivo = $_SESSION['rol'] ?? 'Invitado';
+    $statusAlert = $_GET['status'] ?? $statusAlert ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -22,6 +23,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="/IdentiQR/public/JavaScript/gestionesDirecciones.js"></script>
         <script src="https://kit.fontawesome.com/b41a278b92.js" crossorigin="anonymous"></script> <!--ICONOS-->
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <title>DireccionMedica_IdentiQR</title>
     </head>

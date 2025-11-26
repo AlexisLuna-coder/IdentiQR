@@ -1,4 +1,5 @@
 <?php
+    /*Creamos la clase para el manejo de POO de los objetos tipo ALUMNO*/
     class Usuario {
 
         private $id_usuario; 
@@ -100,7 +101,5 @@
         public function setFechaRegistro($FechaRegistro) {
             $this->FechaRegistro = $FechaRegistro;
         }
-
     }
-
 ?>

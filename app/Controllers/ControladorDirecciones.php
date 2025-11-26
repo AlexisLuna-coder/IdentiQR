@@ -9,26 +9,22 @@
     class DirectionsController{
         private $directionModel;
         private $alumnoModel;
-
+        //Creamos el constructor e inicializa los modelos de Direcciones y Alumnos para interactuar con la BD.
         public function __construct($conn){
             $this->directionModel = new DireccionesModel($conn);
             $this->alumnoModel = new AlumnoModel($conn);
         }
-
         /*Funciones para la generación de los trÁmites. */
         //1. Función para ingresar dentro de TRáMITES
         public function registrarTramite(){
-            //Obtenemos para ver las vistas
+            //Obtenemos el departamento para ver las vistas acorde al departamento
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
-
             // Variable para controlar la alerta en la vista
             $statusAlert = null; 
-
             //Validar que el botón fue enviado y tiene datos - DirAcademica
             if(isset($_POST['registrarTramite_dirDirACA'])){
-                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará el QR y obtendrá la matricula
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará el QR y obtendrá la matricula por medio de escaneo
                 $idTramite = (int)$_POST['idTramite'];
-                
                 $fechaJustificante = $_POST['fechaJustificante'];
                 $requisitos = $_POST['Requisitos'];
                 /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
@@ -55,7 +51,7 @@
                     $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
                     $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
                     $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
-                    //Concatenación de datos
+                    //Concatenación de datos para un mejor manejo
                     $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
                     //Validamos que tipo de servicio es
                     switch($idTramite){
@@ -84,8 +80,9 @@
                         $fechaJustificante,
                         $requisitos
                     );
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -96,16 +93,14 @@
                 }
             }
             
+            //CASO 2: DAE (Dirección de Asuntos Estudiantiles - Extracurriculares)
             //Validar que el botón fue enviado y tiene datos - dirDAE
             if(isset($_POST['registrarTramite_dirDAE'])){
-                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
-
+                $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneará el QR y obtendrá la matricula por medio de escaneo
                 $idTramite = (int)$_POST['idTramite'];
-                
-                $seleccionExtra = $_POST['seleccionExtra'];
+                $seleccionExtra = $_POST['seleccionExtra']; // Taller seleccionado
                 /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
-
                 /*Hacemos la validación para recuperar los datos*/
                 if($resultDatos){
                     $Nombre_AUX         = $resultDatos['Nombre'];
@@ -128,7 +123,6 @@
                     $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
                     $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
                     $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
-
                     //Concatenación de datos
                     $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
                     $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
@@ -157,8 +151,9 @@
                         $seleccionExtra,
                         $requisitos
                     );
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -168,20 +163,18 @@
                     $statusAlert = 'error_matricula';
                 }
             }
-
+            //CASO 3: DDA (Dirección de Desarrollo Académico - Tutorías)
             //Valir que el botón fue enviado y tiene datos - dirDDA
             if(isset($_POST['registrarTramite_dirDDA'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
-
                 $idTramite = (int)$_POST['idTramite'];
-                
+                // Datos específicos de tutorías
                 $cantTutorias = (int)$_POST['cantTutorias'];
                 $cantTutoriasInd = isset($_POST['cantTutoriasInd']) ? (int)$_POST['cantTutoriasInd'] : 0;
                 $tutor = trim($_POST['tutor']);
                 
                 /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
-
                 /*Hacemos la validación para recuperar los datos*/
                 if($resultDatos){
                     $Nombre_AUX         = $resultDatos['Nombre'];
@@ -234,8 +227,9 @@
                         $cantTutoriasInd,       
                         $tutor
                     ));
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -245,11 +239,12 @@
                     $statusAlert = 'error_matricula';
                 }
             }
-
+            // CASO 4: DIRECCIÓN MÉDICA (Consultas y Citas)
             //Valir que el botón fue enviado y tiene datos - dirMed
             if(isset($_POST['registrarTramite_dirMedica'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
                 $idTramite = (int)$_POST['idTramite'];
+                // Datos vitales 
                 $Temperatura =  (double)$_POST['temperatura'];
                 $Altura =  (double)$_POST['altura'];
                 $Peso = (double)$_POST['peso'];
@@ -257,7 +252,6 @@
                 $descripcionAdicional =  $_POST['descripcion'];
                 /*AQUÍ SE RECUPERARÁN LOS DATOS DEL ALUMNO. */
                 $resultDatos = $this->alumnoModel->recuperarDatosAlumnoPorMatricula($matricula);
-
                 /*Hacemos la validación para recuperar los datos*/
                 if($resultDatos){
                     $Nombre_AUX         = $resultDatos['Nombre'];
@@ -280,11 +274,9 @@
                     $ContactoEmergencia_AUX = $resultDatos['contacto_emergencia'];
                     $FechaIngresoInfoMed_AUX = $resultDatos['fechaIngreso_InfoMed'];
                     $Cuatri_AUX          = $resultDatos['Cuatri'];          // función calcCuatrimestre()
-
                     //Concatenación de datos
                     $nombreCompleto = trim("$Nombre_AUX $ApePat_AUX $ApeMat_AUX");
                     $requisitos = trim($Alergias_AUX. "- Sangre: $TipoSangre_AUX");
-
                     //Validamos que tipo de servicio es
                     switch($idTramite){
                         case 13: 
@@ -313,8 +305,9 @@
                         $Temperatura,
                         $descripcionAdicional
                     );
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -324,7 +317,7 @@
                     $statusAlert = 'error_matricula';
                 }
             }
-
+            // CASO 5: SERVICIOS ESCOLARES (Constancias, Pagos, Inscripción, Reinscripción, etc.)
             //Valir que el botón fue enviado y tiene datos - dirServEsco
             if(isset($_POST['registrarTramite_dirServEsco'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
@@ -395,8 +388,9 @@
                         $metodoPago,
                         $descripcionAdicional
                     ));
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -406,8 +400,8 @@
                     $statusAlert = 'error_matricula';
                 }
             }
-
-            //Valir que el botón fue enviado y tiene datos - dirVinc
+            // CASO 6: VINCULACIÓN (Estancias, Estadías, Servicio Social)       
+            //Validar que el botón fue enviado y tiene datos - dirVinc
             if(isset($_POST['registrarTramite_dirVinc'])){
                 $matricula = $_POST['matriculaEscaneadoBD']; // Aquí se escaneara
 
@@ -416,7 +410,7 @@
                 $entregaDocumentos = $_POST['entregaDocumentos'];
                 $fechaSolicitud = $_POST['fechaSolicitud'];
                 
-                // Recuperar los documentos seleccionados
+                // Recuperar los documentos seleccionados (Checkboxes)
                 if (isset($_POST['docs']) && is_array($_POST['docs'])) {
                     $docs = $_POST['docs']; // ← Esto es un arreglo con los documentos seleccionados
                     $docsTexto = implode(', ', $docs); // Ejemplo: "INE, CV, CartaAceptacion"
@@ -494,9 +488,10 @@
                         $fechaSolicitud,
                         $docsTexto,
                         $entregaDocumentos
-                    );
+                    );                    
+                    //Llamamos al modelo y recuperamos el resultado devuelto para hacer manejo de las alertas
                     $insert = $this->directionModel -> registrarTramite($matricula, $idTramite, $descripcionTotal);
-                    
+                    //Validamos
                     if($insert){
                         $statusAlert = 'success';
                     } else {
@@ -508,52 +503,56 @@
             }
             //Incluimos la vista
             switch($idDepto){
-                    case 2:
-                        //Dirección académica - justificantes
-                        include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                        exit();
-                        break;
-                    case 3:
-                        //Servicio escolares
-                        include_once(__DIR__ . '/../Views/dirServEsco/gestionDocumentosServEsco.php'); 
-                        exit();
-                        break;
-                    case 4:
-                        //DDA
-                        include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                        exit();
-                        break;
-                    case 5:
-                        //DAE
-                        include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                        exit();
-                        break;
-                    case 6:
-                        //Médico
-                        include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                        exit();
-                        break;
-                    case 7:
-                        //Vinculación
-                        include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                        exit();
-                        break;
-                    default:
-                        include_once(__DIR__ . '/../Views/Login.php');
-                }
+                case 2:
+                    //Dirección académica - justificantes
+                    include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
+                    exit();
+                    break;
+                case 3:
+                    //Servicio escolares
+                    include_once(__DIR__ . '/../Views/dirServEsco/gestionDocumentosServEsco.php'); 
+                    exit();
+                    break;
+                case 4:
+                    //DDA
+                    include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
+                    exit();
+                    break;
+                case 5:
+                    //DAE
+                    include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
+                    exit();
+                    break;
+                case 6:
+                    //Médico
+                    include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
+                    exit();
+                    break;
+                case 7:
+                    //Vinculación
+                    include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
+                    exit();
+                    break;
+                default:
+                    include_once(__DIR__ . '/../Views/Login.php');
             }
+        }
         
         //2.0. Función para consultar TODOS LOS TRÁMITES
-
-        //2.1. Función para consultar TODOS LOS TRÁMITES por DEPARTAMENTO
+        //TODO: 2.1. Función para consultar TODOS LOS TRÁMITES por DEPARTAMENTO
+        /**
+         * Obtiene todos los trámites asociados a un departamento específico
+         * y carga la vista de gestión correspondiente.
+         * Se usa típicamente al cargar la página principal de gestión de cada dirección.
+         */
         public function consultarTramitesPorDEPTO(){
             $direccion = null; // default: null
+            // Prioridad: POST -> GET -> Default (2: Académica)
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 2);
-                        
             if(isset($_POST['consultarTramite_Depto'])){
                 // Obtener idDepto del POST o usar el valor por defecto
                 $idDepto = isset($_POST['idDepto']) ? (int)$_POST['idDepto'] : 2;
-                // Llamada al modelo (devuelve mysqli_result)
+                // Llamada al modelo para obtener el resultset
                 $direccion = $this->directionModel->consultarTramitesPorDepto($idDepto);
                 //Evaluamos que tipo de dirección es para Incluirlo
                 switch($idDepto){
@@ -602,7 +601,6 @@
             if(isset($_POST['consultarTramite_idTramite'])){
                 $idTramite = (int)$_POST['idTramite'];
                 $idDepto = isset($_POST['idDepto']) ? (int)$_POST['idDepto'] : 2;
-
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarPorTipoTramite($idTramite);
             }
@@ -643,7 +641,6 @@
                     break;
             }
         }
-        
         //2.3 Función para consultar TODOS los TRÁMITES realizados por algún alumno (por Matrícula)
         public function consultarPorMatricula(){
             $direccion = null; // default: null
@@ -695,9 +692,9 @@
                     break;
             }
         }
-        
         //2.4 Función para consultar TRÁMITES por Folio
         public function consultarPorFolio(){
+            //Busca un trámite específico utilizando su Folio de Registro (ID único en BD).
             $direccion = null; // default: null
             $folio = null;
             $idDepto = null;
@@ -705,7 +702,6 @@
             if(isset($_POST['consultarTramite_Folio'])){
                 $folio = $_POST['FolioRegistro'];
                 $idDepto = isset($_POST['idDepto']) ? (int)$_POST['idDepto'] : 2;
-
                 // Llamada al modelo (devuelve mysqli_result)
                 $direccion = $this->directionModel->consultarTramitePorFolio($folio);
             }
@@ -746,8 +742,13 @@
                     break;
             }
         }
-
+        
         /*Función para realizar la actualización de datos dentro del Trámite*/
+        /**
+         * Función actualizarTramite
+         * * Procesa la actualización de la información de un trámite existente (Status, Descripción).
+         * Se llama desde el formulario de edición (modificacionTramite.php).
+         */
         public function actualizarTramite(){
             $row = null;
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
@@ -760,38 +761,32 @@
                 if($result && $result->num_rows > 0){
                     $row = $result->fetch_assoc();
                 }
-                
+
                 //Evaluamos que tipo de direccion es para Incluirlo
                 switch($idDepto){
                     case 2:
                         //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
-                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
                         include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php');
-                        //exit();
                         break;
                     case 4:
                         //DDA
                         include_once(__DIR__ . '/../Views/dirDDA/modificacionTramite.php');
-                        //exit();
                         break;
                     case 5:
                         //DAE
                         include_once(__DIR__ . '/../Views/dirDAE/modificacionTramite.php');
-                        //exit();
                         break;
                     case 6:
                         //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/modificacionTramite.php');
-                        //exit();
                         break;
                     case 7:
                         //Vinculación
                         include_once(__DIR__ . '/../Views/dirVinculacion/modificacionTramite.php');
-                        //exit();
                         break;
                     default:
                         include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
@@ -799,7 +794,7 @@
                 }
                 return;
             }
-            //ENVIAR INFO
+            //ENVIAR INFO Y Procesar actualización
             $redireccion_error_base = "/IdentiQR/index.html";
             if(isset($_POST['actualizarTramite_Tramite'])){
                 $FolioRegistro = $_POST['FolioRegistro'];
@@ -809,34 +804,29 @@
 
                 $update = $this -> directionModel -> actualizarTramite($Descripcion, $estatusT, $FolioRegistro, $FolioSeguimiento);
                 if($update){
+                    // !ÉXITO: Redirigir a la gestión principal con ALERTA de éxito
                     switch($idDepto){
                         case 2:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult");
                             exit();
                             break;
                         case 3:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult");
                             exit();
                             break;
                         case 4 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult");
                             exit();
                             break;
                         case 5:
-                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                             header("Location: /IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult");
                             exit();
                             break;
                         case 6 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult");
                             exit();
                             break;
                         case 7:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult");
                             exit();
                             break;
@@ -852,23 +842,18 @@
                             $url_error = "/IdentiQR/app/Views/dirDirAca/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=2&error=true";
                             break;
                         case 3:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirServEsco/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=3&error=true";
                             break;
                         case 4 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirDDA/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=4&error=true";
                             break;
                         case 5:
-                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                             $url_error = "/IdentiQR/app/Views/dirDAE/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=5&error=true";
                             break;
                         case 6 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirMedica/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=6&error=true";
                             break;
                         case 7:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirVinculacion/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=7&error=true";
                             break;
                         default:
@@ -882,6 +867,9 @@
             //include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
         }
 
+        /*  Busca un trámite por Folio ingresado manualmente en el input de búsqueda
+            y carga la vista de edición si lo encuentra.
+        */
         public function actualizarTramiteManual(){
             $row = null;
             $statusAlert = null; // Variable para el error
@@ -894,6 +882,7 @@
                 // Obtener el primer registro del resultado
                 if($result && $result->num_rows > 0){
                     $row = $result->fetch_assoc();
+                    // Si existe, cargamos la vista de edición
                     switch($idDepto){
                         case 2: include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php'); break;
                         case 3: include_once(__DIR__ . '/../Views/dirServEsco/modificacionTramite.php'); break;
@@ -906,39 +895,33 @@
                     return; // Terminamos aquí para que se quede en la vista de edición
                 } else {
                     //Configuramos alerta de error
-                    $statusAlert = 'error_folio';
+                    $statusAlert = 'error_folio'; // Alerta para JS
                 }
-                //// Si llegamos aquí es porque hubo error. Cargamos la vista GESTIÓN (la principal)
+                // Si no se encontró, recargamos la vista principal con el error
                 switch($idDepto){
                     case 2:
                         //Dirección académica - justificantes
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
-                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
                         include_once(__DIR__ . '/../Views/dirServEsco/gestionDocumentosServEsco.php');
-                        //exit();
                         break;
                     case 4:
                         //DDA
                         include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php');
-                        //exit();
                         break;
                     case 5:
                         //DAE
                         include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php');
-                        //exit();
                         break;
                     case 6:
                         //Médico
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php');
-                        //exit();
                         break;
                     case 7:
                         //Vinculación
                         include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php');
-                        //exit();
                         break;
                     default:
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
@@ -946,7 +929,9 @@
                 }
             return;
             }
-            //ENVIAR INFO
+
+            // ENVIAR INFO
+            // Lógica de retorno en caso de submit de actualización manual (similar a actualizarTramite)
             if(isset($_POST['actualizarTramite_Tramite'])){
                 $FolioRegistro = $_POST['FolioRegistro'];
                 $FolioSeguimiento = $_POST['FolioSeguimiento'];
@@ -957,32 +942,26 @@
                 if($update){
                     switch($idDepto){
                         case 2:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult");
                             exit();
                             break;
                         case 3:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult");
                             exit();
                             break;
                         case 4 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult");
                             exit();
                             break;
                         case 5:
-                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                             header("Location: /IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult");
                             exit();
                             break;
                         case 6 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult");
                             exit();
                             break;
                         case 7:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             header("Location: /IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult");
                             exit();
                             break;
@@ -998,23 +977,18 @@
                             $url_error = "/IdentiQR/app/Views/dirDirAca/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=2&error=true";
                             break;
                         case 3:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirServEsco/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=3&error=true";
                             break;
                         case 4 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirDDA/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=4&error=true";
                             break;
                         case 5:
-                            //$redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                             $url_error = "/IdentiQR/app/Views/dirDAE/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=5&error=true";
                             break;
                         case 6 :
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirMedica/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=6&error=true";
                             break;
                         case 7:
-                            //$redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=update";
                             $url_error = "/IdentiQR/app/Views/dirVinculacion/modificacionTramite.php?Folio=$FolioSeguimiento&idDepto=7&error=true";
                             break;
                         default:
@@ -1025,10 +999,11 @@
                     exit(); 
                 }
             }
-            //include_once(__DIR__ . '/../Views/dirDirAca/modificacionTramite.php');
         }
-
-        /*Funciones para realizar la baja de los servicios/tramites */
+        
+        /*Funciones para realizar la baja de los servicios/tramites 
+        Muestra una alerta SweetAlert embebida al cargar la vista nuevamente.
+        */
         //1. Baja por FolioRegistro (desde la tabla)
         public function bajaTramiteFR(){
             $idDepto = (int)($_POST['idDepto'] ?? $_GET['idDepto'] ?? 1);
@@ -1046,37 +1021,31 @@
                         //Dirección académica - justificantes
                         $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                        //exit();
                         break;
                     case 3:
                         //Servicio escolares
                         $redireccion = "/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirServEsco/gestionDocumentosServEsco.php'); 
-                        //exit();
                         break;
                     case 4:
                         //DDA
                         $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                        //exit();
                         break;
                     case 5:
                         //DAE
                         $redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                        //exit();
                         break;
                     case 6:
                         //Médico
                         $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                        //exit();
                         break;
                     case 7:
                         //Vinculación
                         $redireccion = "/IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult";
                         include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                        //exit();
                         break;
                     default:
                         $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
@@ -1085,6 +1054,7 @@
                 }
                 
                 // Mostrar mensaje después de cargar la vista
+                // !Realizamos una inyección de script JS para mostrar alerta inmediata
                 if($eliminado > 0){
                     echo "<script>
                         Swal.fire({
@@ -1106,7 +1076,7 @@
                 }
             }
         }
-
+        
         //2. Baja por FolioSeguimiento (desde el formulario)
         public function bajaTramiteFS(){
             $eliminado = 0;
@@ -1115,57 +1085,48 @@
             
             if(isset($_POST['BajaServicio_Tramite']) || (isset($_POST['accionEliminar']) && $_POST['accionEliminar'] === 'eliminarTramite')){
                 $FolioSeguimiento = $_POST['FolioSeguimiento'];
-
                 // Llamar al modelo para eliminar
                 $eliminado = $this->directionModel->cancelarTramiteFS($FolioSeguimiento);
             }
-            
-            // Incluir la vista con el resultado
-            
+
             //Evaluamos que tipo de dirección es para Incluirlo
             switch($idDepto){
                 case 2:
                     //Dirección académica - justificantes
                     $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php'); 
-                    //exit();
                     break;
                 case 3:
                     //Servicio escolares
                     $redireccion = "/IdentiQR/app/Views/dirServEsco/GestionesAdmin_ServEsco.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirServEsco/gestionDocumentosServEsco.php'); 
-                    //exit();
                     break;
                 case 4:
                     //DDA
                     $redireccion = "/IdentiQR/app/Views/dirDDA/GestionesAdmin_DesaAca.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDDA/gestionAsistenciaTutorias.php'); 
-                    //exit();
                     break;
                 case 5:
                     //DAE
                     $redireccion = "/IdentiQR/app/Views/dirDAE/GestionesAdmin_DAE.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDAE/gestionDocumentosDAE.php'); 
-                    //exit();
                     break;
                 case 6:
                     //Médico
                     $redireccion = "/IdentiQR/app/Views/dirMedica/GestionesAdmin_Medico.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirMedica/gestionDocMed.php'); 
-                    //exit();
                     break;
                 case 7:
                     //Vinculación
                     $redireccion = "/IdentiQR/app/Views/dirVinculacion/GestionesAdmin_Vinculacion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirVinculacion/gestionDocumentosAlumnos.php'); 
-                    //exit();
                     break;
                 default:
                     $redireccion = "/IdentiQR/app/Views/dirDirAca/GestionesAdmin_Direccion.php?action=consult";
                     include_once(__DIR__ . '/../Views/dirDirAca/gestionJustificantes_Dir.php');
                     break;
             }
-            // Mostrar mensaje después de cargar la vista
+            // Mostrar mensaje después de cargar la vista mediante una inyección de script JS para el SweetAlert
             if($eliminado > 0){
                 echo "<script>
                     Swal.fire({

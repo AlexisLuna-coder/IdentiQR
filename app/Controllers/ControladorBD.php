@@ -12,35 +12,37 @@
         /*FUNCIÓN PARA LA GENERACIÓN DEL BACKUP DE LA BASE DE DATOS */
         /* 
          * FUNCIÓN PARA LA GENERACIÓN DEL BACKUP DE LA BASE DE DATOS
-         * Esta función utiliza el modelo para crear un archivo de respaldo (backup) de la base de datos.
-         * Luego crea las cabeceras HTTP para forzar la descarga del archivo generado al usuario.
+         * Esta función utiliza el modelo para crear un archivo de respaldo (Backup) de la base de datos.
+         * Fuerza la descarga inmediata en el navegador del usuario.
          */
         public function backupDBs(){
-            // Se llama al método del modelo que genera el backup y devuelve la ruta del archivo
+            // Se llama al método del modelo que genera el backup y devuelve la ruta del archivo físico almacenada en el sistema
             $backup = $this->modelBD->backupDBs();
+
             // Verificamos que el backup se generó correctamente y que el archivo existe
             if($backup && file_exists($backup)){
                 $nombreArch = basename($backup);
                 // Se envían cabeceras para descargar el archivo generado, no para mostrarlo en el navegador
+                // Indica al navegador que es un archivo adjunto (no abrir en pestaña nueva)
                 header("Content-disposition: attachment; filename =".$nombreArch); // nombre del archivo a descargar
                 header("Content-type: MIME"); // tipo MIME genérico para descarga
                 // Se lee y envía el contenido del archivo al navegador
                 readfile(__DIR__ . '/../../config/Backups/' . $nombreArch);
-
-                // Si se descomenta se podrá eliminar archivo después de descargar y ahorrar espacio en servidor
+                // !Si se descomenta se podrá eliminar archivo después de descargar y ahorrar espacio en servidor
                 // unlink($backup); 
-                // Se finaliza la ejecución para evitar mostrar más contenido
                 exit;
             }
         }
 
-        /*FUNCIÓN PARA LA GENERACIÓN DEL RESTORE DE LA BASE DE DATOS */
+        /*FUNCIÓN PARA LA GENERACIÓN DEL RESTORE DE LA BASE DE DATOS (Valida el tamaño del archivo, la ext .sql y la llamada al metodo*/
         public function restoreDBs(){
-            $statusAlert = null; // Variable para controlar la alerta en la vista
+            $statusAlert = null; // Variable para controlar la alerta en la vista (SweetAlert)
+
             /* NOTA. CONSIDERAR QUE EL Archivo cargado se solicitará */
             // Configuración para que el archivo no supere los 52,428,800 bytes
             $tamanoMaximoArch = 50 * 1024 * 1024; // 50 MB
             $uploadDir = realpath(__DIR__ . '/../../config/Uploads');
+
             // Realizamos la validación que se haya subido un archivo sin errores
             if (!isset($_FILES['backupFile']) || $_FILES['backupFile']['error'] !== UPLOAD_ERR_OK) {
                 $errorCodigo = $_FILES['backupFile']['error'] ?? 'desconocido';
@@ -50,7 +52,7 @@
             }
             $file = $_FILES['backupFile'];
             $filename = basename($file['name']);
-            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));  //Devuelve el formato de la extensión en minús
+            $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));  //Devuelve el formato de la extensión en minúsculas
             
             // Valida que la extensión sea .sql
             if ($ext !== 'sql') {
@@ -58,7 +60,7 @@
                 $this->cargarVista($statusAlert); //Envia el mensaje de status a la vista. Ahí se mostrará
                 return;
             }
-            // Valida el tamaño (Max 50MB)
+            // Valida el tamaño (Max 50MB). Si se pasa NO PERMITE
             if ($file['size'] > $tamanoMaximoArch) {
                 $maxMB = $tamanoMaximoArch / 1024 / 1024;
                 $statusAlert = 'restore_error::El archivo excede el límite de 50MB';
@@ -72,13 +74,13 @@
                 $this->cargarVista($statusAlert);
                 return;
             }
-            // Llamar al modelo para realizar la restauración
+            // Llamar al modelo para realizar la restauración ejecutando el Método inicial
             $restore = $this->modelBD->restoreDBs($carpetaSistemaUpload);
             // Eliminar el archivo SQL temporal para no GUARDARLO en el sistema; NO ES RELEVANTE
             if (file_exists($carpetaSistemaUpload)) {
                 unlink($carpetaSistemaUpload);
             }
-
+            //Definir mensaje de éxito o error
             if ($restore === true) {
                 // ÉXITO: Redirigir a la vista principal o mostrar mensaje
                 $statusAlert = 'restore_success';
@@ -93,7 +95,5 @@
             // Incluimos la vista principal del administrador
             include_once __DIR__ . '/../Views/GestionesAdministradorG.php';
         }
-
     }
-
 ?>

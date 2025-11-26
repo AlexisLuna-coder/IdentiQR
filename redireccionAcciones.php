@@ -1,25 +1,25 @@
 <?php 
     //Incluir el controlador de la Dirección/Departamento correspondiente
     include_once "config/Connection_BD.php";
-    //include_once "app/Controllers/ControladorAlumnos.php";
     include_once "app/Controllers/ControladorDirecciones.php";
     include_once "app/Controllers/ControladorBD.php";
     include_once "app/Controllers/ControladorReportes.php";
-    //include_once "app/Controllers/ControladorUsuario.php";
     
     // Crear la conexión a la base de datos
+    // Instanciar la clase de conexión
     $db = new Connection_BD();
     $conn = $db->getConnection();
     
+    // Verificar si la conexión falló antes de continuar
     if (!$conn) {
         die("Error: No se pudo establecer conexión con la base de datos.");
     }
-    // ---------------------------------------------------------------------------------------
-    // VALIDACIÓN DE SESIÓN CON SWEETALERT
-    // ---------------------------------------------------------------------------------------
+    //Validamos que la sesión se encuentre activa, haciendo uso de SWEETALERT
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+
+    // Validar si el usuario tiene un rol asignado 
     if (!isset($_SESSION['rol'])) {
         // Cerramos PHP para escribir HTML limpio
         ?>
@@ -38,6 +38,7 @@
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     let timerInterval;
+                    // Alerta de bloqueo de acceso
                     Swal.fire({
                         title: 'Acceso Restringido',
                         html: 'Debes iniciar sesión para continuar.<br>Redirigiendo al Login...',
@@ -46,13 +47,13 @@
                         timerProgressBar: true, // Muestra la barra de tiempo disminuyendo
                         allowOutsideClick: false,
                         allowEscapeKey: false,
-                        showConfirmButton: false, // Ocultamos el botón, es automático
+                        showConfirmButton: false,
                         willClose: () => {
                             // Se ejecuta justo antes de cerrar
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        // Cuando el timer termina (o se cierra la alerta), redirigimos
+                        // Redirección forzada al Login
                         window.location.href = '/IdentiQR/app/Views/Login.php';
                     });
                 });
@@ -60,16 +61,14 @@
         </body>
         </html>
         <?php
-        exit; // IMPORTANTE: Detener la ejecución aquí
+        exit;
     }
-    //---------------------------------------------------------------------------------------
     
-
     // En caso de no tener una ruta, se envia al formulario de insertar usuario
     $controller = isset($_GET['controller']) ? $_GET['controller'] :  'dirDirAca';
-    //
     $action = isset($_GET['action']) ? $_GET['action'] : 'inicio';
 
+    // Switch para instanciar el controlador correcto según la petición
     switch($controller){
         case 'dirDirAca':
             $controllerInstance = new DirectionsController($conn);
@@ -104,6 +103,7 @@
             exit();
     }
 
+    // Switch para ejecutar el método específico dentro del controlador seleccionado
     switch($action){
         case 'insert': //Llamar a registrarTramite
             $controllerInstance -> registrarTramite();
@@ -216,7 +216,6 @@
         default:
             //echo "Error al encontrar el controlador";
             include "app/Views/index.html";
-            //include "app/views/form_index.php";
             break;
         
 

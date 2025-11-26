@@ -17,10 +17,8 @@
 
 
     class codigosQR{
-        /*Prueba*/
-        //function generarQR_Alumno(Alumno $alumno, InformacionMedica $infoMed)
+  
         function generarQR_Alumno(Alumno $alumno):\Endroid\QrCode\Writer\Result\ResultInterface 
-                                                                            /*: retorna un objeto || :String */
         {
 
             $data_qr = $alumno->recuperarDatosQR();
@@ -40,7 +38,6 @@
                 logoPath: $logoPath,
                 
                 logoResizeToWidth: 200,
-                //logoPunchoutBackground: true,
 
                 foregroundColor: new Color(128, 0, 128),
                 backgroundColor:new Color(230, 230, 250),
@@ -50,15 +47,8 @@
             );
 
             $result = $builder->build();
-
-            // Output QR al navegador
-            //header('Content-Type: ' . $result->getMimeType());
-            //echo $result->getString();
-            //return (base64_encode($result->getString())); //->Para HTML
-            //return ($result->getString());
             return ($result);
-            //$result->saveToFile("qr-code.png"); //Esto lo tendría que mandar a correo
-            //exit;
+
         }
 
 

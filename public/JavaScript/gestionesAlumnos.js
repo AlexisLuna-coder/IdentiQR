@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /*2. MENSAJES DE NOTIFICACIONES */
-
 function registroAlumno(){
     Swal.fire({
         title: "Registro exitoso",
@@ -52,16 +51,13 @@ function registroAlumno(){
         showConfirmButton: false
     });
 }
-
-/*2.3 Alerta de consulta/s */
+/*2.3 Alerta de consultas */
 function consultarConCarga(event) {
     event.preventDefault(); // Detenemos el envío inmediato
     const form = event.target;
     const submitter = event.submitter; // Detectamos qué botón se presionó
-
     let titulo = "Consultando...";
     let texto = "Buscando información en la base de datos.";
-
     // Personalizamos el mensaje según el botón presionado
     if (submitter && submitter.name === 'consultarTodo') {
         titulo = "Consultando todos los alumnos";
@@ -70,7 +66,6 @@ function consultarConCarga(event) {
         titulo = "Consultando alumno";
         texto = "Buscando matrícula específica...";
     }
-
     Swal.fire({
         title: titulo,
         text: texto,

@@ -1,4 +1,3 @@
-// validacionLogin.js
 document.addEventListener("DOMContentLoaded", () => {
     // -------------------------------------------------------
     // 1. GESTIÓN DE ALERTAS (SweetAlert)

@@ -9,14 +9,12 @@
         public function registrarUsuario(Usuario $unUsuario){
             //Lógica para las acciones dentro de la base de datos
             //Codigo para hacer el registro de usuarios
-            //$sql_statement = "CALL registrarUsuariosSP(?, ?, ?, ?, ?, ?, ?, ?)"; // Aquí iría la llamada al procedimiento almacenado para registrar usuario 
             $sql_statement = "INSERT INTO Usuario (nombre, apellido_paterno, apellido_materno,genero, usr, email, passw, rol, idDepto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 
             $stmt = $this->conn->prepare($sql_statement);
             if (!$stmt) {
                 die("Error al preparar la llamada: " . $this->conn->error);
             }
-
             $nombre = $unUsuario->getNombre();
             $apellido_paterno = $unUsuario->getApellidoPaterno();
             $apellido_materno = $unUsuario->getApellidoMaterno();
@@ -53,13 +51,7 @@
                 }
             }
 
-            // Ejecutar el procedimiento
-            //if (!$stmt->execute()) {
-            //    die("Error al ejecutar registrarUsuarioSP: " . $stmt->error);
-            //}
-
             // Obtener el ID del usuario recién insertado
-            // Obtener el id insertado usando la conexión (disponible aquí)
                 $lastId = $this->conn->insert_id;
                 $stmt->close();
 
@@ -80,7 +72,6 @@
                     $unUsuario->setUsr($row['usr']);
                     $unUsuario->setFechaRegistro($row['FechaRegistro']);
                     $unUsuario->setPassw($row['passw']); // Limpiamos la contraseña por seguridad y la encriptamos 
-                    // (Opcional) actualizar otros campos si quieres sincronizar todo
                 } else {
                     echo "No se pudo recuperar el usuario insertado.";
                 }
@@ -107,8 +98,7 @@
             $res = $stmt->get_result();
             if ($res && $row = $res->fetch_assoc()) {
                 $stmt->close();
-                // Devuelve el rol del usuario
-                //return $row['rol']; String
+                // Devuelve el rol del usuario (Un arreglo para lo necesario en el Login)
                 return [
                     'idUsuario' => $row['idUsuario'] ?? null,
                     'usr'       => $row['usr'] ?? null,
@@ -116,7 +106,6 @@
                     'rol'       => $row['rol'] ?? null
                 ];
             }
-
             $stmt->close();
             return false;
         }
@@ -126,22 +115,18 @@
         public function actualizarUsuario(Usuario $unUsuario){
             // Statement
             $sql_statement = "UPDATE usuario set nombre = ?, apellido_paterno = ?, apellido_materno = ?, genero = ?, email = ?, passw = ?, rol = ?, idDepto = ? where id_usuario = ?";
-            
             // Preparar el statement
             $stmt = $this->conn->prepare($sql_statement);
-            
             // Validar preparación
             if (!$stmt) {
                 die("Error al preparar actualización: " . $this->conn->error);
             }
-            
             // Obtenemos los valores del objeto Usuario
             $nombre = $unUsuario->getNombre();
             $apellido_paterno = $unUsuario->getApellidoPaterno();
             $apellido_materno = $unUsuario->getApellidoMaterno();
             $genero = $unUsuario->getGenero();
             $email = $unUsuario->getEmail();
-            
             //$passw = md5($unUsuario->getPassw());
             $passw = ($unUsuario->getPassw());
             
@@ -181,7 +166,6 @@
             $stmt -> bind_param("ssi", $credencial, $credencial, $credencial);
             $stmt -> execute();
             return $result = $stmt -> get_result();
-            //return ($result -> fetch_assoc()); //Regresa un solo registro como un arreglo asociativo
         }
 
         /*Función para la consulta del usuario POR ID */
@@ -225,7 +209,6 @@
             }
             return 0;
         }
-
-
     }
+?>
 

@@ -406,26 +406,24 @@ footer {
         font-size: 1.8rem; /* Icono más grande para tocar fácil */
     }
 
-    /* --- CORRECCIÓN DEL LOGO --- */
     .ImagenIndex1 { 
         height: auto;
-        max-height: 80px; /* Aumentado de 44px a 80px */
+        max-height: 80px;
         width: auto;
         max-width: 200px;
-        margin: 0; /* Quitamos márgenes extraños */
+        margin: 0;
     }
 
     .brand h1 { font-size: 1rem; }
     .brand .tagline { display: none; }
 }
 
-/* 2. Breakpoint para el Footer y Contenido (Menor a 768px) */
+/* Breakpoint para el Footer y Contenido (Menor a 768px) */
 @media (max-width: 768px) {
     header {
         padding: 8px 0;
     }
 
-    /* --- CORRECCIÓN DEL FOOTER ALARGADO --- */
     footer {
         padding: 1rem 0; /* Menos relleno vertical */
     }
@@ -439,13 +437,12 @@ footer {
     .footer__info,
     .footer__links,
     .footer__terms {
-        /* Importante: 'auto' permite que ocupen solo lo que mide el texto */
         flex: 1 1 auto; 
         width: 100%;
         margin: 0; /* Quitamos márgenes por defecto */
     }
     
-    /* Ajustes del Login Box en móvil */
+    /* Ajustes del Login Box en telefono o dispositivo móvil */
     .Login_ContenedorGeneral {
         padding: 2rem 1.2rem;
         max-width: 90%;

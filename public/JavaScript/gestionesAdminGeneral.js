@@ -44,18 +44,15 @@ function confirmarBackup(event, url) {
  * Muestra alerta de confirmación para el RESTORE.
  * Valida que haya archivo seleccionado y pregunta confirmación antes de enviar el formulario.
  * Muestra alerta de carga mientras el servidor procesa la restauración.
- * 
  */
 function confirmarRestore(event) {
     event.preventDefault(); // Detenemos el envío inmediato del formulario
-    
     // Validar que haya archivo seleccionado para restaurar
     const input = document.getElementById('backupFile');
     if (!input || !input.files.length) {
         Swal.fire('Atención', 'Por favor selecciona un archivo .sql primero', 'warning');
         return;
     }
-
     // Mostrar alerta de confirmación para que usuario confirme restauración de BD
     Swal.fire({
         title: '¿Confirmar Restauración?',
@@ -80,7 +77,6 @@ function confirmarRestore(event) {
                     Swal.showLoading();
                 }
             });
-
             // Enviar el formulario manualmente al servidor para iniciar restauración
             event.target.submit();
         }
@@ -162,7 +158,6 @@ function configurarFormularioReportes() {
         const val = select.value;
         if (!val) {
             e.preventDefault();
-            // Usamos SweetAlert2 ya que ya lo estás utilizando
             Swal.fire('Atención', 'Por favor selecciona el tipo de reporte que deseas generar.', 'warning');
             select.focus();
             return;
